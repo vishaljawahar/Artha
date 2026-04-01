@@ -1,6 +1,7 @@
-import { PrismaClient } from "@prisma/client"
-
-const prisma = new PrismaClient()
+// NOTE: This file is NOT used by `prisma db seed`.
+// Categories are seeded per-user at registration time via POST /api/user/register.
+// DEFAULT_CATEGORIES is imported directly by that route.
+// Running `npx prisma db seed` will do nothing (by design).
 
 export const DEFAULT_CATEGORIES = [
   { name: "Electricity",        icon: "⚡", color: "#F59E0B", sortOrder: 1  },
@@ -23,10 +24,3 @@ export const DEFAULT_CATEGORIES = [
   { name: "Subscriptions",      icon: "📱", color: "#818CF8", sortOrder: 18 },
 ]
 
-async function main() {
-  console.log("Seed script — DEFAULT_CATEGORIES exported for per-user seeding on registration.")
-}
-
-main()
-  .catch(console.error)
-  .finally(() => prisma.$disconnect())
