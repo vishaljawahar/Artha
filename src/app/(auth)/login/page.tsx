@@ -42,17 +42,17 @@ export default function LoginPage() {
   }
 
   return (
-    <Card className="bg-slate-900 border-slate-800">
+    <Card className="bg-white border-gray-200 shadow-sm">
       <CardHeader>
-        <CardTitle className="text-white">Sign in</CardTitle>
-        <CardDescription className="text-slate-400">
+        <CardTitle className="text-gray-900">Sign in</CardTitle>
+        <CardDescription className="text-gray-500">
           Enter your email and password to access Artha
         </CardDescription>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="email" className="text-slate-200">Email</Label>
+            <Label htmlFor="email" className="text-gray-700">Email</Label>
             <Input
               id="email"
               type="email"
@@ -60,11 +60,11 @@ export default function LoginPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="bg-slate-800 border-slate-700 text-white placeholder:text-slate-500"
+              className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-400"
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="password" className="text-slate-200">Password</Label>
+            <Label htmlFor="password" className="text-gray-700">Password</Label>
             <Input
               id="password"
               type="password"
@@ -72,11 +72,11 @@ export default function LoginPage() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="bg-slate-800 border-slate-700 text-white"
+              className="bg-white border-gray-300 text-gray-900"
             />
           </div>
           {error && (
-            <p className="text-sm text-red-400 bg-red-950/40 border border-red-900 rounded px-3 py-2">
+            <p className="text-sm text-red-600 bg-red-50 border border-red-200 rounded px-3 py-2">
               {error}
             </p>
           )}
@@ -87,9 +87,9 @@ export default function LoginPage() {
           >
             {loading ? "Signing in…" : "Sign in"}
           </Button>
-          <p className="text-center text-sm text-slate-400">
+          <p className="text-center text-sm text-gray-500">
             No account?{" "}
-            <Link href="/register" className="text-emerald-400 hover:text-emerald-300">
+            <Link href="/register" className="text-emerald-600 hover:text-emerald-500 font-medium">
               Create one
             </Link>
           </p>

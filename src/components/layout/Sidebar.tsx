@@ -18,10 +18,10 @@ export function Sidebar() {
   const pathname = usePathname()
 
   return (
-    <aside className="hidden lg:flex flex-col w-60 min-h-screen bg-slate-900 border-r border-slate-800 px-3 py-6">
+    <aside className="hidden lg:flex flex-col w-60 min-h-screen bg-white border-r border-gray-200 px-3 py-6">
       <div className="px-3 mb-8">
-        <h1 className="text-2xl font-bold text-white">Artha</h1>
-        <p className="text-xs text-slate-500 mt-0.5">Personal Finance</p>
+        <h1 className="text-2xl font-bold text-gray-900">Artha</h1>
+        <p className="text-xs text-gray-400 mt-0.5">Personal Finance</p>
       </div>
 
       <nav className="flex-1 space-y-1">
@@ -34,8 +34,8 @@ export function Sidebar() {
               className={cn(
                 "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors",
                 isActive
-                  ? "bg-emerald-600/20 text-emerald-400"
-                  : "text-slate-400 hover:text-white hover:bg-slate-800"
+                  ? "bg-emerald-50 text-emerald-700"
+                  : "text-gray-600 hover:text-gray-900 hover:bg-gray-100"
               )}
             >
               <span className="text-base">{item.icon}</span>
@@ -47,7 +47,7 @@ export function Sidebar() {
 
       <button
         onClick={() => signOut({ callbackUrl: "/login" })}
-        className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-800 transition-colors mt-4"
+        className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-500 hover:text-gray-900 hover:bg-gray-100 transition-colors mt-4"
       >
         <span className="text-base">🚪</span>
         Sign out
