@@ -1,20 +1,9 @@
-import { auth } from "@/auth"
-import { NextResponse } from "next/server"
+import NextAuth from "next-auth"
+import { authConfig } from "@/auth.config"
 
-export default auth((req) => {
-  const isLoggedIn = !!req.auth
-  const pathname = req.nextUrl.pathname
-
-  const isAuthPage = pathname === "/login" || pathname === "/register"
-
-  if (!isLoggedIn && !isAuthPage) {
-    return NextResponse.redirect(new URL("/login", req.url))
-  }
-
-  if (isLoggedIn && isAuthPage) {
-    return NextResponse.redirect(new URL("/dashboard", req.url))
-  }
-})
+// Middleware uses only the Edge-compatible authConfig (no bcrypt, no Prisma).
+// Route protection is handled by the `authorized` callback in auth.config.ts.
+export default NextAuth(authConfig).auth
 
 export const config = {
   matcher: ["/((?!api/auth|_next/static|_next/image|favicon.ico).*)"],
