@@ -3,10 +3,13 @@ import { auth } from "@/auth"
 import { prisma } from "@/lib/db"
 import { z } from "zod"
 
+const MAX_BULK_LINES = 200
+const MAX_LINE_LENGTH = 500
+
 const bulkSchema = z.object({
-  lines: z.string().min(1, "Lines are required"),
+  lines: z.string().min(1, "Lines are required").max(MAX_BULK_LINES * MAX_LINE_LENGTH, "Input too large"),
   categoryId: z.string().min(1, "Category is required"),
-  year: z.number().int(),
+  year: z.number().int().min(1900).max(2100),
   month: z.number().int().min(1).max(12),
 })
 
@@ -44,7 +47,8 @@ export async function POST(req: NextRequest) {
 
   const parsedLines = lines
     .split("\n")
-    .map((line) => line.trim())
+    .slice(0, MAX_BULK_LINES)
+    .map((line) => line.slice(0, MAX_LINE_LENGTH).trim())
     .filter((line) => line.length > 0)
     .map((line) => {
       const match = AMOUNT_LINE_RE.exec(line)

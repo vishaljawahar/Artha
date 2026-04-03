@@ -60,15 +60,12 @@ interface LegendEntry {
   payload: { value: number }
 }
 
-interface CustomLegendProps {
-  payload?: LegendEntry[]
-}
-
-const renderCustomLegend = (props: CustomLegendProps) => {
-  const { payload } = props
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const renderCustomLegend = (props: any) => {
+  const payload: LegendEntry[] = props?.payload ?? []
   return (
     <ul className="flex flex-wrap justify-center gap-x-4 gap-y-1 mt-3">
-      {(payload ?? []).map((entry, i: number) => (
+      {payload.map((entry, i: number) => (
         <li key={i} className="flex items-center gap-1.5 text-xs text-gray-600">
           <span className="w-2.5 h-2.5 rounded-full flex-shrink-0" style={{ background: entry.color }} />
           <span>{entry.value}</span>

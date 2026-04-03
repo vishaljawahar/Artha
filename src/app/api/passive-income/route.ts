@@ -23,7 +23,9 @@ export async function GET(req: NextRequest) {
   if (!year) return NextResponse.json({ error: "year is required" }, { status: 400 })
 
   const yearNum = parseInt(year, 10)
-  if (isNaN(yearNum)) return NextResponse.json({ error: "Invalid year" }, { status: 400 })
+  if (isNaN(yearNum) || yearNum < 1900 || yearNum > 2100) {
+    return NextResponse.json({ error: "Invalid year" }, { status: 400 })
+  }
 
   const entries = await prisma.passiveIncome.findMany({
     where: { userId, year: yearNum },

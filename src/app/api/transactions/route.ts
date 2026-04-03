@@ -24,7 +24,7 @@ export async function GET(req: NextRequest) {
   const year = parseInt(searchParams.get("year") ?? "", 10)
   const month = parseInt(searchParams.get("month") ?? "", 10)
 
-  if (isNaN(year) || isNaN(month) || month < 1 || month > 12) {
+  if (isNaN(year) || year < 1900 || year > 2100 || isNaN(month) || month < 1 || month > 12) {
     return NextResponse.json({ error: "Invalid year or month" }, { status: 400 })
   }
 

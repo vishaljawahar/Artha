@@ -36,13 +36,14 @@ const INR = (v: number) =>
     maximumFractionDigits: 0,
   }).format(v)
 
-const CustomTooltip = ({ active, payload, label }: TooltipProps<ValueType, NameType>) => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const CustomTooltip = ({ active, payload, label }: any) => {
   if (!active || !payload?.length) return null
   return (
     <div className="bg-white border border-gray-100 rounded-lg shadow-md p-3 text-sm">
       <p className="font-semibold text-gray-800 mb-2">{String(label)}</p>
-      {payload.map((entry) => (
-        <div key={entry.dataKey as string} className="flex items-center gap-2 mb-1">
+      {payload.map((entry: { dataKey: string; color: string; name: string; value: number }) => (
+        <div key={entry.dataKey} className="flex items-center gap-2 mb-1">
           <span className="w-2 h-2 rounded-full" style={{ background: entry.color }} />
           <span className="text-gray-500 w-24">{entry.name}:</span>
           <span className="font-medium text-gray-800">{INR(Number(entry.value ?? 0))}</span>

@@ -51,13 +51,14 @@ import { NextRequest } from "next/server"
 import { auth } from "@/auth"
 import { prisma } from "@/lib/db"
 
-const mockAuth = auth as jest.MockedFunction<typeof auth>
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const mockAuth = auth as jest.MockedFunction<any>
 const mockPrisma = prisma as jest.Mocked<typeof prisma>
 
 const MOCK_SESSION = {
   user: { id: "user-1", name: "Test User", email: "test@test.com" },
   expires: "2099-01-01",
-} as Awaited<ReturnType<typeof auth>>
+} as any
 
 beforeEach(() => {
   jest.clearAllMocks()
