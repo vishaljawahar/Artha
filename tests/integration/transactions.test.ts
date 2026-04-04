@@ -213,7 +213,7 @@ describe("DELETE /api/transactions/[id]", () => {
       method: "DELETE",
     })
 
-    const res = await DELETE(req, { params: { id: "txn-1" } })
+    const res = await DELETE(req, { params: Promise.resolve({ id: "txn-1" }) })
     expect(res.status).toBe(200)
 
     const body = await res.json()
@@ -232,7 +232,7 @@ describe("DELETE /api/transactions/[id]", () => {
       method: "DELETE",
     })
 
-    const res = await DELETE(req, { params: { id: "txn-1" } })
+    const res = await DELETE(req, { params: Promise.resolve({ id: "txn-1" }) })
     expect(res.status).toBe(403)
   })
 
@@ -245,7 +245,7 @@ describe("DELETE /api/transactions/[id]", () => {
       method: "DELETE",
     })
 
-    const res = await DELETE(req, { params: { id: "nonexistent" } })
+    const res = await DELETE(req, { params: Promise.resolve({ id: "nonexistent" }) })
     expect(res.status).toBe(404)
   })
 
@@ -256,7 +256,7 @@ describe("DELETE /api/transactions/[id]", () => {
       method: "DELETE",
     })
 
-    const res = await DELETE(req, { params: { id: "txn-1" } })
+    const res = await DELETE(req, { params: Promise.resolve({ id: "txn-1" }) })
     expect(res.status).toBe(401)
   })
 })

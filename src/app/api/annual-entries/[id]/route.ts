@@ -14,14 +14,14 @@ const updateEntrySchema = z.object({
 
 export async function PUT(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const session = await auth()
   if (!session?.user?.id) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   }
   const userId = session.user.id
-  const { id } = params
+  const { id } = await params
 
   const existing = await prisma.annualEntry.findUnique({ where: { id } })
   if (!existing) {
@@ -58,14 +58,14 @@ export async function PUT(
 
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const session = await auth()
   if (!session?.user?.id) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   }
   const userId = session.user.id
-  const { id } = params
+  const { id } = await params
 
   const existing = await prisma.annualEntry.findUnique({ where: { id } })
   if (!existing) {

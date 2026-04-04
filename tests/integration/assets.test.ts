@@ -185,7 +185,7 @@ describe("DELETE /api/assets/[id]", () => {
       method: "DELETE",
     })
 
-    const res = await DELETE(req, { params: { id: "asset-1" } })
+    const res = await DELETE(req, { params: Promise.resolve({ id: "asset-1" }) })
     expect(res.status).toBe(200)
 
     const body = await res.json()
@@ -201,7 +201,7 @@ describe("DELETE /api/assets/[id]", () => {
       method: "DELETE",
     })
 
-    const res = await DELETE(req, { params: { id: "nonexistent" } })
+    const res = await DELETE(req, { params: Promise.resolve({ id: "nonexistent" }) })
     expect(res.status).toBe(404)
   })
 
@@ -217,7 +217,7 @@ describe("DELETE /api/assets/[id]", () => {
       method: "DELETE",
     })
 
-    const res = await DELETE(req, { params: { id: "asset-1" } })
+    const res = await DELETE(req, { params: Promise.resolve({ id: "asset-1" }) })
     // assets/[id]/route.ts returns 404 (not 403) for cross-user access — by design
     expect(res.status).toBe(404)
   })
@@ -229,7 +229,7 @@ describe("DELETE /api/assets/[id]", () => {
       method: "DELETE",
     })
 
-    const res = await DELETE(req, { params: { id: "asset-1" } })
+    const res = await DELETE(req, { params: Promise.resolve({ id: "asset-1" }) })
     expect(res.status).toBe(401)
   })
 })

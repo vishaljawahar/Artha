@@ -11,7 +11,7 @@ const headerSchema = z.object({
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { year: string; month: string } }
+  { params }: { params: Promise<{ year: string; month: string }> }
 ) {
   const session = await auth()
   if (!session?.user?.id) {
@@ -19,8 +19,9 @@ export async function GET(
   }
   const userId = session.user.id
 
-  const year = parseInt(params.year, 10)
-  const month = parseInt(params.month, 10)
+  const { year: yearStr, month: monthStr } = await params
+  const year = parseInt(yearStr, 10)
+  const month = parseInt(monthStr, 10)
 
   if (isNaN(year) || isNaN(month) || month < 1 || month > 12) {
     return NextResponse.json({ error: "Invalid year or month" }, { status: 400 })
@@ -41,7 +42,7 @@ export async function GET(
 
 export async function POST(
   req: NextRequest,
-  { params }: { params: { year: string; month: string } }
+  { params }: { params: Promise<{ year: string; month: string }> }
 ) {
   const session = await auth()
   if (!session?.user?.id) {
@@ -49,8 +50,9 @@ export async function POST(
   }
   const userId = session.user.id
 
-  const year = parseInt(params.year, 10)
-  const month = parseInt(params.month, 10)
+  const { year: yearStr, month: monthStr } = await params
+  const year = parseInt(yearStr, 10)
+  const month = parseInt(monthStr, 10)
 
   if (isNaN(year) || isNaN(month) || month < 1 || month > 12) {
     return NextResponse.json({ error: "Invalid year or month" }, { status: 400 })

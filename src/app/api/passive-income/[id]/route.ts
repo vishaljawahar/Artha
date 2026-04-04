@@ -15,13 +15,14 @@ const updateSchema = z.object({
 
 export async function PUT(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const session = await auth()
   if (!session?.user?.id) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   const userId = session.user.id
+  const { id } = await params
 
-  const existing = await prisma.passiveIncome.findUnique({ where: { id: params.id } })
+  const existing = await prisma.passiveIncome.findUnique({ where: { id } })
   if (!existing) return NextResponse.json({ error: "Not found" }, { status: 404 })
   if (existing.userId !== userId) return NextResponse.json({ error: "Forbidden" }, { status: 403 })
 
@@ -40,7 +41,7 @@ export async function PUT(
   const { year, month, sourceType, sourceName, amount, receivedDate, notes } = parsed.data
 
   const updated = await prisma.passiveIncome.update({
-    where: { id: params.id },
+    where: { id },
     data: {
       year,
       month: month ?? null,
@@ -57,16 +58,17 @@ export async function PUT(
 
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const session = await auth()
   if (!session?.user?.id) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   const userId = session.user.id
+  const { id } = await params
 
-  const existing = await prisma.passiveIncome.findUnique({ where: { id: params.id } })
+  const existing = await prisma.passiveIncome.findUnique({ where: { id } })
   if (!existing) return NextResponse.json({ error: "Not found" }, { status: 404 })
   if (existing.userId !== userId) return NextResponse.json({ error: "Forbidden" }, { status: 403 })
 
-  await prisma.passiveIncome.delete({ where: { id: params.id } })
+  await prisma.passiveIncome.delete({ where: { id } })
   return NextResponse.json({ success: true })
 }

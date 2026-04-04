@@ -13,16 +13,17 @@ const updateTransactionSchema = z.object({
 
 export async function PUT(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const session = await auth()
   if (!session?.user?.id) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   }
   const userId = session.user.id
+  const { id } = await params
 
   const existing = await prisma.transaction.findUnique({
-    where: { id: params.id },
+    where: { id },
   })
 
   if (!existing) {
@@ -50,7 +51,7 @@ export async function PUT(
   }
 
   const transaction = await prisma.transaction.update({
-    where: { id: params.id },
+    where: { id },
     data: {
       date: new Date(date),
       categoryId,
@@ -65,16 +66,17 @@ export async function PUT(
 
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const session = await auth()
   if (!session?.user?.id) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   }
   const userId = session.user.id
+  const { id } = await params
 
   const existing = await prisma.transaction.findUnique({
-    where: { id: params.id },
+    where: { id },
   })
 
   if (!existing) {
@@ -85,7 +87,7 @@ export async function DELETE(
     return NextResponse.json({ error: "Forbidden" }, { status: 403 })
   }
 
-  await prisma.transaction.delete({ where: { id: params.id } })
+  await prisma.transaction.delete({ where: { id } })
 
   return NextResponse.json({ success: true })
 }

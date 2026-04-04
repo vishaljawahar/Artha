@@ -19,15 +19,16 @@ const updateAssetSchema = z.object({
 
 export async function PUT(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const session = await auth()
   if (!session?.user?.id) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   }
   const userId = session.user.id
+  const { id } = await params
 
-  const existing = await prisma.asset.findUnique({ where: { id: params.id } })
+  const existing = await prisma.asset.findUnique({ where: { id } })
   if (!existing || existing.userId !== userId) {
     return NextResponse.json({ error: "Not found" }, { status: 404 })
   }
@@ -43,7 +44,7 @@ export async function PUT(
 
   const data = parsed.data
   const updated = await prisma.asset.update({
-    where: { id: params.id },
+    where: { id },
     data: {
       ...(data.recordedDate !== undefined && { recordedDate: new Date(data.recordedDate) }),
       ...(data.assetType !== undefined && { assetType: data.assetType }),
@@ -59,19 +60,20 @@ export async function PUT(
 
 export async function DELETE(
   _req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const session = await auth()
   if (!session?.user?.id) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   }
   const userId = session.user.id
+  const { id } = await params
 
-  const existing = await prisma.asset.findUnique({ where: { id: params.id } })
+  const existing = await prisma.asset.findUnique({ where: { id } })
   if (!existing || existing.userId !== userId) {
     return NextResponse.json({ error: "Not found" }, { status: 404 })
   }
 
-  await prisma.asset.delete({ where: { id: params.id } })
+  await prisma.asset.delete({ where: { id } })
   return NextResponse.json({ success: true })
 }
