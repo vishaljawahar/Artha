@@ -195,20 +195,18 @@ export function AddEditDialog({
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Category</FormLabel>
+                  <datalist id={datalistId}>
+                    {categoryOptions.map((opt) => (
+                      <option key={opt} value={opt} />
+                    ))}
+                  </datalist>
                   <FormControl>
-                    <>
-                      <datalist id={datalistId}>
-                        {categoryOptions.map((opt) => (
-                          <option key={opt} value={opt} />
-                        ))}
-                      </datalist>
-                      <Input
-                        {...field}
-                        list={datalistId}
-                        placeholder="e.g. PPF, House Related, Trips"
-                        autoComplete="off"
-                      />
-                    </>
+                    <Input
+                      {...field}
+                      list={datalistId}
+                      placeholder="e.g. PPF, House Related, Trips"
+                      autoComplete="off"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

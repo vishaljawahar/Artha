@@ -7,7 +7,7 @@ const updateTransactionSchema = z.object({
   date: z.string().min(1, "Date is required"),
   categoryId: z.string().min(1, "Category is required"),
   subcategory: z.string().optional(),
-  description: z.string().min(1, "Description is required"),
+  description: z.string().optional(),
   amount: z.number().positive("Amount must be positive"),
 })
 
@@ -56,7 +56,7 @@ export async function PUT(
       date: new Date(date),
       categoryId,
       subcategory: subcategory || null,
-      description,
+      description: description ?? "",
       amount,
     },
   })

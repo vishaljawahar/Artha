@@ -1,6 +1,6 @@
 # Artha — Build Summary
-**Date:** 2026-04-03  
-**Status:** All modules built, server running, 68/68 tests passing
+**Date:** 2026-04-04  
+**Status:** All modules built, server running, 127/127 tests passing
 
 ---
 
@@ -70,6 +70,15 @@ Artha is a full-stack personal finance tracker built with Next.js 14 App Router,
 - Recent transactions panel (last 5 entries)
 - Empty state if no data logged for the year
 
+### Settings (`/settings`)
+**API routes:** See Settings section in API Surface table below  
+**Features:**
+- **Profile tab:** Update display name; change password with bcrypt verification (current → new → confirm)
+- **Categories tab:** List all categories sorted by sortOrder; up/down reorder buttons; inline icon + name edit; add new category form; delete (blocked with 409 if transactions exist)
+- **EMI Manager tab:** List active/inactive EMIs; toggle to show inactive; add/edit EMI dialog (name, amount, start/end date, active toggle); active toggle per row; delete with confirmation
+- **Budget Targets tab:** Year navigation; table of category budget targets; inline amount editing (click value to edit); add target dialog (pick category + amount); delete per target
+- **Import Data tab:** CSV drag-and-drop upload or file picker; downloadable template (client-side Blob); client-side CSV parsing; 10-row preview table; bulk confirm POST to API; import result summary (imported/skipped/errors)
+
 ---
 
 ## API Surface
@@ -89,6 +98,16 @@ Artha is a full-stack personal finance tracker built with Next.js 14 App Router,
 | `/api/assets` | GET, POST | Asset snapshots |
 | `/api/assets/[id]` | PUT, DELETE | Edit/delete asset record |
 | `/api/dashboard` | GET | Aggregated dashboard data for a year |
+| `/api/settings/profile` | PUT | Update user display name |
+| `/api/settings/password` | PUT | Change password (verify current + update hash) |
+| `/api/settings/categories` | GET, POST | List / create categories |
+| `/api/settings/categories/[id]` | PUT, DELETE | Update / delete category (409 if has transactions) |
+| `/api/settings/categories/reorder` | PUT | Reorder categories by id array |
+| `/api/settings/emis` | GET, POST | List / create EMIs |
+| `/api/settings/emis/[id]` | PUT, DELETE | Update / delete EMI |
+| `/api/settings/budget-targets` | GET, POST | List / create budget targets for a year |
+| `/api/settings/budget-targets/[id]` | PUT, DELETE | Update amount / delete budget target |
+| `/api/settings/import` | POST | Bulk import transactions from parsed CSV rows |
 
 All API routes: (1) verify session, (2) scope all queries with `WHERE userId = session.user.id`.
 
@@ -107,6 +126,9 @@ All API routes: (1) verify session, (2) scope all queries with `WHERE userId = s
 | `z.coerce.number()` with explicit `Resolver<T>` cast | Zod v4 + react-hook-form v7 type inference mismatch requires the cast |
 | `Array.from(new Set(...))` over spread | Avoids `--downlevelIteration` TS flag requirement |
 | `@jest-environment node` per integration test | `NextRequest`/`NextResponse` require Node globals, not jsdom |
+| `prisma.eMI` (not `prisma.emi`) | Prisma preserves model name casing from schema; `model EMI` → `prisma.eMI` |
+| Category reorder uses sequential updates (no `$transaction`) | `$transaction` is mocked as a plain `jest.fn()` in tests; sequential updates are simpler and sufficient |
+| CSV import: upsert monthly header per row | Ensures header exists for the row's year/month without a separate lookup round-trip |
 
 ---
 
@@ -147,8 +169,21 @@ src/
     (app)/annual-hub/      ← Yearly entries
     (app)/passive-income/  ← Bond interest, dividends, etc.
     (app)/wealth-tracker/  ← Asset portfolio + net worth
-    (app)/settings/        ← Placeholder (future)
-    api/                   ← 13 REST API routes
+    (app)/settings/        ← Settings (5 tabs: profile, categories, EMIs, budgets, import)
+    api/
+      transactions/        ← CRUD + bulk
+      annual-entries/      ← CRUD
+      passive-income/      ← CRUD
+      assets/              ← CRUD
+      dashboard/           ← Aggregated read
+      monthly-log/         ← Header upsert
+      settings/
+        profile/           ← PUT name
+        password/          ← PUT password
+        categories/        ← GET/POST + [id] PUT/DELETE + reorder PUT
+        emis/              ← GET/POST + [id] PUT/DELETE
+        budget-targets/    ← GET/POST + [id] PUT/DELETE
+        import/            ← POST bulk import
   components/
     layout/                ← Sidebar + MobileNav
     ui/                    ← shadcn/ui components
@@ -157,6 +192,7 @@ src/
     annual-hub/            ← EntrySection, YearNav, AddEditDialog
     passive-income/        ← BondInterestTable, DividendList, SimpleIncomeList, YearNav, AddEditDialog
     wealth-tracker/        ← AssetCard, AllocationChart, TrendChart, NetWorthHeader, AddAssetDialog, UpdateSnapshotDialog, types
+    settings/              ← ProfileTab, CategoriesTab, EmiTab, BudgetTargetsTab, ImportTab
   lib/
     db.ts                  ← Prisma singleton
     utils.ts               ← cn() helper
@@ -172,7 +208,7 @@ prisma/
 
 tests/
   unit/                    ← 4 suites, 27 tests
-  integration/             ← 5 suites, 41 tests
+  integration/             ← 10 suites, 100 tests
   __mocks__/seed.ts        ← Test mock for prisma/seed
   report.md                ← Test results
 ```
@@ -181,8 +217,7 @@ tests/
 
 ## What's Not Yet Built
 
-- **Settings page** — profile, category management, EMI manager, budget targets, CSV import, team/invite
 - **Multi-user invite** — user invitation by email (admin-only)
-- **CSV import** — bulk import Jan–Mar 2026 historical data
 - **Budget alerts** — amber/red at 80%/100% of monthly category target
 - **Recurring transaction templates** — auto-suggest subscriptions each month
+- **Vercel deployment** — push to GitHub, connect Vercel, set env vars

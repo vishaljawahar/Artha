@@ -178,6 +178,48 @@ describe("POST /api/transactions", () => {
     expect(body.transaction.id).toBe("txn-new")
   })
 
+  it("returns 201 when description is omitted (optional field)", async () => {
+    mockAuth.mockResolvedValue(MOCK_SESSION)
+
+    ;(mockPrisma.category.findFirst as jest.Mock).mockResolvedValue({
+      id: "cat-1",
+      name: "Food",
+      userId: "user-1",
+    })
+    ;(mockPrisma.monthlyHeader.findUnique as jest.Mock).mockResolvedValue(null)
+    ;(mockPrisma.transaction.create as jest.Mock).mockResolvedValue({
+      id: "txn-nodesc",
+      userId: "user-1",
+      categoryId: "cat-1",
+      date: new Date("2026-04-01"),
+      description: "",
+      amount: 500,
+      createdAt: new Date(),
+      subcategory: null,
+      monthlyHeaderId: null,
+    })
+
+    const req = new NextRequest("http://localhost/api/transactions", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        date: "2026-04-01",
+        categoryId: "cat-1",
+        // description intentionally omitted
+        amount: 500,
+        year: 2026,
+        month: 4,
+      }),
+    })
+
+    const res = await POST(req)
+    expect(res.status).toBe(201)
+
+    const body = await res.json()
+    expect(body).toHaveProperty("transaction")
+    expect(body.transaction.id).toBe("txn-nodesc")
+  })
+
   it("returns 400 when amount is missing", async () => {
     mockAuth.mockResolvedValue(MOCK_SESSION)
 

@@ -83,6 +83,15 @@ All 6 main modules are fully built and working. The app is live at localhost:300
 - Settings: category management, EMI manager, budget targets, user invite (admin), CSV import, profile/password change
 - Vercel deployment (planned — push to GitHub, connect Vercel, set env vars)
 
+### Security
+
+Security hardening applied (commit b66cdef). Before touching auth or API routes, note:
+- Security headers set in `next.config.mjs` — do not remove the `headers()` block
+- Year params on GET routes must be validated as `year >= 1900 && year <= 2100`
+- Bulk entry route has `MAX_BULK_LINES = 200` and `MAX_LINE_LENGTH = 500` caps — keep these
+- Error catch blocks should only log in `process.env.NODE_ENV === "development"`
+- Recharts custom tooltip/legend props must be typed as `any` (Recharts types are too narrow)
+
 ### Testing
 
 Jest is configured. 68 tests pass (27 unit + 41 integration). Integration tests mock `@/auth` and `@/lib/db` and require `/** @jest-environment node */` per-file docblock (NextRequest needs Node globals, not jsdom). Unit tests run in jsdom. See `tests/report.md` for full pass/fail listing.

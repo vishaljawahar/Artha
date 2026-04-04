@@ -201,8 +201,8 @@ export function AddEditDialog({
                   <FormItem>
                     <FormLabel>Month (optional)</FormLabel>
                     <Select
-                      onValueChange={field.onChange}
-                      value={field.value ?? ""}
+                      onValueChange={(v) => field.onChange(v === "none" ? "" : v)}
+                      value={field.value || "none"}
                     >
                       <FormControl>
                         <SelectTrigger>
@@ -210,7 +210,7 @@ export function AddEditDialog({
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="">Lump sum / Annual</SelectItem>
+                        <SelectItem value="none">Lump sum / Annual</SelectItem>
                         {MONTH_OPTIONS.map((o) => (
                           <SelectItem key={o.value} value={o.value}>
                             {o.label}
