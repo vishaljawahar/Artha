@@ -6,7 +6,7 @@
 
 ## What Was Built
 
-Artha is a full-stack personal finance tracker built with Next.js 14 App Router, replacing Vishal's Apple Notes finance tracking workflow. The app is live at `http://localhost:3000`.
+Artha is a full-stack personal finance tracker built with Next.js 14 App Router, replacing a manual finance tracking workflow. The app is live at `http://localhost:3000`.
 
 ---
 

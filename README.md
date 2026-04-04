@@ -2,7 +2,7 @@
 
 **Artha** *(Sanskrit: wealth, financial wellbeing)* is a full-stack personal finance web app for tracking monthly expenses, annual investments, passive income, and net worth — all in one place.
 
-Built as a structured replacement for Apple Notes finance tracking, with real-time analytics and a clean, mobile-responsive UI.
+Built as a structured replacement for manual finance tracking, with real-time analytics and a clean, mobile-responsive UI.
 
 ---
 
