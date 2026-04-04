@@ -21,7 +21,7 @@ npx prisma generate                    # Regenerate client after schema changes
 ```
 
 ```bash
-npm test               # Run all Jest tests (68 tests across 9 suites)
+npm test               # Run all Jest tests (127 tests across 14 suites)
 npm run test:coverage  # Run with coverage report
 ```
 
@@ -69,7 +69,7 @@ if (!session?.user?.id) return NextResponse.json({ error: "Unauthorized" }, { st
 
 ### Feature Status
 
-All 6 main modules are fully built and working. The app is live at localhost:3000.
+All modules are fully built and working. The app is live at localhost:3000.
 
 **Complete:**
 - Auth — register, login, JWT sessions, account lockout
@@ -78,10 +78,13 @@ All 6 main modules are fully built and working. The app is live at localhost:300
 - Annual Hub — collapsible asset/liability sections, category grouping, add/edit/delete
 - Passive Income — 4 tabs (bond matrix, SB interest, dividends, other), add/edit/delete
 - Wealth Tracker — asset cards, allocation donut, net worth trend chart, update snapshot
+- Settings — profile/password, category management, EMI manager, budget targets, CSV import
 
-**Pending (Settings page + deployment):**
-- Settings: category management, EMI manager, budget targets, user invite (admin), CSV import, profile/password change
-- Vercel deployment (planned — push to GitHub, connect Vercel, set env vars)
+**Pending (deployment + future enhancements):**
+- Vercel deployment (next step — connect GitHub repo to Vercel, set env vars)
+- Multi-user invite (admin invites by email)
+- Budget alerts (amber/red at 80%/100% of monthly target)
+- Recurring transaction templates
 
 ### Security
 
@@ -94,9 +97,11 @@ Security hardening applied (commit b66cdef). Before touching auth or API routes,
 
 ### Testing
 
-Jest is configured. 68 tests pass (27 unit + 41 integration). Integration tests mock `@/auth` and `@/lib/db` and require `/** @jest-environment node */` per-file docblock (NextRequest needs Node globals, not jsdom). Unit tests run in jsdom. See `tests/report.md` for full pass/fail listing.
+Jest is configured. 127 tests pass (27 unit + 100 integration). Integration tests mock `@/auth` and `@/lib/db` and require `/** @jest-environment node */` per-file docblock (NextRequest needs Node globals, not jsdom). Unit tests run in jsdom. See `tests/report.md` for full pass/fail listing.
 
 **Known TS quirk:** Zod v4 + react-hook-form v7 resolver type mismatch — use `zodResolver(schema) as Resolver<FormValues>` when using `Form` components. Import `type Resolver` from `react-hook-form`.
+
+**Prisma quirk:** `model EMI` in schema → `prisma.eMI` at runtime (Prisma preserves model name casing). Use `prisma.eMI` not `prisma.emi`.
 
 ## UI / Design Conventions
 
