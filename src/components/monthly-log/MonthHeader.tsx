@@ -1,6 +1,6 @@
 "use client"
 
-import { ChevronLeft, ChevronRight, Plus, AlignJustify, Clock } from "lucide-react"
+import { ChevronLeft, ChevronRight, Plus, AlignJustify, Clock, Download } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 
@@ -18,6 +18,7 @@ interface MonthHeaderProps {
   onViewChange: (v: "grouped" | "timeline") => void
   onAdd: () => void
   onBulk: () => void
+  onExport: () => void
 }
 
 export function MonthHeader({
@@ -29,6 +30,7 @@ export function MonthHeader({
   onViewChange,
   onAdd,
   onBulk,
+  onExport,
 }: MonthHeaderProps) {
   return (
     <div className="flex items-center justify-between gap-2 flex-wrap">
@@ -74,6 +76,17 @@ export function MonthHeader({
             Timeline
           </button>
         </div>
+
+        {/* Export PDF */}
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={onExport}
+          className="text-xs border-gray-200 text-gray-600 hover:text-gray-900 gap-1"
+        >
+          <Download className="h-3.5 w-3.5" />
+          PDF
+        </Button>
 
         {/* Bulk add */}
         <Button
