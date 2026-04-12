@@ -140,7 +140,7 @@ export default function MonthlyLogPage() {
     const colW = pageW - margin * 2
 
     const formatINR = (val: number) =>
-      new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 0 }).format(val)
+      new Intl.NumberFormat("en-IN", { maximumFractionDigits: 0 }).format(val)
 
     const monthLabel = `${MONTH_NAMES[month - 1]} ${year}`
 
