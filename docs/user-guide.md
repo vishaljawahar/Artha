@@ -47,13 +47,14 @@ Use the **← / →** arrows at the top to switch between years. The page refres
 
 ### KPI Cards
 
-Five summary cards at the top:
+Six summary cards at the top:
 
 | Card | What it shows |
 |---|---|
 | Total Income | Sum of all income headers logged that year |
 | Total Savings | Sum of all savings headers logged that year |
 | Total Expenditure | Sum of all transactions for the year |
+| Total EMI | Sum of all EMI deductions logged that year |
 | Total Surplus | Net Income − Expenditure |
 | Months Logged | Number of months with a monthly header entry |
 

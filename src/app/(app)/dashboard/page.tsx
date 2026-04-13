@@ -24,6 +24,7 @@ interface MonthlySummaryItem {
 
 interface AnnualTotals {
   totalIncome: number
+  totalEmi: number
   totalExpenditure: number
   totalSavings: number
   totalSurplus: number
@@ -171,7 +172,7 @@ export default function DashboardPage() {
       {/* ── KPI Cards ── */}
       {!isEmpty && (
         <>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 mb-5">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 mb-5">
             <KpiCard
               label="Total Income"
               value={loading ? "—" : INR(data?.annualTotals.totalIncome ?? 0)}
@@ -187,6 +188,12 @@ export default function DashboardPage() {
               label="Total Expenditure"
               value={loading ? "—" : INR(data?.annualTotals.totalExpenditure ?? 0)}
               valueColor="text-rose-600"
+              loading={loading}
+            />
+            <KpiCard
+              label="Total EMI"
+              value={loading ? "—" : INR(data?.annualTotals.totalEmi ?? 0)}
+              valueColor="text-amber-600"
               loading={loading}
             />
             <KpiCard
