@@ -63,7 +63,7 @@ Artha is a full-stack personal finance tracker built with Next.js 14 App Router,
 **API route:** `GET /api/dashboard?year=`  
 **Features:**
 - Year navigation
-- 5 KPI cards: Total Income, Total Savings, Total Expenditure, Total Surplus, Months Logged
+- 6 KPI cards: Total Income, Total Savings, Total Expenditure, **Total EMI** (amber), Total Surplus, Months Logged
 - Monthly bar chart (Recharts BarChart): grouped bars for Income / EMI / Savings / Expenditure per month
 - Expense donut chart: top categories by spend for the year
 - Financial Health Scorecard: EMI-to-Income, Savings Rate, Expenditure-to-Net ratios with colour-coded badges and progress bars
@@ -220,4 +220,3 @@ tests/
 - **Multi-user invite** — user invitation by email (admin-only)
 - **Budget alerts** — amber/red at 80%/100% of monthly category target
 - **Recurring transaction templates** — auto-suggest subscriptions each month
-- **Vercel deployment** — push to GitHub, connect Vercel, set env vars

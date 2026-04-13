@@ -158,14 +158,14 @@ export function AddTransactionDialog({
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 overflow-hidden">
-            <div className="space-y-1.5 min-w-0">
+            <div className="space-y-1.5 min-w-0 overflow-hidden">
               <Label htmlFor="txn-date" className="text-xs text-gray-600">Date</Label>
               <Input
                 id="txn-date"
                 type="date"
                 value={date}
                 onChange={(e) => setDate(e.target.value)}
-                className="border-gray-200 w-full min-w-0"
+                className="border-gray-200 w-full min-w-0 max-w-full appearance-none"
                 required
               />
             </div>

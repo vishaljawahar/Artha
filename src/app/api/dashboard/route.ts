@@ -82,6 +82,7 @@ export async function GET(req: NextRequest) {
   // Annual totals — computed over months that have a header
   const activeMonths = monthlySummary.filter((m) => headerByMonth[m.month])
   const totalIncome = activeMonths.reduce((s, m) => s + m.income, 0)
+  const totalEmi = activeMonths.reduce((s, m) => s + m.emiTotal, 0)
   const totalSavings = activeMonths.reduce((s, m) => s + m.savings, 0)
   const totalExpenditure = transactions.reduce((s, tx) => s + Number(tx.amount), 0)
   const totalNetIncome = activeMonths.reduce((s, m) => s + m.netIncome, 0)
@@ -138,6 +139,7 @@ export async function GET(req: NextRequest) {
     monthlySummary,
     annualTotals: {
       totalIncome,
+      totalEmi,
       totalExpenditure,
       totalSavings,
       totalSurplus,

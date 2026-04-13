@@ -37,5 +37,6 @@ next-env.d.ts
 
 # Claude Code
 CLAUDE.md
+docs/agent-teams-reference.md
 
 /src/generated/prisma
