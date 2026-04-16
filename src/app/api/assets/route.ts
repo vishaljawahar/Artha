@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from "next/server"
 import { z } from "zod"
 
 const AssetTypeEnum = z.enum([
-  "PPF", "STOCKS", "BONDS", "US_STOCKS", "MUTUAL_FUNDS",
+  "PPF", "STOCKS", "BONDS", "US_STOCKS", "FIXED_DEPOSIT", "MUTUAL_FUNDS",
   "SMALLCASE", "LIC", "GOLD", "CRYPTO", "PROPERTY", "OTHER"
 ])
 

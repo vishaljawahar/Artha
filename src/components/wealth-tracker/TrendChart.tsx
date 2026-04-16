@@ -41,21 +41,35 @@ const CustomTooltip = ({ active, payload, label }: { active?: boolean; payload?:
 }
 
 export function TrendChart({ assets }: TrendChartProps) {
-  // Group by recordedDate, sum currentValues per date
-  const dateMap = new Map<string, number>()
-  for (const asset of assets) {
-    const dateKey = asset.recordedDate.split("T")[0]
-    const existing = dateMap.get(dateKey) ?? 0
-    dateMap.set(dateKey, existing + Number(asset.currentValue))
-  }
+  // Get all unique snapshot dates, sorted chronologically
+  const allDates = [...new Set(assets.map(a => a.recordedDate.split("T")[0]))].sort()
 
-  const trendData: TrendPoint[] = Array.from(dateMap.entries())
-    .sort(([a], [b]) => a.localeCompare(b))
-    .map(([date, total]) => {
-      const d = new Date(date)
-      const displayDate = d.toLocaleDateString("en-IN", { day: "2-digit", month: "short" })
-      return { date, displayDate, total }
-    })
+  // For each date, compute net worth by taking the latest known value of each
+  // asset recorded on or before that date. This ensures newly added assets don't
+  // create a downward spike — older assets are carried forward at their last value.
+  const trendData: TrendPoint[] = allDates.map(date => {
+    const latestValueByName = new Map<string, number>()
+    const latestDateByName = new Map<string, string>()
+
+    for (const asset of assets) {
+      const assetDate = asset.recordedDate.split("T")[0]
+      if (assetDate <= date) {
+        const prevDate = latestDateByName.get(asset.assetName) ?? ""
+        if (assetDate >= prevDate) {
+          latestValueByName.set(asset.assetName, Number(asset.currentValue))
+          latestDateByName.set(asset.assetName, assetDate)
+        }
+      }
+    }
+
+    const total = Array.from(latestValueByName.values()).reduce((sum, v) => sum + v, 0)
+    const d = new Date(date)
+    return {
+      date,
+      displayDate: d.toLocaleDateString("en-IN", { day: "2-digit", month: "short" }),
+      total,
+    }
+  })
 
   if (trendData.length < 2) {
     return (
