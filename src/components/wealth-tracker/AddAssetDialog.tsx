@@ -33,7 +33,7 @@ import { Asset, ASSET_TYPE_OPTIONS, ASSET_TYPE_LABELS, AssetType } from "./types
 
 const formSchema = z.object({
   assetName: z.string().min(1, "Asset name is required"),
-  assetType: z.enum(["PPF", "STOCKS", "BONDS", "US_STOCKS", "MUTUAL_FUNDS", "SMALLCASE", "LIC", "GOLD", "CRYPTO", "PROPERTY", "OTHER"] as [AssetType, ...AssetType[]]),
+  assetType: z.enum(["PPF", "STOCKS", "BONDS", "US_STOCKS", "FIXED_DEPOSIT", "MUTUAL_FUNDS", "SMALLCASE", "LIC", "GOLD", "CRYPTO", "PROPERTY", "OTHER"] as [AssetType, ...AssetType[]]),
   currentValue: z.string().min(1, "Current value is required").refine(
     (v) => !isNaN(Number(v)) && Number(v) >= 0,
     "Must be a valid non-negative number"
