@@ -3,6 +3,7 @@ export type AssetType =
   | "STOCKS"
   | "BONDS"
   | "US_STOCKS"
+  | "FIXED_DEPOSIT"
   | "MUTUAL_FUNDS"
   | "SMALLCASE"
   | "LIC"
@@ -31,6 +32,7 @@ export const ASSET_TYPE_LABELS: Record<AssetType, string> = {
   MUTUAL_FUNDS: "Mutual Funds",
   SMALLCASE: "Smallcase",
   LIC: "LIC",
+  FIXED_DEPOSIT: "Fixed Deposit",
   GOLD: "Gold",
   CRYPTO: "Crypto",
   PROPERTY: "Property",
@@ -43,6 +45,7 @@ export const ASSET_TYPE_COLORS: Record<AssetType, string> = {
   BONDS: "#F59E0B",
   US_STOCKS: "#8B5CF6",
   MUTUAL_FUNDS: "#EC4899",
+  FIXED_DEPOSIT: "#37e90b",
   SMALLCASE: "#06B6D4",
   LIC: "#F97316",
   GOLD: "#FBBF24",
@@ -53,7 +56,7 @@ export const ASSET_TYPE_COLORS: Record<AssetType, string> = {
 
 export const ASSET_TYPE_OPTIONS: AssetType[] = [
   "PPF", "STOCKS", "BONDS", "US_STOCKS", "MUTUAL_FUNDS",
-  "SMALLCASE", "LIC", "GOLD", "CRYPTO", "PROPERTY", "OTHER"
+  "SMALLCASE", "FIXED_DEPOSIT", "LIC", "GOLD", "CRYPTO", "PROPERTY", "OTHER"
 ]
 
 export function formatINR(amount: number): string {
