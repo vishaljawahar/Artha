@@ -1,6 +1,7 @@
 "use client"
 
-import { Pencil, Trash2 } from "lucide-react"
+import { useState } from "react"
+import { Pencil, Trash2, ChevronDown, ChevronRight } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Transaction, Category } from "./types"
 
@@ -66,40 +67,92 @@ export function TransactionGrouped({
   // Sort groups by subtotal descending
   const groups = Array.from(groupMap.values()).sort((a, b) => b.subtotal - a.subtotal)
 
+  return <CollapsibleGroups groups={groups} onEdit={onEdit} onDelete={onDelete} />
+}
+
+function CollapsibleGroups({
+  groups,
+  onEdit,
+  onDelete,
+}: {
+  groups: GroupData[]
+  onEdit: (t: Transaction) => void
+  onDelete: (t: Transaction) => void
+}) {
+  const allIds = groups.map((g) => g.categoryId)
+  const [collapsedIds, setCollapsedIds] = useState<Set<string>>(() => new Set(allIds))
+
+  const allCollapsed = collapsedIds.size === groups.length
+  const toggleAll = () => {
+    setCollapsedIds(allCollapsed ? new Set() : new Set(allIds))
+  }
+
+  const toggle = (id: string) => {
+    setCollapsedIds((prev) => {
+      const next = new Set(prev)
+      if (next.has(id)) next.delete(id)
+      else next.add(id)
+      return next
+    })
+  }
+
   return (
     <div className="space-y-4">
-      {groups.map((group) => (
-        <div key={group.categoryId} className="bg-white border border-gray-200 rounded-xl overflow-hidden">
-          {/* Group header */}
-          <div className="flex items-center justify-between px-4 py-3 bg-gray-50 border-b border-gray-200">
-            <div className="flex items-center gap-2">
-              {group.category?.color && (
-                <span
-                  className="inline-block h-2.5 w-2.5 rounded-full flex-shrink-0"
-                  style={{ backgroundColor: group.category.color }}
-                />
-              )}
-              <span className="text-sm font-semibold text-gray-800">
-                {group.category?.icon ? `${group.category.icon} ` : ""}
-                {group.category?.name ?? "Unknown"}
-              </span>
-              <span className="text-xs text-gray-400">
-                ({group.transactions.length})
-              </span>
-            </div>
-            <span className="text-sm font-semibold text-gray-900">
-              {formatINR(group.subtotal)}
-            </span>
-          </div>
+      {/* Expand / Collapse all */}
+      <div className="flex justify-end">
+        <button
+          onClick={toggleAll}
+          className="text-xs text-gray-400 hover:text-emerald-600 transition-colors"
+        >
+          {allCollapsed ? "Expand all" : "Collapse all"}
+        </button>
+      </div>
 
-          {/* Transactions */}
-          <div className="divide-y divide-gray-100">
-            {group.transactions.map((t) => (
-              <TransactionRow key={t.id} transaction={t} onEdit={onEdit} onDelete={onDelete} />
-            ))}
+      {groups.map((group) => {
+        const isCollapsed = collapsedIds.has(group.categoryId)
+        return (
+          <div key={group.categoryId} className="bg-white border border-gray-200 rounded-xl overflow-hidden">
+            {/* Group header — clicking anywhere toggles */}
+            <button
+              onClick={() => toggle(group.categoryId)}
+              className="w-full flex items-center justify-between px-4 py-3 bg-gray-50 border-b border-gray-200 hover:bg-gray-100 transition-colors"
+            >
+              <div className="flex items-center gap-2">
+                {isCollapsed ? (
+                  <ChevronRight className="h-3.5 w-3.5 text-gray-400 flex-shrink-0" />
+                ) : (
+                  <ChevronDown className="h-3.5 w-3.5 text-gray-400 flex-shrink-0" />
+                )}
+                {group.category?.color && (
+                  <span
+                    className="inline-block h-2.5 w-2.5 rounded-full flex-shrink-0"
+                    style={{ backgroundColor: group.category.color }}
+                  />
+                )}
+                <span className="text-sm font-semibold text-gray-800">
+                  {group.category?.icon ? `${group.category.icon} ` : ""}
+                  {group.category?.name ?? "Unknown"}
+                </span>
+                <span className="text-xs text-gray-400">
+                  ({group.transactions.length})
+                </span>
+              </div>
+              <span className="text-sm font-semibold text-gray-900">
+                {formatINR(group.subtotal)}
+              </span>
+            </button>
+
+            {/* Transactions */}
+            {!isCollapsed && (
+              <div className="divide-y divide-gray-100">
+                {group.transactions.map((t) => (
+                  <TransactionRow key={t.id} transaction={t} onEdit={onEdit} onDelete={onDelete} />
+                ))}
+              </div>
+            )}
           </div>
-        </div>
-      ))}
+        )
+      })}
     </div>
   )
 }
