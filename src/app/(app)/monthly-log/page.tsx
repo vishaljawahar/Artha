@@ -320,6 +320,7 @@ export default function MonthlyLogPage() {
         </div>
       ) : view === "grouped" ? (
         <TransactionGrouped
+          key={`${year}-${month}`}
           transactions={transactions}
           categories={categories}
           onEdit={(t) => {
