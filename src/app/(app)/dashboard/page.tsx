@@ -5,7 +5,7 @@ import Link from "next/link"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import { KpiCard } from "@/components/dashboard/KpiCard"
 import { MonthlyChart } from "@/components/dashboard/MonthlyChart"
-import { ExpenseDonut } from "@/components/dashboard/ExpenseDonut"
+import { CategoryBreakdown } from "@/components/dashboard/CategoryBreakdown"
 import { HealthScorecard } from "@/components/dashboard/HealthScorecard"
 import { RecentTransactions } from "@/components/dashboard/RecentTransactions"
 
@@ -209,23 +209,21 @@ export default function DashboardPage() {
             />
           </div>
 
-          {/* ── Charts Row ── */}
-          <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 mb-4">
-            {/* Monthly bar chart — wider */}
-            <div className="lg:col-span-3">
-              <MonthlyChart
-                data={data?.monthlySummary ?? []}
-                activeMonths={activeMonths}
-                loading={loading}
-              />
-            </div>
-            {/* Donut chart */}
-            <div className="lg:col-span-2">
-              <ExpenseDonut
-                data={data?.categoryBreakdown ?? []}
-                loading={loading}
-              />
-            </div>
+          {/* ── Monthly Chart ── */}
+          <div className="mb-4">
+            <MonthlyChart
+              data={data?.monthlySummary ?? []}
+              activeMonths={activeMonths}
+              loading={loading}
+            />
+          </div>
+
+          {/* ── Category Breakdown ── */}
+          <div className="mb-4">
+            <CategoryBreakdown
+              data={data?.categoryBreakdown ?? []}
+              loading={loading}
+            />
           </div>
 
           {/* ── Health + Recent Row ── */}
