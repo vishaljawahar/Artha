@@ -12,7 +12,7 @@ const importRowSchema = z.object({
 })
 
 const importSchema = z.object({
-  rows: z.array(importRowSchema).min(1, "At least one row is required"),
+  rows: z.array(importRowSchema).min(1, "At least one row is required").max(500, "Cannot import more than 500 rows at once"),
 })
 
 export async function POST(req: NextRequest) {

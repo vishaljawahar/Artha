@@ -5,6 +5,10 @@ import { registerSchema } from "@/lib/validations"
 import { DEFAULT_CATEGORIES } from "../../../../../prisma/seed"
 
 export async function POST(req: NextRequest) {
+  if (process.env.REGISTRATION_OPEN !== "true") {
+    return NextResponse.json({ error: "Registration is closed" }, { status: 403 })
+  }
+
   try {
     const body = await req.json()
 
@@ -17,18 +21,12 @@ export async function POST(req: NextRequest) {
     }
 
     const { name, email, password } = parsed.data
-
-    const existing = await prisma.user.findUnique({ where: { email } })
-    if (existing) {
-      return NextResponse.json(
-        { error: "An account with this email already exists" },
-        { status: 409 }
-      )
-    }
-
     const passwordHash = await bcrypt.hash(password, 12)
 
     const user = await prisma.$transaction(async (tx) => {
+      const existing = await tx.user.findUnique({ where: { email } })
+      if (existing) return null
+
       const userCount = await tx.user.count()
       const role = userCount === 0 ? "ADMIN" : "MEMBER"
 
@@ -47,8 +45,15 @@ export async function POST(req: NextRequest) {
       return newUser
     })
 
+    if (!user) {
+      return NextResponse.json(
+        { error: "An account with this email already exists" },
+        { status: 409 }
+      )
+    }
+
     return NextResponse.json(
-      { message: "Account created successfully", userId: user.id },
+      { message: "Account created successfully" },
       { status: 201 }
     )
   } catch (error) {
