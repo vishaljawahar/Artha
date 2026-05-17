@@ -5,9 +5,10 @@ import { Skeleton } from "@/components/ui/skeleton"
 interface HealthMetric {
   label: string
   value: number
-  /** 0 = green/healthy, 1 = amber/watch, 2 = red/high */
+  /** 0 = green/healthy, 1 = amber/watch, 2 = red/bad */
   tier: 0 | 1 | 2
-  badgeLabel: string
+  /** [tier0Label, tier1Label, tier2Label] */
+  tierLabels: [string, string, string]
 }
 
 function getEmiTier(v: number): 0 | 1 | 2 {
@@ -28,10 +29,16 @@ function getExpenditureTier(v: number): 0 | 1 | 2 {
   return 2
 }
 
-const TIER_BADGE: Record<0 | 1 | 2, { label: string; classes: string }> = {
-  0: { label: "Healthy", classes: "bg-emerald-50 text-emerald-700 border-emerald-200" },
-  1: { label: "Watch", classes: "bg-amber-50 text-amber-700 border-amber-200" },
-  2: { label: "High", classes: "bg-red-50 text-red-700 border-red-200" },
+function getSurplusTier(v: number): 0 | 1 | 2 {
+  if (v >= 15) return 0
+  if (v >= 5) return 1
+  return 2
+}
+
+const TIER_BADGE_CLASSES: Record<0 | 1 | 2, string> = {
+  0: "bg-emerald-50 text-emerald-700 border-emerald-200",
+  1: "bg-amber-50 text-amber-700 border-amber-200",
+  2: "bg-red-50 text-red-700 border-red-200",
 }
 
 const TIER_PROGRESS_COLOR: Record<0 | 1 | 2, string> = {
@@ -61,16 +68,17 @@ interface HealthScorecardProps {
   emiLoad: number
   savingsRate: number
   expenditureRate: number
+  surplusRate: number
   loading?: boolean
 }
 
-export function HealthScorecard({ emiLoad, savingsRate, expenditureRate, loading }: HealthScorecardProps) {
+export function HealthScorecard({ emiLoad, savingsRate, expenditureRate, surplusRate, loading }: HealthScorecardProps) {
   if (loading) {
     return (
       <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
         <Skeleton className="h-5 w-44 mb-4" />
         <div className="space-y-4">
-          {[0, 1, 2].map((i) => (
+          {[0, 1, 2, 3].map((i) => (
             <div key={i}>
               <Skeleton className="h-4 w-32 mb-2" />
               <Skeleton className="h-2 w-full" />
@@ -86,19 +94,25 @@ export function HealthScorecard({ emiLoad, savingsRate, expenditureRate, loading
       label: "EMI-to-Income",
       value: emiLoad,
       tier: getEmiTier(emiLoad),
-      badgeLabel: TIER_BADGE[getEmiTier(emiLoad)].label,
+      tierLabels: ["Healthy", "Watch", "High"],
     },
     {
       label: "Savings Rate",
       value: savingsRate,
       tier: getSavingsTier(savingsRate),
-      badgeLabel: TIER_BADGE[getSavingsTier(savingsRate)].label,
+      tierLabels: ["Healthy", "Watch", "Low"],
     },
     {
       label: "Expenditure-to-Net",
       value: expenditureRate,
       tier: getExpenditureTier(expenditureRate),
-      badgeLabel: TIER_BADGE[getExpenditureTier(expenditureRate)].label,
+      tierLabels: ["Healthy", "Watch", "High"],
+    },
+    {
+      label: "Surplus Rate",
+      value: surplusRate,
+      tier: getSurplusTier(surplusRate),
+      tierLabels: ["Healthy", "Watch", "Low"],
     },
   ]
 
@@ -107,7 +121,8 @@ export function HealthScorecard({ emiLoad, savingsRate, expenditureRate, loading
       <h3 className="text-sm font-semibold text-gray-700 mb-4">Financial Health</h3>
       <div className="space-y-5">
         {metrics.map((m) => {
-          const badge = TIER_BADGE[m.tier]
+          const badgeLabel = m.tierLabels[m.tier]
+          const badgeClasses = TIER_BADGE_CLASSES[m.tier]
           const progressColor = TIER_PROGRESS_COLOR[m.tier]
           return (
             <div key={m.label}>
@@ -118,9 +133,9 @@ export function HealthScorecard({ emiLoad, savingsRate, expenditureRate, loading
                     {m.value.toFixed(1)}%
                   </span>
                   <span
-                    className={`text-xs font-medium px-2 py-0.5 rounded-full border ${badge.classes}`}
+                    className={`text-xs font-medium px-2 py-0.5 rounded-full border ${badgeClasses}`}
                   >
-                    {badge.label}
+                    {badgeLabel}
                   </span>
                 </div>
               </div>

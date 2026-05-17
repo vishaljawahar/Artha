@@ -133,6 +133,9 @@ export async function GET(req: NextRequest) {
   const emiLoad = avgIncome > 0 ? (avgEmi / avgIncome) * 100 : 0
   const savingsRate = avgIncome > 0 ? (avgSavings / avgIncome) * 100 : 0
   const expenditureRate = avgNetIncome > 0 ? (avgExpenditure / avgNetIncome) * 100 : 0
+  const surplusRate = avgIncome > 0
+    ? ((avgIncome - avgExpenditure - avgEmi - avgSavings) / avgIncome) * 100
+    : 0
 
   return NextResponse.json({
     year,
@@ -150,5 +153,6 @@ export async function GET(req: NextRequest) {
     emiLoad,
     savingsRate,
     expenditureRate,
+    surplusRate,
   })
 }

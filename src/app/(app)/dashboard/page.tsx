@@ -57,6 +57,7 @@ interface DashboardData {
   emiLoad: number
   savingsRate: number
   expenditureRate: number
+  surplusRate: number
 }
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -234,6 +235,7 @@ export default function DashboardPage() {
                 emiLoad={data?.emiLoad ?? 0}
                 savingsRate={data?.savingsRate ?? 0}
                 expenditureRate={data?.expenditureRate ?? 0}
+                surplusRate={data?.surplusRate ?? 0}
                 loading={loading}
               />
             </div>
