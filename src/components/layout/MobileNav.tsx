@@ -2,18 +2,32 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
+import { signOut } from "next-auth/react"
+import { CheckSquare, CircleDollarSign, LogOut, MoreHorizontal, Settings } from "lucide-react"
 import { cn } from "@/lib/utils"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 
 const MOBILE_NAV_ITEMS = [
   { href: "/dashboard",      label: "Home",     icon: "🏠" },
   { href: "/monthly-log",    label: "Monthly",  icon: "📅" },
   { href: "/annual-hub",     label: "Annual",   icon: "📆" },
-  { href: "/passive-income", label: "Passive",  icon: "💰" },
   { href: "/wealth-tracker", label: "Wealth",   icon: "📈" },
+]
+
+const MORE_ITEMS = [
+  { href: "/passive-income", label: "Passive Income", icon: CircleDollarSign },
+  { href: "/bill-checklist", label: "Bill Checklist", icon: CheckSquare },
+  { href: "/settings", label: "Settings", icon: Settings },
 ]
 
 export function MobileNav() {
   const pathname = usePathname()
+  const moreActive = MORE_ITEMS.some((item) => pathname === item.href || pathname.startsWith(item.href + "/"))
 
   return (
     <nav className="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-50">
@@ -34,6 +48,41 @@ export function MobileNav() {
             </Link>
           )
         })}
+        <DropdownMenu>
+          <DropdownMenuTrigger
+            className={cn(
+              "flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-lg transition-colors min-w-[60px] outline-none",
+              moreActive ? "text-emerald-600" : "text-gray-400"
+            )}
+          >
+            <MoreHorizontal className="h-5 w-5" />
+            <span className="text-[10px] font-medium">More</span>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" side="top" className="mb-2 w-52">
+            {MORE_ITEMS.map((item) => {
+              const Icon = item.icon
+              const isActive = pathname === item.href || pathname.startsWith(item.href + "/")
+              return (
+                <DropdownMenuItem key={item.href} asChild>
+                  <Link
+                    href={item.href}
+                    className={cn("flex items-center gap-2", isActive && "text-emerald-700")}
+                  >
+                    <Icon className="h-4 w-4" />
+                    {item.label}
+                  </Link>
+                </DropdownMenuItem>
+              )
+            })}
+            <DropdownMenuItem
+              onClick={() => signOut({ callbackUrl: "/login" })}
+              className="flex items-center gap-2 text-gray-600"
+            >
+              <LogOut className="h-4 w-4" />
+              Sign out
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
     </nav>
   )
