@@ -4,7 +4,7 @@ This file provides guidance to Codex (Codex.ai/code) when working with code in t
 
 ## Project Overview
 
-**Artha** is a personal finance tracker web app built for Vishal's personal use (≤20 users). It replaces manual Apple Notes tracking with a structured web app covering monthly expenses, annual entries, passive income, and wealth tracking.
+**Artha** is a personal finance tracker web app built for Vishal's personal use (≤20 users). It replaces manual Apple Notes tracking with a structured web app covering monthly expenses, monthly bill payments, annual entries, passive income, and wealth tracking.
 
 Design spec: `docs/superpowers/specs/2026-03-31-artha-expense-tracker-design.md` — read this before implementing any feature module.
 
@@ -32,7 +32,7 @@ npm run test:coverage  # Run with coverage report
 ### Route Groups
 
 - `src/app/(auth)/` — public routes: `/login`, `/register`. Centered card layout.
-- `src/app/(app)/` — protected routes: `/dashboard`, `/monthly-log`, `/annual-hub`, `/passive-income`, `/wealth-tracker`, `/settings`. Sidebar + mobile nav layout.
+- `src/app/(app)/` — protected routes: `/dashboard`, `/monthly-log`, `/annual-hub`, `/passive-income`, `/wealth-tracker`, `/bill-checklist`, `/settings`. Sidebar + mobile nav layout.
 - `src/app/api/` — API routes. **Excluded from middleware** — API routes handle their own auth via session checks.
 
 ### Auth Architecture (critical — Edge Runtime split)
@@ -50,8 +50,10 @@ NextAuth v5 requires splitting auth config due to Edge Runtime limitations:
 ### Database Layer
 
 - `src/lib/db.ts` — Prisma singleton client (dev-mode logging). Always import from here.
-- `prisma/schema.prisma` — 9 models: `User`, `MonthlyHeader`, `Transaction`, `Category`, `EMI`, `AnnualEntry`, `PassiveIncome`, `Asset`, `BudgetTarget`.
+- `prisma/schema.prisma` — 11 models: `User`, `MonthlyHeader`, `Transaction`, `Category`, `EMI`, `AnnualEntry`, `PassiveIncome`, `Asset`, `BudgetTarget`, `MonthlyBill`, `MonthlyBillPayment`.
 - `prisma/seed.ts` — Exports `DEFAULT_CATEGORIES` array. **Not a runnable seed script** — categories are seeded per-user at registration in the API route.
+
+**Monthly bill checklist data model:** `MonthlyBill` stores reusable bill definitions configured from Settings. `MonthlyBillPayment` stores month-specific paid/unpaid state with `@@unique([userId, monthlyBillId, year, month])`. `MonthlyBill.amount` and `MonthlyBill.dueDay` are optional because bill amounts and due dates can vary month to month.
 
 ### Key Patterns
 
@@ -78,7 +80,8 @@ All modules are fully built and in active use. The app runs locally at localhost
 - Annual Hub — collapsible asset/liability sections, category grouping, add/edit/delete
 - Passive Income — 4 tabs (bond matrix, SB interest, dividends, other), add/edit/delete
 - Wealth Tracker — asset cards, allocation donut, net worth trend chart, update snapshot
-- Settings — profile/password, category management, EMI manager, budget targets, CSV import
+- Bill Checklist — monthly paid/unpaid checklist for recurring bills, with month navigation, optional expected amounts/due days, and month-specific completion state
+- Settings — profile/password, category management, EMI manager, bill checklist items, budget targets, CSV import
 - Vercel deployment — connected to GitHub, main branch auto-deploys on merge
 
 **Pending (future enhancements):**
@@ -96,6 +99,7 @@ Security hardening applied (commit b66cdef). Before touching auth or API routes,
 - Error catch blocks should only log in `process.env.NODE_ENV === "development"`
 - Recharts custom tooltip/legend props must be typed as `any` (Recharts types are too narrow)
 - **jsPDF font limitation:** jsPDF's built-in Helvetica font cannot render the `₹` symbol — it renders as a superscript glyph. Format INR amounts as plain numbers using `Intl.NumberFormat("en-IN")` with no currency prefix in any PDF output.
+- Bill checklist month/year API params must be validated (`year >= 1900 && year <= 2100`, `month >= 1 && month <= 12`) and every bill/payment query must include `userId`.
 
 **Registration gate:** `POST /api/user/register` is permanently closed unless `REGISTRATION_OPEN=true` is set in the environment. To invite a new user: add `REGISTRATION_OPEN=true` in Vercel → share the `/register` link → remove the var once they've created their account. Never leave this var set permanently.
 
@@ -106,6 +110,8 @@ Jest is configured. 127 tests pass (27 unit + 100 integration). Integration test
 **Known TS quirk:** Zod v4 + react-hook-form v7 resolver type mismatch — use `zodResolver(schema) as Resolver<FormValues>` when using `Form` components. Import `type Resolver` from `react-hook-form`.
 
 **Prisma quirk:** `model EMI` in schema → `prisma.eMI` at runtime (Prisma preserves model name casing). Use `prisma.eMI` not `prisma.emi`.
+
+**Migration quirk:** When adding Prisma migrations locally, the CLI may not automatically load `.env.local`. If `DIRECT_DATABASE_URL` is missing, load `.env.local` values before running `npx prisma migrate deploy` or `npx prisma migrate dev`.
 
 ### Git & PR Workflow
 
@@ -121,5 +127,5 @@ Jest is configured. 127 tests pass (27 unit + 100 integration). Integration test
 - **Light theme only** — white backgrounds, gray text, light borders. No dark mode.
 - **Accent color:** Emerald green for CTAs and active states.
 - **shadcn/ui** with `default` style and `slate` base color.
-- Sidebar for desktop, bottom nav for mobile.
+- Sidebar for desktop, bottom nav for mobile. Mobile keeps five primary tabs and uses a `More` menu for secondary destinations (`Passive Income`, `Bill Checklist`, `Settings`, sign out).
 - **Favicon:** Custom icon at `src/app/icon.png` (Next.js App Router auto-generates `<link rel="icon">` from this file). Do not add a `favicon.ico` alongside it — the browser will serve the cached `.ico` and ignore `icon.png`.
