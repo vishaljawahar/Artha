@@ -28,15 +28,15 @@ import {
 interface MonthlyBill {
   id: string
   name: string
-  amount: number
-  dueDay: number
+  amount: number | null
+  dueDay: number | null
   isActive: boolean
 }
 
 const EMPTY_FORM = {
   name: "",
   amount: "",
-  dueDay: "1",
+  dueDay: "",
   isActive: true,
 }
 
@@ -74,7 +74,10 @@ export function MonthlyBillsTab() {
       const res = await fetch("/api/settings/monthly-bills")
       if (!res.ok) throw new Error("Failed to load monthly bills")
       const data = await res.json()
-      setBills(data.bills.map((bill: MonthlyBill) => ({ ...bill, amount: Number(bill.amount) })))
+      setBills(data.bills.map((bill: MonthlyBill) => ({
+        ...bill,
+        amount: bill.amount === null ? null : Number(bill.amount),
+      })))
     } catch {
       toast.error("Failed to load monthly bills")
     } finally {
@@ -96,8 +99,8 @@ export function MonthlyBillsTab() {
     setEditBill(bill)
     setForm({
       name: bill.name,
-      amount: String(bill.amount),
-      dueDay: String(bill.dueDay),
+      amount: bill.amount === null ? "" : String(bill.amount),
+      dueDay: bill.dueDay === null ? "" : String(bill.dueDay),
       isActive: bill.isActive,
     })
     setDialogOpen(true)
@@ -105,14 +108,14 @@ export function MonthlyBillsTab() {
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault()
-    const amount = parseFloat(form.amount)
-    const dueDay = parseInt(form.dueDay, 10)
+    const amount = form.amount.trim() === "" ? null : parseFloat(form.amount)
+    const dueDay = form.dueDay.trim() === "" ? null : parseInt(form.dueDay, 10)
 
-    if (isNaN(amount) || amount <= 0) {
+    if (amount !== null && (isNaN(amount) || amount <= 0)) {
       toast.error("Amount must be positive")
       return
     }
-    if (isNaN(dueDay) || dueDay < 1 || dueDay > 31) {
+    if (dueDay !== null && (isNaN(dueDay) || dueDay < 1 || dueDay > 31)) {
       toast.error("Due day must be between 1 and 31")
       return
     }
@@ -226,7 +229,8 @@ export function MonthlyBillsTab() {
             <div className="flex-1 min-w-0">
               <p className="text-sm font-medium text-gray-900 truncate">{bill.name}</p>
               <p className="text-xs text-gray-500 mt-0.5">
-                Due {dueDayLabel(bill.dueDay)} &middot; {formatINR(bill.amount)}
+                {bill.dueDay === null ? "No due day" : `Due ${dueDayLabel(bill.dueDay)}`} &middot;{" "}
+                {bill.amount === null ? "Amount varies" : formatINR(bill.amount)}
               </p>
             </div>
             <Switch checked={bill.isActive} onCheckedChange={() => handleToggleActive(bill)} className="scale-90" />
@@ -264,7 +268,9 @@ export function MonthlyBillsTab() {
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-1.5">
-                <Label htmlFor="bill-amount" className="text-xs text-gray-600">Amount</Label>
+                <Label htmlFor="bill-amount" className="text-xs text-gray-600">
+                  Amount <span className="text-gray-400">(optional)</span>
+                </Label>
                 <Input
                   id="bill-amount"
                   type="number"
@@ -272,13 +278,15 @@ export function MonthlyBillsTab() {
                   step="1"
                   value={form.amount}
                   onChange={(e) => setForm((f) => ({ ...f, amount: e.target.value }))}
-                  placeholder="2500"
+                  placeholder="Varies"
                   className="border-gray-200"
                   required
                 />
               </div>
               <div className="space-y-1.5">
-                <Label htmlFor="bill-due-day" className="text-xs text-gray-600">Due Day</Label>
+                <Label htmlFor="bill-due-day" className="text-xs text-gray-600">
+                  Due Day <span className="text-gray-400">(optional)</span>
+                </Label>
                 <Input
                   id="bill-due-day"
                   type="number"

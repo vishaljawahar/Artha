@@ -5,8 +5,8 @@ import { z } from "zod"
 
 const updateMonthlyBillSchema = z.object({
   name: z.string().trim().min(1, "Name is required").optional(),
-  amount: z.number().positive("Amount must be positive").optional(),
-  dueDay: z.number().int().min(1, "Due day must be between 1 and 31").max(31, "Due day must be between 1 and 31").optional(),
+  amount: z.number().positive("Amount must be positive").optional().nullable(),
+  dueDay: z.number().int().min(1, "Due day must be between 1 and 31").max(31, "Due day must be between 1 and 31").optional().nullable(),
   isActive: z.boolean().optional(),
 })
 
@@ -40,7 +40,7 @@ export async function PUT(
       data: parsed.data,
     })
 
-    return NextResponse.json({ bill: { ...bill, amount: Number(bill.amount) } })
+    return NextResponse.json({ bill: { ...bill, amount: bill.amount === null ? null : Number(bill.amount) } })
   } catch (error) {
     if (process.env.NODE_ENV === "development") {
       console.error("Monthly bill update error:", error)

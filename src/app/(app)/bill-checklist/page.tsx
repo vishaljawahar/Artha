@@ -10,8 +10,8 @@ import { Checkbox } from "@/components/ui/checkbox"
 interface ChecklistItem {
   id: string
   name: string
-  amount: number
-  dueDay: number
+  amount: number | null
+  dueDay: number | null
   isPaid: boolean
   paidAt: string | null
 }
@@ -65,7 +65,10 @@ export default function BillChecklistPage() {
       const res = await fetch(`/api/bill-checklist?year=${year}&month=${month}`)
       if (!res.ok) throw new Error("Failed to load checklist")
       const data = await res.json()
-      setItems(data.items.map((item: ChecklistItem) => ({ ...item, amount: Number(item.amount) })))
+      setItems(data.items.map((item: ChecklistItem) => ({
+        ...item,
+        amount: item.amount === null ? null : Number(item.amount),
+      })))
     } catch {
       toast.error("Failed to load bill checklist")
     } finally {
@@ -122,8 +125,8 @@ export default function BillChecklistPage() {
 
   const paidItems = items.filter((item) => item.isPaid)
   const unpaidItems = items.filter((item) => !item.isPaid)
-  const expectedTotal = items.reduce((sum, item) => sum + item.amount, 0)
-  const paidTotal = paidItems.reduce((sum, item) => sum + item.amount, 0)
+  const expectedTotal = items.reduce((sum, item) => sum + (item.amount ?? 0), 0)
+  const paidTotal = paidItems.reduce((sum, item) => sum + (item.amount ?? 0), 0)
   const progress = items.length === 0 ? 0 : Math.round((paidItems.length / items.length) * 100)
 
   return (
@@ -192,10 +195,12 @@ export default function BillChecklistPage() {
                   <p className={`text-sm font-medium truncate ${item.isPaid ? "text-gray-500 line-through" : "text-gray-900"}`}>
                     {item.name}
                   </p>
-                  <p className="text-sm font-semibold text-gray-900">{formatINR(item.amount)}</p>
+                  <p className="text-sm font-semibold text-gray-900">
+                    {item.amount === null ? "Varies" : formatINR(item.amount)}
+                  </p>
                 </div>
                 <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-gray-500">
-                  <span>Due {dueDayLabel(item.dueDay)}</span>
+                  <span>{item.dueDay === null ? "No due day" : `Due ${dueDayLabel(item.dueDay)}`}</span>
                   {item.paidAt && (
                     <span>Paid {new Date(item.paidAt).toLocaleDateString("en-IN", { day: "2-digit", month: "short" })}</span>
                   )}

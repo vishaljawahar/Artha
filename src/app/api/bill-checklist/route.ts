@@ -49,7 +49,7 @@ export async function GET(req: NextRequest) {
         return {
           id: bill.id,
           name: bill.name,
-          amount: Number(bill.amount),
+          amount: bill.amount === null ? null : Number(bill.amount),
           dueDay: bill.dueDay,
           isPaid: payment?.isPaid ?? false,
           paidAt: payment?.paidAt ?? null,

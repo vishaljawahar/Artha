@@ -211,8 +211,8 @@ model MonthlyBill {
   id        String   @id @default(uuid())
   userId    String
   name      String
-  amount    Decimal  @db.Decimal(12, 2)
-  dueDay    Int
+  amount    Decimal? @db.Decimal(12, 2)
+  dueDay    Int?
   isActive  Boolean  @default(true)
   sortOrder Int      @default(0)
   createdAt DateTime @default(now())

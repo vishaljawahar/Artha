@@ -90,6 +90,26 @@ describe("POST /api/settings/monthly-bills", () => {
     expect(body.bill.amount).toBe(2500)
   })
 
+  it("creates a bill with optional amount and due day omitted", async () => {
+    mockAuth.mockResolvedValue(MOCK_SESSION)
+    ;(mockPrisma.monthlyBill.count as jest.Mock).mockResolvedValue(0)
+    ;(mockPrisma.monthlyBill.create as jest.Mock).mockResolvedValue({
+      ...MOCK_BILL,
+      amount: null,
+      dueDay: null,
+    })
+    const req = new NextRequest("http://localhost/api/settings/monthly-bills", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name: "Internet", amount: null, dueDay: null }),
+    })
+    const res = await POST(req)
+    expect(res.status).toBe(201)
+    const body = await res.json()
+    expect(body.bill.amount).toBeNull()
+    expect(body.bill.dueDay).toBeNull()
+  })
+
   it("rejects an invalid due day", async () => {
     mockAuth.mockResolvedValue(MOCK_SESSION)
     const req = new NextRequest("http://localhost/api/settings/monthly-bills", {

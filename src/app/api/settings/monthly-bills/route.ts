@@ -5,8 +5,8 @@ import { z } from "zod"
 
 const createMonthlyBillSchema = z.object({
   name: z.string().trim().min(1, "Name is required"),
-  amount: z.number().positive("Amount must be positive"),
-  dueDay: z.number().int().min(1, "Due day must be between 1 and 31").max(31, "Due day must be between 1 and 31"),
+  amount: z.number().positive("Amount must be positive").optional().nullable(),
+  dueDay: z.number().int().min(1, "Due day must be between 1 and 31").max(31, "Due day must be between 1 and 31").optional().nullable(),
   isActive: z.boolean().optional(),
 })
 
@@ -28,7 +28,7 @@ export async function GET(_req: NextRequest) {
     })
 
     return NextResponse.json({
-      bills: bills.map((bill) => ({ ...bill, amount: Number(bill.amount) })),
+      bills: bills.map((bill) => ({ ...bill, amount: bill.amount === null ? null : Number(bill.amount) })),
     })
   } catch (error) {
     if (process.env.NODE_ENV === "development") {
@@ -57,14 +57,17 @@ export async function POST(req: NextRequest) {
       data: {
         userId,
         name: parsed.data.name,
-        amount: parsed.data.amount,
-        dueDay: parsed.data.dueDay,
+        amount: parsed.data.amount ?? null,
+        dueDay: parsed.data.dueDay ?? null,
         isActive: parsed.data.isActive ?? true,
         sortOrder: count,
       },
     })
 
-    return NextResponse.json({ bill: { ...bill, amount: Number(bill.amount) } }, { status: 201 })
+    return NextResponse.json(
+      { bill: { ...bill, amount: bill.amount === null ? null : Number(bill.amount) } },
+      { status: 201 }
+    )
   } catch (error) {
     if (process.env.NODE_ENV === "development") {
       console.error("Monthly bill create error:", error)
