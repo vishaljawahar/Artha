@@ -78,11 +78,11 @@ export default function WealthTrackerPage() {
   if (assets.length === 0) {
     return (
       <div className="p-4 sm:p-6 max-w-5xl mx-auto">
-        <h1 className="text-2xl font-bold text-gray-900 mb-6">Wealth Tracker</h1>
-        <div className="flex flex-col items-center justify-center py-24 text-center border border-dashed border-gray-200 rounded-xl bg-gray-50">
+        <h1 className="text-2xl font-bold text-foreground mb-6">Wealth Tracker</h1>
+        <div className="flex flex-col items-center justify-center py-24 text-center border border-dashed border-border rounded-xl bg-background">
           <p className="text-4xl mb-4">📈</p>
-          <h2 className="text-lg font-semibold text-gray-700 mb-2">No assets yet</h2>
-          <p className="text-sm text-gray-400 mb-6 max-w-xs">
+          <h2 className="text-lg font-semibold text-foreground mb-2">No assets yet</h2>
+          <p className="text-sm text-muted-foreground mb-6 max-w-xs">
             Start tracking your portfolio by adding your first asset — PPF, stocks, mutual funds, gold, and more.
           </p>
           <Button
@@ -119,7 +119,7 @@ export default function WealthTrackerPage() {
       </div>
 
       <div>
-        <h2 className="text-sm font-semibold text-gray-700 mb-3">Current Portfolio</h2>
+        <h2 className="text-sm font-semibold text-foreground mb-3">Current Portfolio</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {currentPortfolio
             .sort((a, b) => Number(b.currentValue) - Number(a.currentValue))

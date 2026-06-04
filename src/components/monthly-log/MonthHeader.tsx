@@ -39,7 +39,7 @@ export function MonthHeader({
         <Button variant="ghost" size="icon" onClick={onPrev} className="h-8 w-8">
           <ChevronLeft className="h-4 w-4" />
         </Button>
-        <span className="text-base font-semibold text-gray-900 min-w-[130px] text-center">
+        <span className="text-base font-semibold text-foreground min-w-[130px] text-center">
           {MONTH_NAMES[month - 1]} {year}
         </span>
         <Button variant="ghost" size="icon" onClick={onNext} className="h-8 w-8">
@@ -50,14 +50,14 @@ export function MonthHeader({
       {/* Right side controls */}
       <div className="flex items-center gap-2">
         {/* View toggle */}
-        <div className="flex items-center border border-gray-200 rounded-lg overflow-hidden">
+        <div className="flex items-center border border-border rounded-lg overflow-hidden">
           <button
             onClick={() => onViewChange("grouped")}
             className={cn(
               "flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium transition-colors",
               view === "grouped"
                 ? "bg-emerald-600 text-white"
-                : "bg-white text-gray-600 hover:bg-gray-50"
+                : "bg-card text-muted-foreground hover:bg-accent"
             )}
           >
             <AlignJustify className="h-3.5 w-3.5" />
@@ -69,7 +69,7 @@ export function MonthHeader({
               "flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium transition-colors",
               view === "timeline"
                 ? "bg-emerald-600 text-white"
-                : "bg-white text-gray-600 hover:bg-gray-50"
+                : "bg-card text-muted-foreground hover:bg-accent"
             )}
           >
             <Clock className="h-3.5 w-3.5" />
@@ -82,7 +82,7 @@ export function MonthHeader({
           variant="outline"
           size="sm"
           onClick={onExport}
-          className="text-xs border-gray-200 text-gray-600 hover:text-gray-900 gap-1"
+          className="text-xs gap-1"
         >
           <Download className="h-3.5 w-3.5" />
           PDF
@@ -93,7 +93,7 @@ export function MonthHeader({
           variant="outline"
           size="sm"
           onClick={onBulk}
-          className="text-xs border-gray-200 text-gray-600 hover:text-gray-900"
+          className="text-xs"
         >
           Bulk
         </Button>

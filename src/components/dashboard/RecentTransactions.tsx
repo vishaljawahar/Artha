@@ -33,7 +33,7 @@ function formatDate(dateStr: string) {
 export function RecentTransactions({ transactions, loading }: RecentTransactionsProps) {
   if (loading) {
     return (
-      <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
+      <div className="bg-card rounded-xl border border-border shadow-sm p-4">
         <Skeleton className="h-5 w-44 mb-4" />
         <div className="space-y-3">
           {[0, 1, 2, 3, 4].map((i) => (
@@ -52,12 +52,12 @@ export function RecentTransactions({ transactions, loading }: RecentTransactions
   }
 
   return (
-    <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
+    <div className="bg-card rounded-xl border border-border shadow-sm p-4">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-sm font-semibold text-gray-700">Recent Transactions</h3>
+        <h3 className="text-sm font-semibold text-foreground">Recent Transactions</h3>
         <Link
           href="/monthly-log"
-          className="text-xs text-emerald-600 hover:text-emerald-700 font-medium"
+          className="text-xs text-emerald-600 hover:text-emerald-700 dark:text-emerald-400 dark:hover:text-emerald-300 font-medium"
         >
           View all →
         </Link>
@@ -65,31 +65,29 @@ export function RecentTransactions({ transactions, loading }: RecentTransactions
 
       {transactions.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-8 text-center">
-          <p className="text-sm text-gray-400">No transactions yet</p>
+          <p className="text-sm text-muted-foreground">No transactions yet</p>
         </div>
       ) : (
         <ul className="space-y-3">
           {transactions.map((tx) => (
             <li key={tx.id} className="flex items-center gap-3">
-              {/* Category icon */}
               <div
                 className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 text-sm"
-                style={{ background: tx.categoryColor ? `${tx.categoryColor}22` : "#F3F4F6" }}
+                style={{ background: tx.categoryColor ? `${tx.categoryColor}22` : undefined }}
               >
                 {tx.categoryIcon ?? "💳"}
               </div>
 
-              {/* Description + category chip */}
               <div className="flex-1 min-w-0">
-                <p className="text-sm text-gray-800 truncate font-medium">{tx.description}</p>
+                <p className="text-sm text-foreground truncate font-medium">{tx.description}</p>
                 <div className="flex items-center gap-1.5 mt-0.5">
-                  <span className="text-xs text-gray-400">{formatDate(tx.date)}</span>
-                  <span className="text-gray-200">·</span>
+                  <span className="text-xs text-muted-foreground">{formatDate(tx.date)}</span>
+                  <span className="text-muted-foreground/40">·</span>
                   <span
                     className="text-xs px-1.5 py-0.5 rounded-full"
                     style={{
-                      background: tx.categoryColor ? `${tx.categoryColor}18` : "#F3F4F6",
-                      color: tx.categoryColor ?? "#6B7280",
+                      background: tx.categoryColor ? `${tx.categoryColor}18` : undefined,
+                      color: tx.categoryColor ?? undefined,
                     }}
                   >
                     {tx.categoryName}
@@ -97,8 +95,7 @@ export function RecentTransactions({ transactions, loading }: RecentTransactions
                 </div>
               </div>
 
-              {/* Amount */}
-              <span className="text-sm font-semibold text-gray-800 flex-shrink-0">
+              <span className="text-sm font-semibold text-foreground flex-shrink-0">
                 {INR(tx.amount)}
               </span>
             </li>

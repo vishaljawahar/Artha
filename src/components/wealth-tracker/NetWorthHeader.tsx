@@ -18,13 +18,13 @@ export function NetWorthHeader({
   onUpdateSnapshot,
 }: NetWorthHeaderProps) {
   return (
-    <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-6">
+    <div className="bg-card rounded-xl border border-border shadow-sm p-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <p className="text-sm font-medium text-gray-500 mb-1">Total Net Worth</p>
-          <p className="text-3xl font-bold text-gray-900">{formatINR(netWorth)}</p>
+          <p className="text-sm font-medium text-muted-foreground mb-1">Total Net Worth</p>
+          <p className="text-3xl font-bold text-foreground">{formatINR(netWorth)}</p>
           {lastUpdated && (
-            <p className="text-sm text-gray-400 mt-1">
+            <p className="text-sm text-muted-foreground mt-1">
               Last updated: {formatDate(lastUpdated)}
             </p>
           )}
@@ -33,7 +33,7 @@ export function NetWorthHeader({
           <Button
             variant="outline"
             size="sm"
-            className="gap-2 border-gray-200 text-gray-700 hover:bg-gray-50"
+            className="gap-2"
             onClick={onUpdateSnapshot}
           >
             <RefreshCw className="h-4 w-4" />

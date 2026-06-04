@@ -34,7 +34,7 @@ export function AssetCard({ asset, onEdit, onDelete }: AssetCardProps) {
   const label = ASSET_TYPE_LABELS[asset.assetType]
 
   return (
-    <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-5 hover:shadow-md transition-shadow">
+    <div className="bg-card rounded-xl border border-border shadow-sm p-5 hover:shadow-md transition-shadow">
       <div className="flex items-start justify-between mb-3">
         <Badge
           className="text-xs font-medium px-2 py-0.5 rounded-full border-0"
@@ -46,7 +46,7 @@ export function AssetCard({ asset, onEdit, onDelete }: AssetCardProps) {
           <Button
             variant="ghost"
             size="icon"
-            className="h-7 w-7 text-gray-400 hover:text-gray-700 hover:bg-gray-50"
+            className="h-7 w-7 text-muted-foreground hover:text-foreground"
             onClick={() => onEdit(asset)}
           >
             <Pencil className="h-3.5 w-3.5" />
@@ -56,7 +56,7 @@ export function AssetCard({ asset, onEdit, onDelete }: AssetCardProps) {
               <Button
                 variant="ghost"
                 size="icon"
-                className="h-7 w-7 text-gray-400 hover:text-red-500 hover:bg-red-50"
+                className="h-7 w-7 text-muted-foreground hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950"
               >
                 <Trash2 className="h-3.5 w-3.5" />
               </Button>
@@ -83,13 +83,13 @@ export function AssetCard({ asset, onEdit, onDelete }: AssetCardProps) {
         </div>
       </div>
 
-      <h3 className="text-sm font-semibold text-gray-800 mb-2 truncate">{asset.assetName}</h3>
-      <p className="text-xl font-bold text-gray-900 mb-1">{formatINR(currentValue)}</p>
+      <h3 className="text-sm font-semibold text-foreground mb-2 truncate">{asset.assetName}</h3>
+      <p className="text-xl font-bold text-foreground mb-1">{formatINR(currentValue)}</p>
 
       {investedAmount != null && (
         <div className="mt-2 space-y-0.5">
-          <p className="text-xs text-gray-500">
-            Invested: <span className="font-medium text-gray-700">{formatINR(investedAmount)}</span>
+          <p className="text-xs text-muted-foreground">
+            Invested: <span className="font-medium text-foreground">{formatINR(investedAmount)}</span>
           </p>
           {gain != null && gainPct != null && (
             <div className={`flex items-center gap-1 text-xs font-medium ${gain >= 0 ? "text-emerald-600" : "text-red-500"}`}>
@@ -107,7 +107,7 @@ export function AssetCard({ asset, onEdit, onDelete }: AssetCardProps) {
         </div>
       )}
 
-      <p className="text-xs text-gray-400 mt-3">
+      <p className="text-xs text-muted-foreground mt-3">
         {new Date(asset.recordedDate).toLocaleDateString("en-IN", {
           day: "2-digit",
           month: "short",

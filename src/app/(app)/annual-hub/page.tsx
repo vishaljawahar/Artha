@@ -112,7 +112,7 @@ export default function AnnualHubPage() {
     <div className="p-4 sm:p-6 max-w-3xl mx-auto space-y-4">
       {/* Page header */}
       <div className="flex items-center justify-between gap-4 flex-wrap">
-        <h1 className="text-2xl font-bold text-gray-900">Annual Hub</h1>
+        <h1 className="text-2xl font-bold text-foreground">Annual Hub</h1>
         <div className="flex items-center gap-3">
           <YearNav
             year={year}

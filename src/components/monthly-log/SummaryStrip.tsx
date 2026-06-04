@@ -28,32 +28,32 @@ export function SummaryStrip({ header, totalExpenditure }: SummaryStripProps) {
     {
       label: "Income",
       value: income !== null ? formatINR(income) : "—",
-      color: "text-gray-900",
+      color: "text-foreground",
     },
     {
       label: "EMI",
       value: emiTotal !== null ? formatINR(emiTotal) : "—",
-      color: "text-gray-900",
+      color: "text-foreground",
     },
     {
       label: "Savings",
       value: savings !== null ? formatINR(savings) : "—",
-      color: "text-gray-900",
+      color: "text-foreground",
     },
     {
       label: "Net Income",
       value: netIncome !== null ? formatINR(netIncome) : "—",
-      color: "text-gray-900",
+      color: "text-foreground",
     },
     {
       label: "Spent",
       value: formatINR(totalExpenditure),
-      color: "text-gray-900",
+      color: "text-foreground",
     },
     {
       label: "Surplus",
       value: surplus !== null ? formatINR(surplus) : "—",
-      color: surplus === null ? "text-gray-400" : surplus >= 0 ? "text-emerald-600" : "text-red-600",
+      color: surplus === null ? "text-muted-foreground" : surplus >= 0 ? "text-emerald-600" : "text-red-600",
     },
   ]
 
@@ -62,9 +62,9 @@ export function SummaryStrip({ header, totalExpenditure }: SummaryStripProps) {
       {stats.map((stat) => (
         <div
           key={stat.label}
-          className="bg-white border border-gray-200 rounded-xl px-3 py-3 text-center"
+          className="bg-card border border-border rounded-xl px-3 py-3 text-center"
         >
-          <p className="text-[11px] font-medium text-gray-500 uppercase tracking-wide mb-1">
+          <p className="text-[11px] font-medium text-muted-foreground uppercase tracking-wide mb-1">
             {stat.label}
           </p>
           <p className={cn("text-sm font-semibold", stat.color)}>{stat.value}</p>
