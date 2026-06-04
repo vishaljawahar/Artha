@@ -160,7 +160,7 @@ export default function PassiveIncomePage() {
       {/* Header */}
       <div className="flex items-center justify-between flex-wrap gap-4 mb-6">
         <div className="flex items-center gap-4 flex-wrap">
-          <h1 className="text-2xl font-bold text-gray-900">Passive Income</h1>
+          <h1 className="text-2xl font-bold text-foreground">Passive Income</h1>
           <YearNav
             year={year}
             total={total}

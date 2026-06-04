@@ -133,73 +133,73 @@ export default function BillChecklistPage() {
     <div className="p-4 md:p-6 space-y-4 max-w-5xl mx-auto">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Bill Checklist</h1>
-          <p className="text-sm text-gray-500 mt-1">Track monthly bills before they slip past you.</p>
+          <h1 className="text-2xl font-bold text-foreground">Bill Checklist</h1>
+          <p className="text-sm text-muted-foreground mt-1">Track monthly bills before they slip past you.</p>
         </div>
         <div className="flex items-center justify-between sm:justify-end gap-2">
-          <button onClick={handlePrev} className="p-2 rounded-md hover:bg-gray-100 text-gray-500" title="Previous month">
+          <button onClick={handlePrev} className="p-2 rounded-md hover:bg-accent text-muted-foreground" title="Previous month">
             <ChevronLeft className="h-5 w-5" />
           </button>
           <div className="min-w-[150px] text-center">
-            <p className="text-sm font-semibold text-gray-900">{MONTH_NAMES[month - 1]} {year}</p>
-            <p className="text-xs text-gray-500">{progress}% paid</p>
+            <p className="text-sm font-semibold text-foreground">{MONTH_NAMES[month - 1]} {year}</p>
+            <p className="text-xs text-muted-foreground">{progress}% paid</p>
           </div>
-          <button onClick={handleNext} className="p-2 rounded-md hover:bg-gray-100 text-gray-500" title="Next month">
+          <button onClick={handleNext} className="p-2 rounded-md hover:bg-accent text-muted-foreground" title="Next month">
             <ChevronRight className="h-5 w-5" />
           </button>
         </div>
       </div>
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-        <div className="rounded-lg border border-gray-200 bg-white px-4 py-3">
-          <p className="text-xs font-medium text-gray-500">Paid</p>
-          <p className="text-xl font-semibold text-emerald-700 mt-1">{paidItems.length}</p>
+        <div className="rounded-lg border border-border bg-card px-4 py-3">
+          <p className="text-xs font-medium text-muted-foreground">Paid</p>
+          <p className="text-xl font-semibold text-emerald-700 dark:text-emerald-400 mt-1">{paidItems.length}</p>
         </div>
-        <div className="rounded-lg border border-gray-200 bg-white px-4 py-3">
-          <p className="text-xs font-medium text-gray-500">Unpaid</p>
-          <p className="text-xl font-semibold text-gray-900 mt-1">{unpaidItems.length}</p>
+        <div className="rounded-lg border border-border bg-card px-4 py-3">
+          <p className="text-xs font-medium text-muted-foreground">Unpaid</p>
+          <p className="text-xl font-semibold text-foreground mt-1">{unpaidItems.length}</p>
         </div>
-        <div className="rounded-lg border border-gray-200 bg-white px-4 py-3">
-          <p className="text-xs font-medium text-gray-500">Expected</p>
-          <p className="text-xl font-semibold text-gray-900 mt-1">{formatINR(expectedTotal)}</p>
+        <div className="rounded-lg border border-border bg-card px-4 py-3">
+          <p className="text-xs font-medium text-muted-foreground">Expected</p>
+          <p className="text-xl font-semibold text-foreground mt-1">{formatINR(expectedTotal)}</p>
         </div>
-        <div className="rounded-lg border border-gray-200 bg-white px-4 py-3">
-          <p className="text-xs font-medium text-gray-500">Paid Total</p>
-          <p className="text-xl font-semibold text-emerald-700 mt-1">{formatINR(paidTotal)}</p>
+        <div className="rounded-lg border border-border bg-card px-4 py-3">
+          <p className="text-xs font-medium text-muted-foreground">Paid Total</p>
+          <p className="text-xl font-semibold text-emerald-700 dark:text-emerald-400 mt-1">{formatINR(paidTotal)}</p>
         </div>
       </div>
 
       {loading ? (
         <div className="space-y-2">
           {Array.from({ length: 5 }).map((_, i) => (
-            <div key={i} className="h-16 bg-gray-100 rounded-md animate-pulse" />
+            <div key={i} className="h-16 bg-secondary rounded-md animate-pulse" />
           ))}
         </div>
       ) : (
-        <div className="border border-gray-200 rounded-lg overflow-hidden bg-white divide-y divide-gray-100">
+        <div className="border border-border rounded-lg overflow-hidden bg-card divide-y divide-border">
           {items.map((item) => (
             <label
               key={item.id}
-              className={`flex items-center gap-4 px-4 py-4 transition-colors hover:bg-gray-50 ${
-                item.isPaid ? "bg-emerald-50/40" : "bg-white"
+              className={`flex items-center gap-4 px-4 py-4 transition-colors hover:bg-accent ${
+                item.isPaid ? "bg-emerald-50/40 dark:bg-emerald-950/30" : ""
               }`}
             >
               <Checkbox
                 checked={item.isPaid}
                 disabled={savingId === item.id}
                 onCheckedChange={(checked) => handleToggle(item, checked === true)}
-                className="h-5 w-5 border-gray-300 data-[state=checked]:border-emerald-600 data-[state=checked]:bg-emerald-600"
+                className="h-5 w-5 border-border data-[state=checked]:border-emerald-600 data-[state=checked]:bg-emerald-600"
               />
               <div className="flex-1 min-w-0">
                 <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
-                  <p className={`text-sm font-medium truncate ${item.isPaid ? "text-gray-500 line-through" : "text-gray-900"}`}>
+                  <p className={`text-sm font-medium truncate ${item.isPaid ? "text-muted-foreground line-through" : "text-foreground"}`}>
                     {item.name}
                   </p>
-                  <p className="text-sm font-semibold text-gray-900">
+                  <p className="text-sm font-semibold text-foreground">
                     {item.amount === null ? "Varies" : formatINR(item.amount)}
                   </p>
                 </div>
-                <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-gray-500">
+                <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground">
                   <span>{item.dueDay === null ? "No due day" : `Due ${dueDayLabel(item.dueDay)}`}</span>
                   {item.paidAt && (
                     <span>Paid {new Date(item.paidAt).toLocaleDateString("en-IN", { day: "2-digit", month: "short" })}</span>
@@ -210,11 +210,11 @@ export default function BillChecklistPage() {
           ))}
           {items.length === 0 && (
             <div className="px-4 py-12 text-center">
-              <div className="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-full bg-emerald-50 text-emerald-700">
+              <div className="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-full bg-emerald-50 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-400">
                 <CalendarCheck2 className="h-5 w-5" />
               </div>
-              <p className="text-sm font-medium text-gray-900">No active bills yet</p>
-              <p className="text-sm text-gray-500 mt-1">Add checklist items from Settings to start tracking this month.</p>
+              <p className="text-sm font-medium text-foreground">No active bills yet</p>
+              <p className="text-sm text-muted-foreground mt-1">Add checklist items from Settings to start tracking this month.</p>
               <Button asChild className="mt-4 bg-emerald-600 hover:bg-emerald-700 text-white" size="sm">
                 <Link href="/settings">Open Settings</Link>
               </Button>
