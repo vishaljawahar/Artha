@@ -1,14 +1,19 @@
-import type { Metadata } from "next"
+import type { Metadata, Viewport } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
 import { Toaster } from "@/components/ui/sonner"
-import { ThemeProvider } from "@/components/theme-provider"
+import { ThemeProvider } from "@/components/ui/theme-provider"
 
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
   title: "Artha — Personal Finance Tracker",
   description: "Track expenses, investments, and net worth",
+}
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
 }
 
 export default function RootLayout({
@@ -19,7 +24,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${inter.className} antialiased`}>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+        <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false} disableTransitionOnChange>
           {children}
           <Toaster />
         </ThemeProvider>

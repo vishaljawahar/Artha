@@ -123,7 +123,7 @@ export default function DashboardPage() {
         </div>
 
         {/* Year navigation */}
-        <div className="flex items-center gap-1 bg-card border border-border rounded-lg px-2 py-1.5 shadow-sm">
+        <div className="flex items-center gap-1 bg-background border border-border rounded-lg px-2 py-1.5 shadow-sm">
           <button
             onClick={() => setYear((y) => y - 1)}
             className="p-1 rounded hover:bg-accent text-muted-foreground hover:text-foreground transition-colors"
@@ -228,9 +228,9 @@ export default function DashboardPage() {
           </div>
 
           {/* ── Health + Recent Row ── */}
-          <div className="grid grid-cols-1 lg:grid-cols-5 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
             {/* Health scorecard */}
-            <div className="lg:col-span-2">
+            <div className="md:col-span-1 lg:col-span-2">
               <HealthScorecard
                 emiLoad={data?.emiLoad ?? 0}
                 savingsRate={data?.savingsRate ?? 0}
@@ -240,7 +240,7 @@ export default function DashboardPage() {
               />
             </div>
             {/* Recent transactions */}
-            <div className="lg:col-span-3">
+            <div className="md:col-span-1 lg:col-span-3">
               <RecentTransactions
                 transactions={data?.recentTransactions ?? []}
                 loading={loading}

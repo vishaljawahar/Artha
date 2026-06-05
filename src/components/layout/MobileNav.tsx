@@ -3,8 +3,8 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { signOut } from "next-auth/react"
-import { useTheme } from "next-themes"
 import { CheckSquare, CircleDollarSign, LogOut, Moon, MoreHorizontal, Settings, Sun } from "lucide-react"
+import { useTheme } from "next-themes"
 import { cn } from "@/lib/utils"
 import {
   DropdownMenu,
@@ -33,7 +33,7 @@ export function MobileNav() {
   const moreActive = MORE_ITEMS.some((item) => pathname === item.href || pathname.startsWith(item.href + "/"))
 
   return (
-    <nav className="lg:hidden fixed bottom-0 left-0 right-0 bg-card border-t border-border z-50">
+    <nav className="lg:hidden fixed bottom-0 left-0 right-0 bg-background border-t border-border z-50">
       <div className="flex items-center justify-around px-2 py-2">
         {MOBILE_NAV_ITEMS.map((item) => {
           const isActive = pathname === item.href || pathname.startsWith(item.href + "/")
@@ -43,7 +43,7 @@ export function MobileNav() {
               href={item.href}
               className={cn(
                 "flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-lg transition-colors min-w-[60px]",
-                isActive ? "text-emerald-600 dark:text-emerald-400" : "text-muted-foreground"
+                isActive ? "text-emerald-600" : "text-muted-foreground"
               )}
             >
               <span className="text-xl">{item.icon}</span>
@@ -55,7 +55,7 @@ export function MobileNav() {
           <DropdownMenuTrigger
             className={cn(
               "flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-lg transition-colors min-w-[60px] outline-none",
-              moreActive ? "text-emerald-600 dark:text-emerald-400" : "text-muted-foreground"
+              moreActive ? "text-emerald-600" : "text-muted-foreground"
             )}
           >
             <MoreHorizontal className="h-5 w-5" />
@@ -69,7 +69,7 @@ export function MobileNav() {
                 <DropdownMenuItem key={item.href} asChild>
                   <Link
                     href={item.href}
-                    className={cn("flex items-center gap-2", isActive && "text-emerald-700 dark:text-emerald-400")}
+                    className={cn("flex items-center gap-2", isActive && "text-emerald-600")}
                   >
                     <Icon className="h-4 w-4" />
                     {item.label}

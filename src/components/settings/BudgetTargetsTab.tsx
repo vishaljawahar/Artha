@@ -228,11 +228,11 @@ export function BudgetTargetsTab() {
           ))}
         </div>
       ) : (
-        <div className="border border-gray-200 rounded-lg overflow-hidden divide-y divide-gray-100">
+        <div className="border border-border rounded-lg overflow-hidden divide-y divide-border">
           {targets.map((target) => (
-            <div key={target.id} className="flex items-center gap-4 px-4 py-3 bg-white hover:bg-gray-50">
+            <div key={target.id} className="flex items-center gap-4 px-4 py-3 bg-card hover:bg-accent transition-colors">
               <span className="text-xl w-7 text-center">{target.category.icon ?? "📦"}</span>
-              <span className="flex-1 text-sm font-medium text-gray-800">{target.category.name}</span>
+              <span className="flex-1 text-sm font-medium text-foreground">{target.category.name}</span>
 
               {editId === target.id ? (
                 <div className="flex items-center gap-2">
@@ -297,11 +297,11 @@ export function BudgetTargetsTab() {
           </DialogHeader>
           <form onSubmit={handleAdd} className="space-y-4">
             <div className="space-y-1.5">
-              <Label className="text-xs text-gray-600">Category</Label>
+              <Label className="text-xs text-muted-foreground">Category</Label>
               <select
                 value={addCategoryId}
                 onChange={(e) => setAddCategoryId(e.target.value)}
-                className="w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-emerald-500"
                 required
               >
                 <option value="">Select category...</option>

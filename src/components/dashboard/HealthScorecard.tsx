@@ -36,9 +36,9 @@ function getSurplusTier(v: number): 0 | 1 | 2 {
 }
 
 const TIER_BADGE_CLASSES: Record<0 | 1 | 2, string> = {
-  0: "bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950 dark:text-emerald-400 dark:border-emerald-800",
-  1: "bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950 dark:text-amber-400 dark:border-amber-800",
-  2: "bg-red-50 text-red-700 border-red-200 dark:bg-red-950 dark:text-red-400 dark:border-red-800",
+  0: "bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950 dark:text-emerald-400 dark:border-emerald-900",
+  1: "bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950 dark:text-amber-400 dark:border-amber-900",
+  2: "bg-red-50 text-red-700 border-red-200 dark:bg-red-950 dark:text-red-400 dark:border-red-900",
 }
 
 const TIER_PROGRESS_COLOR: Record<0 | 1 | 2, string> = {
@@ -55,7 +55,7 @@ interface ProgressBarProps {
 function ColoredProgress({ value, color }: ProgressBarProps) {
   const clamped = Math.min(100, Math.max(0, value))
   return (
-    <div className="w-full h-2 bg-secondary rounded-full overflow-hidden mt-2">
+    <div className="w-full h-2 bg-muted rounded-full overflow-hidden mt-2">
       <div
         className="h-full rounded-full transition-all duration-500"
         style={{ width: `${clamped}%`, background: color }}

@@ -115,7 +115,7 @@ function CollapsibleGroups({
             {/* Group header — clicking anywhere toggles */}
             <button
               onClick={() => toggle(group.categoryId)}
-              className="w-full flex items-center justify-between px-4 py-3 bg-secondary border-b border-border hover:bg-accent transition-colors"
+              className="w-full flex items-center justify-between px-4 py-3 bg-muted border-b border-border hover:bg-accent transition-colors"
             >
               <div className="flex items-center gap-2">
                 {isCollapsed ? (
@@ -174,7 +174,7 @@ function TransactionRow({
         </span>
         <div className="min-w-0">
           {t.subcategory && (
-            <span className="inline-block text-[10px] font-medium text-emerald-700 bg-emerald-50 border border-emerald-100 dark:text-emerald-400 dark:bg-emerald-950 dark:border-emerald-800 rounded px-1.5 py-0.5 mr-2 mb-0.5">
+            <span className="inline-block text-[10px] font-medium text-emerald-700 bg-emerald-50 border border-emerald-100 rounded px-1.5 py-0.5 mr-2 mb-0.5 dark:bg-emerald-950 dark:border-emerald-900 dark:text-emerald-400">
               {t.subcategory}
             </span>
           )}

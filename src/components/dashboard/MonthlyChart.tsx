@@ -40,13 +40,13 @@ const INR = (v: number) =>
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (!active || !payload?.length) return null
   return (
-    <div className="bg-card border border-border rounded-lg shadow-md p-3 text-sm">
-      <p className="font-semibold text-foreground mb-2">{String(label)}</p>
+    <div className="bg-popover border border-border rounded-lg shadow-md p-3 text-sm">
+      <p className="font-semibold text-popover-foreground mb-2">{String(label)}</p>
       {payload.map((entry: { dataKey: string; color: string; name: string; value: number }) => (
         <div key={entry.dataKey} className="flex items-center gap-2 mb-1">
           <span className="w-2 h-2 rounded-full" style={{ background: entry.color }} />
           <span className="text-muted-foreground w-24">{entry.name}:</span>
-          <span className="font-medium text-foreground">{INR(Number(entry.value ?? 0))}</span>
+          <span className="font-medium text-popover-foreground">{INR(Number(entry.value ?? 0))}</span>
         </div>
       ))}
     </div>

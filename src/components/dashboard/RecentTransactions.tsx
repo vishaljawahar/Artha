@@ -82,7 +82,7 @@ export function RecentTransactions({ transactions, loading }: RecentTransactions
                 <p className="text-sm text-foreground truncate font-medium">{tx.description}</p>
                 <div className="flex items-center gap-1.5 mt-0.5">
                   <span className="text-xs text-muted-foreground">{formatDate(tx.date)}</span>
-                  <span className="text-muted-foreground/40">·</span>
+                  <span className="text-border">·</span>
                   <span
                     className="text-xs px-1.5 py-0.5 rounded-full"
                     style={{
@@ -95,6 +95,7 @@ export function RecentTransactions({ transactions, loading }: RecentTransactions
                 </div>
               </div>
 
+              {/* Amount */}
               <span className="text-sm font-semibold text-foreground flex-shrink-0">
                 {INR(tx.amount)}
               </span>

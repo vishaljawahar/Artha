@@ -57,7 +57,7 @@ export function MonthHeader({
               "flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium transition-colors",
               view === "grouped"
                 ? "bg-emerald-600 text-white"
-                : "bg-card text-muted-foreground hover:bg-accent"
+                : "bg-background text-muted-foreground hover:bg-accent hover:text-accent-foreground"
             )}
           >
             <AlignJustify className="h-3.5 w-3.5" />
@@ -69,7 +69,7 @@ export function MonthHeader({
               "flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium transition-colors",
               view === "timeline"
                 ? "bg-emerald-600 text-white"
-                : "bg-card text-muted-foreground hover:bg-accent"
+                : "bg-background text-muted-foreground hover:bg-accent hover:text-accent-foreground"
             )}
           >
             <Clock className="h-3.5 w-3.5" />

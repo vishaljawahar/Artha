@@ -3,8 +3,8 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { signOut } from "next-auth/react"
+import { Moon, Sun } from "lucide-react"
 import { useTheme } from "next-themes"
-import { Sun, Moon, LogOut } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 const NAV_ITEMS = [
@@ -22,7 +22,7 @@ export function Sidebar() {
   const { theme, setTheme } = useTheme()
 
   return (
-    <aside className="hidden lg:flex flex-col w-60 min-h-screen bg-card border-r border-border px-3 py-6">
+    <aside className="hidden lg:flex flex-col w-60 min-h-screen bg-background border-r border-border px-3 py-6">
       <div className="px-3 mb-8">
         <h1 className="text-2xl font-bold text-foreground">Artha</h1>
         <p className="text-xs text-muted-foreground mt-0.5">Personal Finance</p>
@@ -49,19 +49,19 @@ export function Sidebar() {
         })}
       </nav>
 
-      <div className="space-y-1 mt-4">
+      <div className="mt-4 space-y-1">
         <button
           onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-          className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
+          className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-accent transition-colors w-full"
         >
           {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
           {theme === "dark" ? "Light mode" : "Dark mode"}
         </button>
         <button
           onClick={() => signOut({ callbackUrl: "/login" })}
-          className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
+          className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-accent transition-colors w-full"
         >
-          <LogOut className="h-4 w-4" />
+          <span className="text-base">🚪</span>
           Sign out
         </button>
       </div>
