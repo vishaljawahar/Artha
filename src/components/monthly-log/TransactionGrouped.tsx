@@ -111,17 +111,17 @@ function CollapsibleGroups({
       {groups.map((group) => {
         const isCollapsed = collapsedIds.has(group.categoryId)
         return (
-          <div key={group.categoryId} className="bg-white border border-gray-200 rounded-xl overflow-hidden">
+          <div key={group.categoryId} className="bg-card border border-border rounded-xl overflow-hidden">
             {/* Group header — clicking anywhere toggles */}
             <button
               onClick={() => toggle(group.categoryId)}
-              className="w-full flex items-center justify-between px-4 py-3 bg-gray-50 border-b border-gray-200 hover:bg-gray-100 transition-colors"
+              className="w-full flex items-center justify-between px-4 py-3 bg-muted border-b border-border hover:bg-accent transition-colors"
             >
               <div className="flex items-center gap-2">
                 {isCollapsed ? (
-                  <ChevronRight className="h-3.5 w-3.5 text-gray-400 flex-shrink-0" />
+                  <ChevronRight className="h-3.5 w-3.5 text-muted-foreground flex-shrink-0" />
                 ) : (
-                  <ChevronDown className="h-3.5 w-3.5 text-gray-400 flex-shrink-0" />
+                  <ChevronDown className="h-3.5 w-3.5 text-muted-foreground flex-shrink-0" />
                 )}
                 {group.category?.color && (
                   <span
@@ -129,22 +129,22 @@ function CollapsibleGroups({
                     style={{ backgroundColor: group.category.color }}
                   />
                 )}
-                <span className="text-sm font-semibold text-gray-800">
+                <span className="text-sm font-semibold text-foreground">
                   {group.category?.icon ? `${group.category.icon} ` : ""}
                   {group.category?.name ?? "Unknown"}
                 </span>
-                <span className="text-xs text-gray-400">
+                <span className="text-xs text-muted-foreground">
                   ({group.transactions.length})
                 </span>
               </div>
-              <span className="text-sm font-semibold text-gray-900">
+              <span className="text-sm font-semibold text-foreground">
                 {formatINR(group.subtotal)}
               </span>
             </button>
 
             {/* Transactions */}
             {!isCollapsed && (
-              <div className="divide-y divide-gray-100">
+              <div className="divide-y divide-border">
                 {group.transactions.map((t) => (
                   <TransactionRow key={t.id} transaction={t} onEdit={onEdit} onDelete={onDelete} />
                 ))}
@@ -167,24 +167,24 @@ function TransactionRow({
   onDelete: (t: Transaction) => void
 }) {
   return (
-    <div className="group flex items-center justify-between px-4 py-2.5 hover:bg-gray-50 transition-colors">
+    <div className="group flex items-center justify-between px-4 py-2.5 hover:bg-accent transition-colors">
       <div className="flex items-center gap-3 min-w-0">
-        <span className="text-xs text-gray-400 w-14 flex-shrink-0">
+        <span className="text-xs text-muted-foreground w-14 flex-shrink-0">
           {formatDate(t.date)}
         </span>
         <div className="min-w-0">
           {t.subcategory && (
-            <span className="inline-block text-[10px] font-medium text-emerald-700 bg-emerald-50 border border-emerald-100 rounded px-1.5 py-0.5 mr-2 mb-0.5">
+            <span className="inline-block text-[10px] font-medium text-emerald-700 bg-emerald-50 border border-emerald-100 rounded px-1.5 py-0.5 mr-2 mb-0.5 dark:bg-emerald-950 dark:border-emerald-900 dark:text-emerald-400">
               {t.subcategory}
             </span>
           )}
-          <span className={cn("text-sm text-gray-700 truncate", t.subcategory ? "block" : "inline")}>
-            {t.description || <span className="text-gray-400 italic">No description</span>}
+          <span className={cn("text-sm text-foreground truncate", t.subcategory ? "block" : "inline")}>
+            {t.description || <span className="text-muted-foreground italic">No description</span>}
           </span>
         </div>
       </div>
       <div className="flex items-center gap-3 flex-shrink-0 ml-2">
-        <span className="text-sm font-semibold text-gray-900">{formatINR(Number(t.amount))}</span>
+        <span className="text-sm font-semibold text-foreground">{formatINR(Number(t.amount))}</span>
         <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
           <button
             onClick={() => onEdit(t)}

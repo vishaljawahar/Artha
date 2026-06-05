@@ -159,18 +159,18 @@ export function AddTransactionDialog({
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 overflow-hidden">
             <div className="space-y-1.5 min-w-0 overflow-hidden">
-              <Label htmlFor="txn-date" className="text-xs text-gray-600">Date</Label>
+              <Label htmlFor="txn-date" className="text-xs text-muted-foreground">Date</Label>
               <Input
                 id="txn-date"
                 type="date"
                 value={date}
                 onChange={(e) => setDate(e.target.value)}
-                className="border-gray-200 w-full min-w-0 max-w-full appearance-none"
+                className="w-full min-w-0 max-w-full appearance-none"
                 required
               />
             </div>
             <div className="space-y-1.5">
-              <Label htmlFor="txn-amount" className="text-xs text-gray-600">Amount (₹)</Label>
+              <Label htmlFor="txn-amount" className="text-xs text-muted-foreground">Amount (₹)</Label>
               <Input
                 id="txn-amount"
                 type="number"
@@ -179,14 +179,13 @@ export function AddTransactionDialog({
                 placeholder="e.g. 500"
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
-                className="border-gray-200"
                 required
               />
             </div>
           </div>
 
           <div className="space-y-1.5" ref={categoryRef}>
-            <Label className="text-xs text-gray-600">Category</Label>
+            <Label className="text-xs text-muted-foreground">Category</Label>
             <div className="relative">
               <Button
                 type="button"
@@ -195,7 +194,7 @@ export function AddTransactionDialog({
                   setCategoryOpen((v) => !v)
                   setCategorySearch("")
                 }}
-                className="w-full justify-between border-gray-200 font-normal text-sm h-9"
+                className="w-full justify-between font-normal text-sm h-9"
               >
                 {categoryId ? (
                   (() => {
@@ -208,20 +207,20 @@ export function AddTransactionDialog({
                     ) : "Select category..."
                   })()
                 ) : (
-                  <span className="text-gray-400">Select category...</span>
+                  <span className="text-muted-foreground">Select category...</span>
                 )}
                 <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
               </Button>
 
               {categoryOpen && (
-                <div className="absolute z-50 mt-1 w-full rounded-md border border-gray-200 bg-white shadow-lg">
-                  <div className="p-2 border-b border-gray-100">
+                <div className="absolute z-50 mt-1 w-full rounded-md border border-border bg-popover text-popover-foreground shadow-lg">
+                  <div className="p-2 border-b border-border">
                     <Input
                       autoFocus
                       placeholder="Search category..."
                       value={categorySearch}
                       onChange={(e) => setCategorySearch(e.target.value)}
-                      className="h-8 text-sm border-gray-200"
+                      className="h-8 text-sm"
                     />
                   </div>
                   <div className="overflow-y-scroll max-h-48">
@@ -238,7 +237,7 @@ export function AddTransactionDialog({
                             setCategoryOpen(false)
                             setCategorySearch("")
                           }}
-                          className="flex items-center justify-between w-full px-3 py-2 text-sm hover:bg-gray-50 text-left"
+                          className="flex items-center justify-between w-full px-3 py-2 text-sm hover:bg-accent hover:text-accent-foreground text-left"
                         >
                           <span className="flex items-center gap-2">
                             {cat.icon && <span>{cat.icon}</span>}
@@ -252,7 +251,7 @@ export function AddTransactionDialog({
                     {categories.filter((cat) =>
                       cat.name.toLowerCase().includes(categorySearch.toLowerCase())
                     ).length === 0 && (
-                      <p className="px-3 py-4 text-sm text-gray-400 text-center">
+                      <p className="px-3 py-4 text-sm text-muted-foreground text-center">
                         No category found.
                       </p>
                     )}
@@ -263,8 +262,8 @@ export function AddTransactionDialog({
           </div>
 
           <div className="space-y-1.5">
-            <Label htmlFor="txn-subcategory" className="text-xs text-gray-600">
-              Subcategory <span className="text-gray-400">(optional)</span>
+            <Label htmlFor="txn-subcategory" className="text-xs text-muted-foreground">
+              Subcategory <span className="opacity-60">(optional)</span>
             </Label>
             <Input
               id="txn-subcategory"
@@ -272,13 +271,12 @@ export function AddTransactionDialog({
               placeholder="e.g. Fuel, Medicines"
               value={subcategory}
               onChange={(e) => setSubcategory(e.target.value)}
-              className="border-gray-200"
             />
           </div>
 
           <div className="space-y-1.5">
-            <Label htmlFor="txn-description" className="text-xs text-gray-600">
-              Description <span className="text-gray-400">(optional)</span>
+            <Label htmlFor="txn-description" className="text-xs text-muted-foreground">
+              Description <span className="opacity-60">(optional)</span>
             </Label>
             <Input
               id="txn-description"
@@ -286,7 +284,6 @@ export function AddTransactionDialog({
               placeholder="e.g. Car wash, Grocery run"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className="border-gray-200"
             />
           </div>
 

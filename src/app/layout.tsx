@@ -1,7 +1,8 @@
-import type { Metadata } from "next"
+import type { Metadata, Viewport } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
 import { Toaster } from "@/components/ui/sonner"
+import { ThemeProvider } from "@/components/ui/theme-provider"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -10,16 +11,23 @@ export const metadata: Metadata = {
   description: "Track expenses, investments, and net worth",
 }
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+}
+
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
-      <body className={`${inter.className} bg-white text-gray-900 antialiased`}>
-        {children}
-        <Toaster />
+    <html lang="en" suppressHydrationWarning>
+      <body className={`${inter.className} antialiased`}>
+        <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false} disableTransitionOnChange>
+          {children}
+          <Toaster />
+        </ThemeProvider>
       </body>
     </html>
   )

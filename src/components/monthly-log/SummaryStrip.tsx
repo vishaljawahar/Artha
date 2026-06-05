@@ -62,9 +62,9 @@ export function SummaryStrip({ header, totalExpenditure }: SummaryStripProps) {
       {stats.map((stat) => (
         <div
           key={stat.label}
-          className="bg-white border border-gray-200 rounded-xl px-3 py-3 text-center"
+          className="bg-card border border-border rounded-xl px-3 py-3 text-center"
         >
-          <p className="text-[11px] font-medium text-gray-500 uppercase tracking-wide mb-1">
+          <p className="text-[11px] font-medium text-muted-foreground uppercase tracking-wide mb-1">
             {stat.label}
           </p>
           <p className={cn("text-sm font-semibold", stat.color)}>{stat.value}</p>

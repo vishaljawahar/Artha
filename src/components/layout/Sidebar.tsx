@@ -3,6 +3,8 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { signOut } from "next-auth/react"
+import { Moon, Sun } from "lucide-react"
+import { useTheme } from "next-themes"
 import { cn } from "@/lib/utils"
 
 const NAV_ITEMS = [
@@ -17,12 +19,13 @@ const NAV_ITEMS = [
 
 export function Sidebar() {
   const pathname = usePathname()
+  const { theme, setTheme } = useTheme()
 
   return (
-    <aside className="hidden lg:flex flex-col w-60 min-h-screen bg-white border-r border-gray-200 px-3 py-6">
+    <aside className="hidden lg:flex flex-col w-60 min-h-screen bg-background border-r border-border px-3 py-6">
       <div className="px-3 mb-8">
-        <h1 className="text-2xl font-bold text-gray-900">Artha</h1>
-        <p className="text-xs text-gray-400 mt-0.5">Personal Finance</p>
+        <h1 className="text-2xl font-bold text-foreground">Artha</h1>
+        <p className="text-xs text-muted-foreground mt-0.5">Personal Finance</p>
       </div>
 
       <nav className="flex-1 space-y-1">
@@ -35,8 +38,8 @@ export function Sidebar() {
               className={cn(
                 "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors",
                 isActive
-                  ? "bg-emerald-50 text-emerald-700"
-                  : "text-gray-600 hover:text-gray-900 hover:bg-gray-100"
+                  ? "bg-emerald-50 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-400"
+                  : "text-muted-foreground hover:text-foreground hover:bg-accent"
               )}
             >
               <span className="text-base">{item.icon}</span>
@@ -46,13 +49,22 @@ export function Sidebar() {
         })}
       </nav>
 
-      <button
-        onClick={() => signOut({ callbackUrl: "/login" })}
-        className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-500 hover:text-gray-900 hover:bg-gray-100 transition-colors mt-4"
-      >
-        <span className="text-base">🚪</span>
-        Sign out
-      </button>
+      <div className="mt-4 space-y-1">
+        <button
+          onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+          className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-accent transition-colors w-full"
+        >
+          {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+          {theme === "dark" ? "Light mode" : "Dark mode"}
+        </button>
+        <button
+          onClick={() => signOut({ callbackUrl: "/login" })}
+          className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-accent transition-colors w-full"
+        >
+          <span className="text-base">🚪</span>
+          Sign out
+        </button>
+      </div>
     </aside>
   )
 }

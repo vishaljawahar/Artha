@@ -228,9 +228,9 @@ export default function DashboardPage() {
           </div>
 
           {/* ── Health + Recent Row ── */}
-          <div className="grid grid-cols-1 lg:grid-cols-5 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
             {/* Health scorecard */}
-            <div className="lg:col-span-2">
+            <div className="md:col-span-1 lg:col-span-2">
               <HealthScorecard
                 emiLoad={data?.emiLoad ?? 0}
                 savingsRate={data?.savingsRate ?? 0}
@@ -240,7 +240,7 @@ export default function DashboardPage() {
               />
             </div>
             {/* Recent transactions */}
-            <div className="lg:col-span-3">
+            <div className="md:col-span-1 lg:col-span-3">
               <RecentTransactions
                 transactions={data?.recentTransactions ?? []}
                 loading={loading}

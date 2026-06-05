@@ -50,14 +50,14 @@ export function MonthHeader({
       {/* Right side controls */}
       <div className="flex items-center gap-2">
         {/* View toggle */}
-        <div className="flex items-center border border-gray-200 rounded-lg overflow-hidden">
+        <div className="flex items-center border border-border rounded-lg overflow-hidden">
           <button
             onClick={() => onViewChange("grouped")}
             className={cn(
               "flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium transition-colors",
               view === "grouped"
                 ? "bg-emerald-600 text-white"
-                : "bg-white text-gray-600 hover:bg-gray-50"
+                : "bg-background text-muted-foreground hover:bg-accent hover:text-accent-foreground"
             )}
           >
             <AlignJustify className="h-3.5 w-3.5" />
@@ -69,7 +69,7 @@ export function MonthHeader({
               "flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium transition-colors",
               view === "timeline"
                 ? "bg-emerald-600 text-white"
-                : "bg-white text-gray-600 hover:bg-gray-50"
+                : "bg-background text-muted-foreground hover:bg-accent hover:text-accent-foreground"
             )}
           >
             <Clock className="h-3.5 w-3.5" />
