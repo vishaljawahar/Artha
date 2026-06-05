@@ -57,7 +57,7 @@ export function RecentTransactions({ transactions, loading }: RecentTransactions
         <h3 className="text-sm font-semibold text-foreground">Recent Transactions</h3>
         <Link
           href="/monthly-log"
-          className="text-xs text-emerald-600 hover:text-emerald-700 font-medium"
+          className="text-xs text-emerald-600 hover:text-emerald-700 dark:text-emerald-400 dark:hover:text-emerald-300 font-medium"
         >
           View all →
         </Link>
@@ -71,7 +71,6 @@ export function RecentTransactions({ transactions, loading }: RecentTransactions
         <ul className="space-y-3">
           {transactions.map((tx) => (
             <li key={tx.id} className="flex items-center gap-3">
-              {/* Category icon */}
               <div
                 className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 text-sm"
                 style={{ background: tx.categoryColor ? `${tx.categoryColor}22` : undefined }}
@@ -79,7 +78,6 @@ export function RecentTransactions({ transactions, loading }: RecentTransactions
                 {tx.categoryIcon ?? "💳"}
               </div>
 
-              {/* Description + category chip */}
               <div className="flex-1 min-w-0">
                 <p className="text-sm text-foreground truncate font-medium">{tx.description}</p>
                 <div className="flex items-center gap-1.5 mt-0.5">

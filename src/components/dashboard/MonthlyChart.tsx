@@ -74,13 +74,13 @@ export function MonthlyChart({ data, activeMonths, loading }: MonthlyChartProps)
       <h3 className="text-sm font-semibold text-foreground mb-4">Monthly Breakdown</h3>
       <ResponsiveContainer width="100%" height={260}>
         <BarChart data={chartData} margin={{ top: 4, right: 4, left: 4, bottom: 4 }} barCategoryGap="25%">
-          <CartesianGrid strokeDasharray="3 3" stroke="#F3F4F6" vertical={false} />
+          <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" vertical={false} />
           <XAxis
             dataKey="monthName"
             tick={(props) => {
               const { x, y, payload } = props
               const month = data.find((m) => m.monthName === payload.value)
-              const color = month && activeMonths.has(month.month) ? "#374151" : "#D1D5DB"
+              const color = month && activeMonths.has(month.month) ? "hsl(var(--foreground))" : "hsl(var(--muted-foreground))"
               return (
                 <text x={Number(x)} y={Number(y) + 12} textAnchor="middle" fill={color} fontSize={11}>
                   {payload.value}
@@ -98,12 +98,12 @@ export function MonthlyChart({ data, activeMonths, loading }: MonthlyChartProps)
                 ? `${(v / 1000).toFixed(0)}K`
                 : `${v}`
             }
-            tick={{ fill: "#9CA3AF", fontSize: 11 }}
+            tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 11 }}
             axisLine={false}
             tickLine={false}
             width={40}
           />
-          <Tooltip content={<CustomTooltip />} cursor={{ fill: "#F9FAFB" }} />
+          <Tooltip content={<CustomTooltip />} cursor={{ fill: "hsl(var(--accent))" }} />
           <Legend
             wrapperStyle={{ fontSize: "12px", paddingTop: "12px" }}
             iconType="circle"

@@ -38,17 +38,17 @@ export default function RegisterPage() {
   }
 
   return (
-    <Card className="bg-white border-gray-200 shadow-sm">
+    <Card className="shadow-sm">
       <CardHeader>
-        <CardTitle className="text-gray-900">Create account</CardTitle>
-        <CardDescription className="text-gray-500">
+        <CardTitle>Create account</CardTitle>
+        <CardDescription>
           The first account created becomes the admin
         </CardDescription>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="name" className="text-gray-700">Name</Label>
+            <Label htmlFor="name">Name</Label>
             <Input
               id="name"
               type="text"
@@ -57,11 +57,10 @@ export default function RegisterPage() {
               onChange={(e) => setName(e.target.value)}
               required
               minLength={2}
-              className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-400"
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="email" className="text-gray-700">Email</Label>
+            <Label htmlFor="email">Email</Label>
             <Input
               id="email"
               type="email"
@@ -69,11 +68,10 @@ export default function RegisterPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-400"
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="password" className="text-gray-700">Password</Label>
+            <Label htmlFor="password">Password</Label>
             <Input
               id="password"
               type="password"
@@ -81,7 +79,6 @@ export default function RegisterPage() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-400"
             />
           </div>
           {error && (
@@ -96,9 +93,9 @@ export default function RegisterPage() {
           >
             {loading ? "Creating account…" : "Create account"}
           </Button>
-          <p className="text-center text-sm text-gray-500">
+          <p className="text-center text-sm text-muted-foreground">
             Already have an account?{" "}
-            <Link href="/login" className="text-emerald-600 hover:text-emerald-500 font-medium">
+            <Link href="/login" className="text-emerald-600 hover:text-emerald-500 dark:text-emerald-400 dark:hover:text-emerald-300 font-medium">
               Sign in
             </Link>
           </p>
