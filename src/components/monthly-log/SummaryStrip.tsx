@@ -28,32 +28,32 @@ export function SummaryStrip({ header, totalExpenditure }: SummaryStripProps) {
     {
       label: "Income",
       value: income !== null ? formatINR(income) : "—",
-      color: "text-gray-900",
+      color: "text-foreground",
     },
     {
       label: "EMI",
       value: emiTotal !== null ? formatINR(emiTotal) : "—",
-      color: "text-gray-900",
+      color: "text-foreground",
     },
     {
       label: "Savings",
       value: savings !== null ? formatINR(savings) : "—",
-      color: "text-gray-900",
+      color: "text-foreground",
     },
     {
       label: "Net Income",
       value: netIncome !== null ? formatINR(netIncome) : "—",
-      color: "text-gray-900",
+      color: "text-foreground",
     },
     {
       label: "Spent",
       value: formatINR(totalExpenditure),
-      color: "text-gray-900",
+      color: "text-foreground",
     },
     {
       label: "Surplus",
       value: surplus !== null ? formatINR(surplus) : "—",
-      color: surplus === null ? "text-gray-400" : surplus >= 0 ? "text-emerald-600" : "text-red-600",
+      color: surplus === null ? "text-muted-foreground" : surplus >= 0 ? "text-emerald-600" : "text-red-600",
     },
   ]
 

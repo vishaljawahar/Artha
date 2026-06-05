@@ -40,13 +40,13 @@ const INR = (v: number) =>
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (!active || !payload?.length) return null
   return (
-    <div className="bg-white border border-gray-100 rounded-lg shadow-md p-3 text-sm">
-      <p className="font-semibold text-gray-800 mb-2">{String(label)}</p>
+    <div className="bg-popover border border-border rounded-lg shadow-md p-3 text-sm">
+      <p className="font-semibold text-popover-foreground mb-2">{String(label)}</p>
       {payload.map((entry: { dataKey: string; color: string; name: string; value: number }) => (
         <div key={entry.dataKey} className="flex items-center gap-2 mb-1">
           <span className="w-2 h-2 rounded-full" style={{ background: entry.color }} />
-          <span className="text-gray-500 w-24">{entry.name}:</span>
-          <span className="font-medium text-gray-800">{INR(Number(entry.value ?? 0))}</span>
+          <span className="text-muted-foreground w-24">{entry.name}:</span>
+          <span className="font-medium text-popover-foreground">{INR(Number(entry.value ?? 0))}</span>
         </div>
       ))}
     </div>
@@ -56,7 +56,7 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 export function MonthlyChart({ data, activeMonths, loading }: MonthlyChartProps) {
   if (loading) {
     return (
-      <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
+      <div className="bg-card rounded-xl border border-border shadow-sm p-4">
         <Skeleton className="h-5 w-40 mb-4" />
         <Skeleton className="h-[260px] w-full" />
       </div>
@@ -70,8 +70,8 @@ export function MonthlyChart({ data, activeMonths, loading }: MonthlyChartProps)
   }))
 
   return (
-    <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
-      <h3 className="text-sm font-semibold text-gray-700 mb-4">Monthly Breakdown</h3>
+    <div className="bg-card rounded-xl border border-border shadow-sm p-4">
+      <h3 className="text-sm font-semibold text-foreground mb-4">Monthly Breakdown</h3>
       <ResponsiveContainer width="100%" height={260}>
         <BarChart data={chartData} margin={{ top: 4, right: 4, left: 4, bottom: 4 }} barCategoryGap="25%">
           <CartesianGrid strokeDasharray="3 3" stroke="#F3F4F6" vertical={false} />

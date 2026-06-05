@@ -29,7 +29,7 @@ const INR = (v: number) =>
 export function CategoryBreakdown({ data, loading }: CategoryBreakdownProps) {
   if (loading) {
     return (
-      <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
+      <div className="bg-card rounded-xl border border-border shadow-sm p-4">
         <div className="flex justify-between items-center mb-4">
           <Skeleton className="h-4 w-40" />
           <Skeleton className="h-4 w-24" />
@@ -50,13 +50,13 @@ export function CategoryBreakdown({ data, loading }: CategoryBreakdownProps) {
 
   if (data.length === 0) {
     return (
-      <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-4 flex flex-col items-center justify-center h-[200px]">
-        <h3 className="text-sm font-semibold text-gray-700 mb-2 self-start">Spending by Category</h3>
+      <div className="bg-card rounded-xl border border-border shadow-sm p-4 flex flex-col items-center justify-center h-[200px]">
+        <h3 className="text-sm font-semibold text-foreground mb-2 self-start">Spending by Category</h3>
         <div className="flex-1 flex flex-col items-center justify-center text-center">
-          <div className="w-12 h-12 rounded-full bg-gray-50 flex items-center justify-center mb-2">
+          <div className="w-12 h-12 rounded-full bg-muted flex items-center justify-center mb-2">
             <span className="text-xl">📊</span>
           </div>
-          <p className="text-sm text-gray-400">No spending data yet</p>
+          <p className="text-sm text-muted-foreground">No spending data yet</p>
         </div>
       </div>
     )
@@ -65,10 +65,10 @@ export function CategoryBreakdown({ data, loading }: CategoryBreakdownProps) {
   const total = data.reduce((s, c) => s + c.total, 0)
 
   return (
-    <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
+    <div className="bg-card rounded-xl border border-border shadow-sm p-4">
       <div className="flex justify-between items-baseline mb-3">
-        <h3 className="text-sm font-semibold text-gray-700">Spending by Category</h3>
-        <span className="text-sm text-gray-500">{INR(total)}</span>
+        <h3 className="text-sm font-semibold text-foreground">Spending by Category</h3>
+        <span className="text-sm text-muted-foreground">{INR(total)}</span>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-2.5">
@@ -81,19 +81,19 @@ export function CategoryBreakdown({ data, loading }: CategoryBreakdownProps) {
                 className="w-2.5 h-2.5 rounded-full flex-shrink-0"
                 style={{ backgroundColor: color }}
               />
-              <span className="text-sm text-gray-700 w-32 truncate flex-shrink-0" title={cat.categoryName}>
+              <span className="text-sm text-foreground w-32 truncate flex-shrink-0" title={cat.categoryName}>
                 {cat.categoryName}
               </span>
-              <div className="flex-1 h-1.5 bg-gray-100 rounded-full overflow-hidden min-w-0">
+              <div className="flex-1 h-1.5 bg-muted rounded-full overflow-hidden min-w-0">
                 <div
                   className="h-full rounded-full"
                   style={{ width: `${pct.toFixed(1)}%`, backgroundColor: color }}
                 />
               </div>
-              <span className="text-xs text-gray-600 tabular-nums w-16 text-right flex-shrink-0">
+              <span className="text-xs text-muted-foreground tabular-nums w-16 text-right flex-shrink-0">
                 {INR(cat.total)}
               </span>
-              <span className="text-xs text-gray-400 w-8 text-right flex-shrink-0">
+              <span className="text-xs text-muted-foreground w-8 text-right flex-shrink-0">
                 {pct.toFixed(0)}%
               </span>
             </div>

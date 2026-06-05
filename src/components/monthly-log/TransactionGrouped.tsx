@@ -39,7 +39,7 @@ export function TransactionGrouped({
 }: TransactionGroupedProps) {
   if (transactions.length === 0) {
     return (
-      <div className="text-center py-16 text-gray-400">
+      <div className="text-center py-16 text-muted-foreground">
         <p className="text-sm">No transactions yet.</p>
         <p className="text-xs mt-1">Add your first one with the + button.</p>
       </div>
@@ -102,7 +102,7 @@ function CollapsibleGroups({
       <div className="flex justify-end">
         <button
           onClick={toggleAll}
-          className="text-xs text-gray-400 hover:text-emerald-600 transition-colors"
+          className="text-xs text-muted-foreground hover:text-emerald-600 transition-colors"
         >
           {allCollapsed ? "Expand all" : "Collapse all"}
         </button>
@@ -188,14 +188,14 @@ function TransactionRow({
         <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
           <button
             onClick={() => onEdit(t)}
-            className="p-1 rounded text-gray-400 hover:text-emerald-600 hover:bg-emerald-50 transition-colors"
+            className="p-1 rounded text-muted-foreground hover:text-emerald-600 hover:bg-emerald-50 dark:hover:bg-emerald-950 transition-colors"
             title="Edit"
           >
             <Pencil className="h-3.5 w-3.5" />
           </button>
           <button
             onClick={() => onDelete(t)}
-            className="p-1 rounded text-gray-400 hover:text-red-600 hover:bg-red-50 transition-colors"
+            className="p-1 rounded text-muted-foreground hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950 transition-colors"
             title="Delete"
           >
             <Trash2 className="h-3.5 w-3.5" />

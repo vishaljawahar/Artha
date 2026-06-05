@@ -118,25 +118,25 @@ export default function DashboardPage() {
       {/* ── Header ── */}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
-          <p className="text-sm text-gray-500 mt-0.5">Your financial overview</p>
+          <h1 className="text-2xl font-bold text-foreground">Dashboard</h1>
+          <p className="text-sm text-muted-foreground mt-0.5">Your financial overview</p>
         </div>
 
         {/* Year navigation */}
-        <div className="flex items-center gap-1 bg-white border border-gray-200 rounded-lg px-2 py-1.5 shadow-sm">
+        <div className="flex items-center gap-1 bg-background border border-border rounded-lg px-2 py-1.5 shadow-sm">
           <button
             onClick={() => setYear((y) => y - 1)}
-            className="p-1 rounded hover:bg-gray-100 text-gray-500 hover:text-gray-700 transition-colors"
+            className="p-1 rounded hover:bg-accent text-muted-foreground hover:text-foreground transition-colors"
             aria-label="Previous year"
           >
             <ChevronLeft className="w-4 h-4" />
           </button>
-          <span className="text-sm font-semibold text-gray-800 px-2 min-w-[3rem] text-center">
+          <span className="text-sm font-semibold text-foreground px-2 min-w-[3rem] text-center">
             {year}
           </span>
           <button
             onClick={() => setYear((y) => y + 1)}
-            className="p-1 rounded hover:bg-gray-100 text-gray-500 hover:text-gray-700 transition-colors"
+            className="p-1 rounded hover:bg-accent text-muted-foreground hover:text-foreground transition-colors"
             aria-label="Next year"
           >
             <ChevronRight className="w-4 h-4" />
@@ -153,12 +153,12 @@ export default function DashboardPage() {
 
       {/* ── Empty state ── */}
       {isEmpty && (
-        <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-12 text-center">
-          <div className="w-16 h-16 rounded-full bg-emerald-50 flex items-center justify-center mx-auto mb-4">
+        <div className="bg-card rounded-xl border border-border shadow-sm p-12 text-center">
+          <div className="w-16 h-16 rounded-full bg-emerald-50 dark:bg-emerald-950 flex items-center justify-center mx-auto mb-4">
             <span className="text-3xl">📊</span>
           </div>
-          <h2 className="text-lg font-semibold text-gray-800 mb-2">No data for {year}</h2>
-          <p className="text-gray-500 text-sm mb-6">
+          <h2 className="text-lg font-semibold text-foreground mb-2">No data for {year}</h2>
+          <p className="text-muted-foreground text-sm mb-6">
             Start by logging your monthly income, EMIs, and savings to see your financial overview here.
           </p>
           <Link

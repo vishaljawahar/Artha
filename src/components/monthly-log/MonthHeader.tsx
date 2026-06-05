@@ -39,7 +39,7 @@ export function MonthHeader({
         <Button variant="ghost" size="icon" onClick={onPrev} className="h-8 w-8">
           <ChevronLeft className="h-4 w-4" />
         </Button>
-        <span className="text-base font-semibold text-gray-900 min-w-[130px] text-center">
+        <span className="text-base font-semibold text-foreground min-w-[130px] text-center">
           {MONTH_NAMES[month - 1]} {year}
         </span>
         <Button variant="ghost" size="icon" onClick={onNext} className="h-8 w-8">
@@ -82,7 +82,7 @@ export function MonthHeader({
           variant="outline"
           size="sm"
           onClick={onExport}
-          className="text-xs border-gray-200 text-gray-600 hover:text-gray-900 gap-1"
+          className="text-xs gap-1"
         >
           <Download className="h-3.5 w-3.5" />
           PDF
@@ -93,7 +93,7 @@ export function MonthHeader({
           variant="outline"
           size="sm"
           onClick={onBulk}
-          className="text-xs border-gray-200 text-gray-600 hover:text-gray-900"
+          className="text-xs"
         >
           Bulk
         </Button>

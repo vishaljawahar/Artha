@@ -36,9 +36,9 @@ function getSurplusTier(v: number): 0 | 1 | 2 {
 }
 
 const TIER_BADGE_CLASSES: Record<0 | 1 | 2, string> = {
-  0: "bg-emerald-50 text-emerald-700 border-emerald-200",
-  1: "bg-amber-50 text-amber-700 border-amber-200",
-  2: "bg-red-50 text-red-700 border-red-200",
+  0: "bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950 dark:text-emerald-400 dark:border-emerald-900",
+  1: "bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950 dark:text-amber-400 dark:border-amber-900",
+  2: "bg-red-50 text-red-700 border-red-200 dark:bg-red-950 dark:text-red-400 dark:border-red-900",
 }
 
 const TIER_PROGRESS_COLOR: Record<0 | 1 | 2, string> = {
@@ -55,7 +55,7 @@ interface ProgressBarProps {
 function ColoredProgress({ value, color }: ProgressBarProps) {
   const clamped = Math.min(100, Math.max(0, value))
   return (
-    <div className="w-full h-2 bg-gray-100 rounded-full overflow-hidden mt-2">
+    <div className="w-full h-2 bg-muted rounded-full overflow-hidden mt-2">
       <div
         className="h-full rounded-full transition-all duration-500"
         style={{ width: `${clamped}%`, background: color }}
@@ -75,7 +75,7 @@ interface HealthScorecardProps {
 export function HealthScorecard({ emiLoad, savingsRate, expenditureRate, surplusRate, loading }: HealthScorecardProps) {
   if (loading) {
     return (
-      <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
+      <div className="bg-card rounded-xl border border-border shadow-sm p-4">
         <Skeleton className="h-5 w-44 mb-4" />
         <div className="space-y-4">
           {[0, 1, 2, 3].map((i) => (
@@ -117,8 +117,8 @@ export function HealthScorecard({ emiLoad, savingsRate, expenditureRate, surplus
   ]
 
   return (
-    <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
-      <h3 className="text-sm font-semibold text-gray-700 mb-4">Financial Health</h3>
+    <div className="bg-card rounded-xl border border-border shadow-sm p-4">
+      <h3 className="text-sm font-semibold text-foreground mb-4">Financial Health</h3>
       <div className="space-y-5">
         {metrics.map((m) => {
           const badgeLabel = m.tierLabels[m.tier]
@@ -127,9 +127,9 @@ export function HealthScorecard({ emiLoad, savingsRate, expenditureRate, surplus
           return (
             <div key={m.label}>
               <div className="flex items-center justify-between mb-1">
-                <span className="text-sm text-gray-600">{m.label}</span>
+                <span className="text-sm text-muted-foreground">{m.label}</span>
                 <div className="flex items-center gap-2">
-                  <span className="text-lg font-bold text-gray-900">
+                  <span className="text-lg font-bold text-foreground">
                     {m.value.toFixed(1)}%
                   </span>
                   <span
