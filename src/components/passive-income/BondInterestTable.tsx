@@ -42,7 +42,7 @@ const formatINR = (amount: number) =>
 export function BondInterestTable({ entries, onEdit, onDelete }: BondInterestTableProps) {
   if (entries.length === 0) {
     return (
-      <div className="text-center py-16 text-gray-400">
+      <div className="text-center py-16 text-muted-foreground">
         <p className="text-base">No bond interest entries for this year.</p>
         <p className="text-sm mt-1">Add your first entry using the + Add button above.</p>
       </div>
@@ -86,19 +86,19 @@ export function BondInterestTable({ entries, onEdit, onDelete }: BondInterestTab
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead className="w-28 font-semibold text-gray-700">Month</TableHead>
+            <TableHead className="w-28 font-semibold text-foreground">Month</TableHead>
             {sources.map((src) => (
-              <TableHead key={src} className="text-right font-semibold text-gray-700 min-w-32">
+              <TableHead key={src} className="text-right font-semibold text-foreground min-w-32">
                 {src}
               </TableHead>
             ))}
-            <TableHead className="text-right font-semibold text-gray-700 w-28">Total</TableHead>
+            <TableHead className="text-right font-semibold text-foreground w-28">Total</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {rowData.map(({ label, cells, rowTotal }) => (
             <TableRow key={label} className="group">
-              <TableCell className="font-medium text-gray-700">{label}</TableCell>
+              <TableCell className="font-medium text-foreground">{label}</TableCell>
               {sources.map((src) => {
                 const cell = cells[src]
                 return (
@@ -107,18 +107,18 @@ export function BondInterestTable({ entries, onEdit, onDelete }: BondInterestTab
                       <div className="flex flex-col gap-0.5 items-end">
                         {cell.entries.map((e) => (
                           <div key={e.id} className="flex items-center gap-1 group/cell">
-                            <span className="text-gray-800 text-sm">{formatINR(Number(e.amount))}</span>
+                            <span className="text-foreground text-sm">{formatINR(Number(e.amount))}</span>
                             <span className="hidden group-hover/cell:flex items-center gap-0.5 ml-1">
                               <button
                                 onClick={() => onEdit(e)}
-                                className="text-xs text-gray-400 hover:text-blue-600 transition-colors px-0.5"
+                                className="text-xs text-muted-foreground hover:text-blue-600 transition-colors px-0.5"
                                 title="Edit"
                               >
                                 ✎
                               </button>
                               <button
                                 onClick={() => onDelete(e)}
-                                className="text-xs text-gray-400 hover:text-red-600 transition-colors px-0.5"
+                                className="text-xs text-muted-foreground hover:text-red-600 transition-colors px-0.5"
                                 title="Delete"
                               >
                                 ✕
@@ -128,26 +128,26 @@ export function BondInterestTable({ entries, onEdit, onDelete }: BondInterestTab
                         ))}
                       </div>
                     ) : (
-                      <span className="text-gray-300">—</span>
+                      <span className="text-muted-foreground">—</span>
                     )}
                   </TableCell>
                 )
               })}
-              <TableCell className="text-right font-medium text-gray-800">
-                {rowTotal > 0 ? formatINR(rowTotal) : <span className="text-gray-300">—</span>}
+              <TableCell className="text-right font-medium text-foreground">
+                {rowTotal > 0 ? formatINR(rowTotal) : <span className="text-muted-foreground">—</span>}
               </TableCell>
             </TableRow>
           ))}
           {/* Column totals row */}
-          <TableRow className="border-t-2 border-gray-200 bg-gray-50 font-semibold">
-            <TableCell className="text-gray-700">Total</TableCell>
+          <TableRow className="border-t-2 border-border bg-muted font-semibold">
+            <TableCell className="text-foreground">Total</TableCell>
             {sources.map((src) => (
-              <TableCell key={src} className="text-right text-gray-800">
-                {colTotals[src] > 0 ? formatINR(colTotals[src]) : <span className="text-gray-300">—</span>}
+              <TableCell key={src} className="text-right text-foreground">
+                {colTotals[src] > 0 ? formatINR(colTotals[src]) : <span className="text-muted-foreground">—</span>}
               </TableCell>
             ))}
-            <TableCell className="text-right text-emerald-700">
-              {grandTotal > 0 ? formatINR(grandTotal) : <span className="text-gray-300">—</span>}
+            <TableCell className="text-right text-emerald-700 dark:text-emerald-400">
+              {grandTotal > 0 ? formatINR(grandTotal) : <span className="text-muted-foreground">—</span>}
             </TableCell>
           </TableRow>
         </TableBody>

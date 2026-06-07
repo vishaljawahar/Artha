@@ -181,7 +181,7 @@ export function CategoriesTab() {
     return (
       <div className="space-y-2">
         {Array.from({ length: 6 }).map((_, i) => (
-          <div key={i} className="h-12 bg-gray-100 rounded-md animate-pulse" />
+          <div key={i} className="h-12 bg-muted rounded-md animate-pulse" />
         ))}
       </div>
     )
@@ -190,21 +190,21 @@ export function CategoriesTab() {
   return (
     <div className="max-w-2xl space-y-4">
       <div className="flex items-center justify-between">
-        <h2 className="text-sm font-medium text-gray-700">
+        <h2 className="text-sm font-medium text-foreground">
           {categories.length} {categories.length === 1 ? "category" : "categories"}
         </h2>
       </div>
 
       {/* Category list */}
-      <div className="border border-gray-200 rounded-lg overflow-hidden divide-y divide-gray-100">
+      <div className="border border-border rounded-lg overflow-hidden divide-y divide-border">
         {categories.map((cat, index) => (
-          <div key={cat.id} className="flex items-center gap-3 px-4 py-3 bg-white hover:bg-gray-50">
+          <div key={cat.id} className="flex items-center gap-3 px-4 py-3 bg-card hover:bg-muted">
             {/* Move buttons */}
             <div className="flex flex-col gap-0.5">
               <button
                 onClick={() => handleMove(index, "up")}
                 disabled={index === 0}
-                className="text-gray-400 hover:text-gray-600 disabled:opacity-20 disabled:cursor-not-allowed"
+                className="text-muted-foreground hover:text-foreground disabled:opacity-20 disabled:cursor-not-allowed"
                 title="Move up"
               >
                 <ChevronUp className="h-3.5 w-3.5" />
@@ -212,7 +212,7 @@ export function CategoriesTab() {
               <button
                 onClick={() => handleMove(index, "down")}
                 disabled={index === categories.length - 1}
-                className="text-gray-400 hover:text-gray-600 disabled:opacity-20 disabled:cursor-not-allowed"
+                className="text-muted-foreground hover:text-foreground disabled:opacity-20 disabled:cursor-not-allowed"
                 title="Move down"
               >
                 <ChevronDown className="h-3.5 w-3.5" />
@@ -224,14 +224,14 @@ export function CategoriesTab() {
                 <Input
                   value={editIcon}
                   onChange={(e) => setEditIcon(e.target.value)}
-                  className="w-14 border-gray-200 text-center text-base"
+                  className="w-14 border-border text-center text-base"
                   placeholder="📦"
                   maxLength={2}
                 />
                 <Input
                   value={editName}
                   onChange={(e) => setEditName(e.target.value)}
-                  className="flex-1 border-gray-200"
+                  className="flex-1 border-border"
                   placeholder="Category name"
                 />
                 <button
@@ -244,7 +244,7 @@ export function CategoriesTab() {
                 </button>
                 <button
                   onClick={cancelEdit}
-                  className="text-gray-400 hover:text-gray-600"
+                  className="text-muted-foreground hover:text-foreground"
                   title="Cancel"
                 >
                   <X className="h-4 w-4" />
@@ -253,17 +253,17 @@ export function CategoriesTab() {
             ) : (
               <>
                 <span className="text-xl w-8 text-center">{cat.icon ?? "📦"}</span>
-                <span className="flex-1 text-sm text-gray-800 font-medium">{cat.name}</span>
+                <span className="flex-1 text-sm text-foreground font-medium">{cat.name}</span>
                 <button
                   onClick={() => startEdit(cat)}
-                  className="text-gray-400 hover:text-gray-600"
+                  className="text-muted-foreground hover:text-foreground"
                   title="Edit"
                 >
                   <Pencil className="h-3.5 w-3.5" />
                 </button>
                 <button
                   onClick={() => setDeleteTarget(cat)}
-                  className="text-gray-400 hover:text-red-600"
+                  className="text-muted-foreground hover:text-red-600"
                   title="Delete"
                 >
                   <Trash2 className="h-3.5 w-3.5" />
@@ -274,27 +274,27 @@ export function CategoriesTab() {
         ))}
 
         {categories.length === 0 && (
-          <div className="px-4 py-8 text-center text-sm text-gray-400">
+          <div className="px-4 py-8 text-center text-sm text-muted-foreground">
             No categories yet. Add one below.
           </div>
         )}
       </div>
 
       {/* Add new category */}
-      <form onSubmit={handleAdd} className="border border-gray-200 rounded-lg px-4 py-3 bg-gray-50">
-        <p className="text-xs font-medium text-gray-500 mb-3">Add New Category</p>
+      <form onSubmit={handleAdd} className="border border-border rounded-lg px-4 py-3 bg-muted">
+        <p className="text-xs font-medium text-muted-foreground mb-3">Add New Category</p>
         <div className="flex items-center gap-3">
           <Input
             value={newIcon}
             onChange={(e) => setNewIcon(e.target.value)}
-            className="w-14 border-gray-200 bg-white text-center text-base"
+            className="w-14 border-border bg-card text-center text-base"
             placeholder="📦"
             maxLength={2}
           />
           <Input
             value={newName}
             onChange={(e) => setNewName(e.target.value)}
-            className="flex-1 border-gray-200 bg-white"
+            className="flex-1 border-border bg-card"
             placeholder="Category name (e.g. Travel)"
           />
           <Button

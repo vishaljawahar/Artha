@@ -76,20 +76,20 @@ function CategoryGroup({
         className={cn(
           "w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium transition-colors group",
           isAsset
-            ? "hover:bg-emerald-50 text-gray-700"
-            : "hover:bg-gray-50 text-gray-700"
+            ? "hover:bg-emerald-50 dark:hover:bg-emerald-950 text-foreground"
+            : "hover:bg-muted text-foreground"
         )}
       >
         <div className="flex items-center gap-2">
           {expanded ? (
-            <ChevronDown className="h-3.5 w-3.5 text-gray-400 flex-shrink-0" />
+            <ChevronDown className="h-3.5 w-3.5 text-muted-foreground flex-shrink-0" />
           ) : (
-            <ChevronRight className="h-3.5 w-3.5 text-gray-400 flex-shrink-0" />
+            <ChevronRight className="h-3.5 w-3.5 text-muted-foreground flex-shrink-0" />
           )}
           <span
             className={cn(
               "font-semibold text-sm",
-              isAsset ? "text-emerald-700" : "text-gray-700"
+              isAsset ? "text-emerald-700 dark:text-emerald-400" : "text-foreground"
             )}
           >
             {category}
@@ -98,7 +98,7 @@ function CategoryGroup({
         <span
           className={cn(
             "font-semibold text-sm",
-            isAsset ? "text-emerald-700" : "text-gray-700"
+            isAsset ? "text-emerald-700 dark:text-emerald-400" : "text-foreground"
           )}
         >
           {formatINR(subtotal)}
@@ -111,28 +111,28 @@ function CategoryGroup({
           {entries.map((entry) => (
             <div
               key={entry.id}
-              className="flex items-center justify-between px-3 py-1.5 rounded-md text-sm hover:bg-gray-50 group/entry"
+              className="flex items-center justify-between px-3 py-1.5 rounded-md text-sm hover:bg-muted group/entry"
             >
               <div className="flex items-center gap-3 flex-1 min-w-0">
-                <span className="text-gray-500 w-14 flex-shrink-0 text-xs">
+                <span className="text-muted-foreground w-14 flex-shrink-0 text-xs">
                   {formatEntryDate(entry.entryDate)}
                 </span>
-                <span className="text-gray-800 truncate">{entry.particulars}</span>
+                <span className="text-foreground truncate">{entry.particulars}</span>
                 {entry.notes && (
-                  <span className="text-gray-400 text-xs truncate hidden sm:block">
+                  <span className="text-muted-foreground text-xs truncate hidden sm:block">
                     {entry.notes}
                   </span>
                 )}
               </div>
               <div className="flex items-center gap-2 ml-3 flex-shrink-0">
-                <span className="text-gray-700 font-medium text-sm">
+                <span className="text-foreground font-medium text-sm">
                   {formatINR(Number(entry.amount))}
                 </span>
                 <div className="flex items-center gap-1 opacity-0 group-hover/entry:opacity-100 transition-opacity">
                   <Button
                     variant="ghost"
                     size="icon"
-                    className="h-6 w-6 text-gray-400 hover:text-emerald-600"
+                    className="h-6 w-6 text-muted-foreground hover:text-emerald-600"
                     onClick={() => onEdit(entry)}
                     aria-label="Edit entry"
                   >
@@ -143,7 +143,7 @@ function CategoryGroup({
                       <Button
                         variant="ghost"
                         size="icon"
-                        className="h-6 w-6 text-gray-400 hover:text-red-500"
+                        className="h-6 w-6 text-muted-foreground hover:text-red-500"
                         aria-label="Delete entry"
                       >
                         <Trash2 className="h-3.5 w-3.5" />
@@ -199,30 +199,30 @@ export function EntrySection({
   const categories = Object.keys(grouped).sort()
 
   return (
-    <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
+    <div className="bg-card border border-border rounded-xl overflow-hidden">
       {/* Section header */}
       <button
         onClick={() => setSectionOpen((v) => !v)}
         className={cn(
           "w-full flex items-center justify-between px-4 py-3.5 text-left transition-colors",
-          isAsset ? "hover:bg-emerald-50/60" : "hover:bg-gray-50"
+          isAsset ? "hover:bg-emerald-50/60 dark:hover:bg-emerald-950/60" : "hover:bg-muted"
         )}
       >
         <div className="flex items-center gap-2">
           {sectionOpen ? (
-            <ChevronDown className="h-4 w-4 text-gray-500" />
+            <ChevronDown className="h-4 w-4 text-muted-foreground" />
           ) : (
-            <ChevronRight className="h-4 w-4 text-gray-500" />
+            <ChevronRight className="h-4 w-4 text-muted-foreground" />
           )}
-          <span className="font-semibold text-gray-900">{title}</span>
-          <span className="text-xs text-gray-400 font-normal">
+          <span className="font-semibold text-foreground">{title}</span>
+          <span className="text-xs text-muted-foreground font-normal">
             {entries.length} {entries.length === 1 ? "entry" : "entries"}
           </span>
         </div>
         <span
           className={cn(
             "font-bold text-base",
-            isAsset ? "text-emerald-700" : "text-gray-700"
+            isAsset ? "text-emerald-700 dark:text-emerald-400" : "text-foreground"
           )}
         >
           {formatINR(total)}
@@ -231,9 +231,9 @@ export function EntrySection({
 
       {/* Section body */}
       {sectionOpen && (
-        <div className="border-t border-gray-100 py-2 space-y-0.5">
+        <div className="border-t border-border py-2 space-y-0.5">
           {categories.length === 0 ? (
-            <p className="text-sm text-gray-400 px-4 py-3">No entries yet.</p>
+            <p className="text-sm text-muted-foreground px-4 py-3">No entries yet.</p>
           ) : (
             categories.map((cat) => (
               <CategoryGroup

@@ -193,7 +193,7 @@ export function MonthlyBillsTab() {
     return (
       <div className="space-y-2">
         {Array.from({ length: 4 }).map((_, i) => (
-          <div key={i} className="h-14 bg-gray-100 rounded-md animate-pulse" />
+          <div key={i} className="h-14 bg-muted rounded-md animate-pulse" />
         ))}
       </div>
     )
@@ -203,10 +203,10 @@ export function MonthlyBillsTab() {
     <div className="max-w-2xl space-y-4">
       <div className="flex items-center justify-between gap-3">
         <div className="flex flex-wrap items-center gap-3">
-          <h2 className="text-sm font-medium text-gray-700">
+          <h2 className="text-sm font-medium text-foreground">
             {activeCount} active bill{activeCount !== 1 ? "s" : ""}
           </h2>
-          <label className="flex items-center gap-1.5 text-xs text-gray-500 cursor-pointer select-none">
+          <label className="flex items-center gap-1.5 text-xs text-muted-foreground cursor-pointer select-none">
             <Switch checked={showInactive} onCheckedChange={setShowInactive} className="scale-75" />
             Show inactive
           </label>
@@ -217,33 +217,33 @@ export function MonthlyBillsTab() {
         </Button>
       </div>
 
-      <div className="border border-gray-200 rounded-lg overflow-hidden divide-y divide-gray-100">
+      <div className="border border-border rounded-lg overflow-hidden divide-y divide-border">
         {displayed.map((bill) => (
           <div
             key={bill.id}
-            className={`flex items-center gap-4 px-4 py-3 bg-white ${!bill.isActive ? "opacity-50" : ""}`}
+            className={`flex items-center gap-4 px-4 py-3 bg-card ${!bill.isActive ? "opacity-50" : ""}`}
           >
-            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-emerald-50 text-emerald-700">
+            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-emerald-50 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-400">
               <CalendarDays className="h-4 w-4" />
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-gray-900 truncate">{bill.name}</p>
-              <p className="text-xs text-gray-500 mt-0.5">
+              <p className="text-sm font-medium text-foreground truncate">{bill.name}</p>
+              <p className="text-xs text-muted-foreground mt-0.5">
                 {bill.dueDay === null ? "No due day" : `Due ${dueDayLabel(bill.dueDay)}`} &middot;{" "}
                 {bill.amount === null ? "Amount varies" : formatINR(bill.amount)}
               </p>
             </div>
             <Switch checked={bill.isActive} onCheckedChange={() => handleToggleActive(bill)} className="scale-90" />
-            <button onClick={() => openEdit(bill)} className="text-gray-400 hover:text-gray-600" title="Edit">
+            <button onClick={() => openEdit(bill)} className="text-muted-foreground hover:text-foreground" title="Edit">
               <Pencil className="h-3.5 w-3.5" />
             </button>
-            <button onClick={() => setDeleteTarget(bill)} className="text-gray-400 hover:text-red-600" title="Delete">
+            <button onClick={() => setDeleteTarget(bill)} className="text-muted-foreground hover:text-red-600" title="Delete">
               <Trash2 className="h-3.5 w-3.5" />
             </button>
           </div>
         ))}
         {displayed.length === 0 && (
-          <div className="px-4 py-8 text-center text-sm text-gray-400">
+          <div className="px-4 py-8 text-center text-sm text-muted-foreground">
             {bills.length === 0 ? "No bills yet. Add one to get started." : "No active bills."}
           </div>
         )}
@@ -256,20 +256,20 @@ export function MonthlyBillsTab() {
           </DialogHeader>
           <form onSubmit={handleSave} className="space-y-4">
             <div className="space-y-1.5">
-              <Label htmlFor="bill-name" className="text-xs text-gray-600">Name</Label>
+              <Label htmlFor="bill-name" className="text-xs text-muted-foreground">Name</Label>
               <Input
                 id="bill-name"
                 value={form.name}
                 onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
                 placeholder="e.g. Electricity bill"
-                className="border-gray-200"
+                className="border-border"
                 required
               />
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-1.5">
-                <Label htmlFor="bill-amount" className="text-xs text-gray-600">
-                  Amount <span className="text-gray-400">(optional)</span>
+                <Label htmlFor="bill-amount" className="text-xs text-muted-foreground">
+                  Amount <span className="text-muted-foreground">(optional)</span>
                 </Label>
                 <Input
                   id="bill-amount"
@@ -279,13 +279,13 @@ export function MonthlyBillsTab() {
                   value={form.amount}
                   onChange={(e) => setForm((f) => ({ ...f, amount: e.target.value }))}
                   placeholder="Varies"
-                  className="border-gray-200"
+                  className="border-border"
                   required
                 />
               </div>
               <div className="space-y-1.5">
-                <Label htmlFor="bill-due-day" className="text-xs text-gray-600">
-                  Due Day <span className="text-gray-400">(optional)</span>
+                <Label htmlFor="bill-due-day" className="text-xs text-muted-foreground">
+                  Due Day <span className="text-muted-foreground">(optional)</span>
                 </Label>
                 <Input
                   id="bill-due-day"
@@ -295,7 +295,7 @@ export function MonthlyBillsTab() {
                   step="1"
                   value={form.dueDay}
                   onChange={(e) => setForm((f) => ({ ...f, dueDay: e.target.value }))}
-                  className="border-gray-200"
+                  className="border-border"
                   required
                 />
               </div>
@@ -306,7 +306,7 @@ export function MonthlyBillsTab() {
                 checked={form.isActive}
                 onCheckedChange={(v) => setForm((f) => ({ ...f, isActive: v }))}
               />
-              <Label htmlFor="bill-active" className="text-sm text-gray-700 cursor-pointer">
+              <Label htmlFor="bill-active" className="text-sm text-foreground cursor-pointer">
                 Active
               </Label>
             </div>

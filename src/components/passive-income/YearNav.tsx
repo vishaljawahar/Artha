@@ -24,12 +24,12 @@ export function YearNav({ year, total, onPrev, onNext }: YearNavProps) {
         <Button variant="ghost" size="icon" onClick={onPrev} className="h-8 w-8">
           <ChevronLeft className="h-4 w-4" />
         </Button>
-        <span className="text-lg font-semibold text-gray-900 w-14 text-center">{year}</span>
+        <span className="text-lg font-semibold text-foreground w-14 text-center">{year}</span>
         <Button variant="ghost" size="icon" onClick={onNext} className="h-8 w-8">
           <ChevronRight className="h-4 w-4" />
         </Button>
       </div>
-      <span className="bg-emerald-50 text-emerald-700 border border-emerald-200 rounded px-3 py-1 text-sm font-semibold">
+      <span className="bg-emerald-50 text-emerald-700 border border-emerald-200 dark:bg-emerald-950 dark:text-emerald-400 dark:border-emerald-900 rounded px-3 py-1 text-sm font-semibold">
         Total: {formatINR(total)}
       </span>
     </div>

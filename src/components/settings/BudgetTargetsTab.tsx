@@ -197,14 +197,14 @@ export function BudgetTargetsTab() {
         <div className="flex items-center gap-2">
           <button
             onClick={() => setYear((y) => y - 1)}
-            className="p-1 rounded hover:bg-gray-100 text-gray-500"
+            className="p-1 rounded hover:bg-muted text-muted-foreground"
           >
             <ChevronLeft className="h-4 w-4" />
           </button>
-          <span className="text-sm font-semibold text-gray-800 w-12 text-center">{year}</span>
+          <span className="text-sm font-semibold text-foreground w-12 text-center">{year}</span>
           <button
             onClick={() => setYear((y) => y + 1)}
-            className="p-1 rounded hover:bg-gray-100 text-gray-500"
+            className="p-1 rounded hover:bg-muted text-muted-foreground"
           >
             <ChevronRight className="h-4 w-4" />
           </button>
@@ -224,7 +224,7 @@ export function BudgetTargetsTab() {
       {loading ? (
         <div className="space-y-2">
           {Array.from({ length: 5 }).map((_, i) => (
-            <div key={i} className="h-12 bg-gray-100 rounded-md animate-pulse" />
+            <div key={i} className="h-12 bg-muted rounded-md animate-pulse" />
           ))}
         </div>
       ) : (
@@ -236,14 +236,14 @@ export function BudgetTargetsTab() {
 
               {editId === target.id ? (
                 <div className="flex items-center gap-2">
-                  <span className="text-sm text-gray-500">₹</span>
+                  <span className="text-sm text-muted-foreground">₹</span>
                   <Input
                     type="number"
                     min="1"
                     step="1"
                     value={editAmount}
                     onChange={(e) => setEditAmount(e.target.value)}
-                    className="w-28 border-gray-200 h-8 text-sm"
+                    className="w-28 border-border h-8 text-sm"
                     autoFocus
                     onKeyDown={(e) => {
                       if (e.key === "Enter") handleSaveEdit(target.id)
@@ -257,7 +257,7 @@ export function BudgetTargetsTab() {
                   >
                     <Check className="h-4 w-4" />
                   </button>
-                  <button onClick={cancelEdit} className="text-gray-400 hover:text-gray-600">
+                  <button onClick={cancelEdit} className="text-muted-foreground hover:text-foreground">
                     <X className="h-4 w-4" />
                   </button>
                 </div>
@@ -265,14 +265,14 @@ export function BudgetTargetsTab() {
                 <div className="flex items-center gap-3">
                   <button
                     onClick={() => startEdit(target)}
-                    className="text-sm text-gray-600 hover:text-gray-900 font-medium tabular-nums"
+                    className="text-sm text-muted-foreground hover:text-foreground font-medium tabular-nums"
                     title="Click to edit"
                   >
                     {formatINR(target.targetAmount)}
                   </button>
                   <button
                     onClick={() => setDeleteTarget(target)}
-                    className="text-gray-400 hover:text-red-600"
+                    className="text-muted-foreground hover:text-red-600"
                     title="Delete"
                   >
                     <Trash2 className="h-3.5 w-3.5" />
@@ -282,7 +282,7 @@ export function BudgetTargetsTab() {
             </div>
           ))}
           {targets.length === 0 && (
-            <div className="px-4 py-8 text-center text-sm text-gray-400">
+            <div className="px-4 py-8 text-center text-sm text-muted-foreground">
               No budget targets for {year}. Click &ldquo;Add Target&rdquo; to get started.
             </div>
           )}
@@ -313,7 +313,7 @@ export function BudgetTargetsTab() {
               </select>
             </div>
             <div className="space-y-1.5">
-              <Label htmlFor="add-budget-amount" className="text-xs text-gray-600">
+              <Label htmlFor="add-budget-amount" className="text-xs text-muted-foreground">
                 Annual Target Amount (₹)
               </Label>
               <Input
@@ -324,7 +324,7 @@ export function BudgetTargetsTab() {
                 value={addAmount}
                 onChange={(e) => setAddAmount(e.target.value)}
                 placeholder="e.g. 50000"
-                className="border-gray-200"
+                className="border-border"
                 required
               />
             </div>

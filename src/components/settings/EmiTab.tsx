@@ -194,7 +194,7 @@ export function EmiTab() {
     return (
       <div className="space-y-2">
         {Array.from({ length: 4 }).map((_, i) => (
-          <div key={i} className="h-14 bg-gray-100 rounded-md animate-pulse" />
+          <div key={i} className="h-14 bg-muted rounded-md animate-pulse" />
         ))}
       </div>
     )
@@ -204,10 +204,10 @@ export function EmiTab() {
     <div className="max-w-2xl space-y-4">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <h2 className="text-sm font-medium text-gray-700">
+          <h2 className="text-sm font-medium text-foreground">
             {emis.filter((e) => e.isActive).length} active EMI{emis.filter((e) => e.isActive).length !== 1 ? "s" : ""}
           </h2>
-          <label className="flex items-center gap-1.5 text-xs text-gray-500 cursor-pointer select-none">
+          <label className="flex items-center gap-1.5 text-xs text-muted-foreground cursor-pointer select-none">
             <Switch
               checked={showInactive}
               onCheckedChange={setShowInactive}
@@ -227,15 +227,15 @@ export function EmiTab() {
       </div>
 
       {/* EMI list */}
-      <div className="border border-gray-200 rounded-lg overflow-hidden divide-y divide-gray-100">
+      <div className="border border-border rounded-lg overflow-hidden divide-y divide-border">
         {displayed.map((emi) => (
           <div
             key={emi.id}
-            className={`flex items-center gap-4 px-4 py-3 bg-white ${!emi.isActive ? "opacity-50" : ""}`}
+            className={`flex items-center gap-4 px-4 py-3 bg-card ${!emi.isActive ? "opacity-50" : ""}`}
           >
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-gray-900 truncate">{emi.name}</p>
-              <p className="text-xs text-gray-500 mt-0.5">
+              <p className="text-sm font-medium text-foreground truncate">{emi.name}</p>
+              <p className="text-xs text-muted-foreground mt-0.5">
                 {formatINR(emi.amount)}/mo &middot;{" "}
                 {monthsRemaining(emi.startDate, emi.endDate)}
               </p>
@@ -247,14 +247,14 @@ export function EmiTab() {
             />
             <button
               onClick={() => openEdit(emi)}
-              className="text-gray-400 hover:text-gray-600"
+              className="text-muted-foreground hover:text-foreground"
               title="Edit"
             >
               <Pencil className="h-3.5 w-3.5" />
             </button>
             <button
               onClick={() => setDeleteTarget(emi)}
-              className="text-gray-400 hover:text-red-600"
+              className="text-muted-foreground hover:text-red-600"
               title="Delete"
             >
               <Trash2 className="h-3.5 w-3.5" />
@@ -262,7 +262,7 @@ export function EmiTab() {
           </div>
         ))}
         {displayed.length === 0 && (
-          <div className="px-4 py-8 text-center text-sm text-gray-400">
+          <div className="px-4 py-8 text-center text-sm text-muted-foreground">
             {emis.length === 0 ? "No EMIs yet. Add one to get started." : "No active EMIs."}
           </div>
         )}
@@ -276,18 +276,18 @@ export function EmiTab() {
           </DialogHeader>
           <form onSubmit={handleSave} className="space-y-4">
             <div className="space-y-1.5">
-              <Label htmlFor="emi-name" className="text-xs text-gray-600">Name</Label>
+              <Label htmlFor="emi-name" className="text-xs text-muted-foreground">Name</Label>
               <Input
                 id="emi-name"
                 value={form.name}
                 onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
                 placeholder="e.g. Car Loan EMI"
-                className="border-gray-200"
+                className="border-border"
                 required
               />
             </div>
             <div className="space-y-1.5">
-              <Label htmlFor="emi-amount" className="text-xs text-gray-600">Amount (₹/month)</Label>
+              <Label htmlFor="emi-amount" className="text-xs text-muted-foreground">Amount (₹/month)</Label>
               <Input
                 id="emi-amount"
                 type="number"
@@ -296,32 +296,32 @@ export function EmiTab() {
                 value={form.amount}
                 onChange={(e) => setForm((f) => ({ ...f, amount: e.target.value }))}
                 placeholder="e.g. 15000"
-                className="border-gray-200"
+                className="border-border"
                 required
               />
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-1.5">
-                <Label htmlFor="emi-start" className="text-xs text-gray-600">Start Date</Label>
+                <Label htmlFor="emi-start" className="text-xs text-muted-foreground">Start Date</Label>
                 <Input
                   id="emi-start"
                   type="date"
                   value={form.startDate}
                   onChange={(e) => setForm((f) => ({ ...f, startDate: e.target.value }))}
-                  className="border-gray-200"
+                  className="border-border"
                   required
                 />
               </div>
               <div className="space-y-1.5">
-                <Label htmlFor="emi-end" className="text-xs text-gray-600">
-                  End Date <span className="text-gray-400">(optional)</span>
+                <Label htmlFor="emi-end" className="text-xs text-muted-foreground">
+                  End Date <span className="text-muted-foreground">(optional)</span>
                 </Label>
                 <Input
                   id="emi-end"
                   type="date"
                   value={form.endDate}
                   onChange={(e) => setForm((f) => ({ ...f, endDate: e.target.value }))}
-                  className="border-gray-200"
+                  className="border-border"
                 />
               </div>
             </div>
@@ -331,7 +331,7 @@ export function EmiTab() {
                 checked={form.isActive}
                 onCheckedChange={(v) => setForm((f) => ({ ...f, isActive: v }))}
               />
-              <Label htmlFor="emi-active" className="text-sm text-gray-700 cursor-pointer">
+              <Label htmlFor="emi-active" className="text-sm text-foreground cursor-pointer">
                 Active
               </Label>
             </div>

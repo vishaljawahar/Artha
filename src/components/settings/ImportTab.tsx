@@ -156,10 +156,10 @@ export function ImportTab() {
   return (
     <div className="max-w-2xl space-y-6">
       {/* Template download */}
-      <div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg bg-gray-50">
+      <div className="flex items-center justify-between p-4 border border-border rounded-lg bg-muted">
         <div>
-          <p className="text-sm font-medium text-gray-800">Download CSV Template</p>
-          <p className="text-xs text-gray-500 mt-0.5">
+          <p className="text-sm font-medium text-foreground">Download CSV Template</p>
+          <p className="text-xs text-muted-foreground mt-0.5">
             Headers: date, category, subcategory, description, amount
           </p>
         </div>
@@ -167,7 +167,7 @@ export function ImportTab() {
           onClick={downloadTemplate}
           variant="outline"
           size="sm"
-          className="border-gray-200 text-gray-700 hover:bg-white"
+          className="border-border text-foreground hover:bg-card"
         >
           <Download className="h-4 w-4 mr-1.5" />
           Download
@@ -183,15 +183,15 @@ export function ImportTab() {
           onClick={() => fileInputRef.current?.click()}
           className={`border-2 border-dashed rounded-lg p-10 text-center cursor-pointer transition-colors ${
             dragging
-              ? "border-emerald-400 bg-emerald-50"
-              : "border-gray-200 hover:border-gray-300 hover:bg-gray-50"
+              ? "border-emerald-400 bg-emerald-50 dark:bg-emerald-950"
+              : "border-border hover:bg-muted"
           }`}
         >
-          <Upload className="h-8 w-8 text-gray-400 mx-auto mb-3" />
-          <p className="text-sm font-medium text-gray-700">
+          <Upload className="h-8 w-8 text-muted-foreground mx-auto mb-3" />
+          <p className="text-sm font-medium text-foreground">
             Drag &amp; drop your CSV file here
           </p>
-          <p className="text-xs text-gray-400 mt-1">or click to browse</p>
+          <p className="text-xs text-muted-foreground mt-1">or click to browse</p>
           <input
             ref={fileInputRef}
             type="file"
@@ -204,9 +204,9 @@ export function ImportTab() {
 
       {/* Parse errors (client-side) */}
       {parseErrors.length > 0 && (
-        <div className="border border-amber-200 bg-amber-50 rounded-lg p-4 space-y-1">
-          <p className="text-sm font-medium text-amber-800">Parse warnings ({parseErrors.length})</p>
-          <ul className="text-xs text-amber-700 space-y-0.5 list-disc list-inside">
+        <div className="border border-amber-200 bg-amber-50 dark:border-amber-900 dark:bg-amber-950 rounded-lg p-4 space-y-1">
+          <p className="text-sm font-medium text-amber-800 dark:text-amber-300">Parse warnings ({parseErrors.length})</p>
+          <ul className="text-xs text-amber-700 dark:text-amber-400 space-y-0.5 list-disc list-inside">
             {parseErrors.slice(0, 5).map((e, i) => (
               <li key={i}>{e}</li>
             ))}
@@ -222,36 +222,36 @@ export function ImportTab() {
         <div className="space-y-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <FileText className="h-4 w-4 text-gray-500" />
-              <span className="text-sm font-medium text-gray-800">{fileName}</span>
-              <span className="text-xs text-gray-500">
+              <FileText className="h-4 w-4 text-muted-foreground" />
+              <span className="text-sm font-medium text-foreground">{fileName}</span>
+              <span className="text-xs text-muted-foreground">
                 ({parsed.length} row{parsed.length !== 1 ? "s" : ""} ready to import)
               </span>
             </div>
-            <button onClick={handleClear} className="text-gray-400 hover:text-gray-600">
+            <button onClick={handleClear} className="text-muted-foreground hover:text-foreground">
               <X className="h-4 w-4" />
             </button>
           </div>
 
-          <div className="border border-gray-200 rounded-lg overflow-hidden">
+          <div className="border border-border rounded-lg overflow-hidden">
             <table className="w-full text-xs">
-              <thead className="bg-gray-50 border-b border-gray-200">
+              <thead className="bg-muted border-b border-border">
                 <tr>
-                  <th className="px-3 py-2 text-left font-medium text-gray-600">Date</th>
-                  <th className="px-3 py-2 text-left font-medium text-gray-600">Category</th>
-                  <th className="px-3 py-2 text-left font-medium text-gray-600">Subcategory</th>
-                  <th className="px-3 py-2 text-left font-medium text-gray-600">Description</th>
-                  <th className="px-3 py-2 text-right font-medium text-gray-600">Amount</th>
+                  <th className="px-3 py-2 text-left font-medium text-muted-foreground">Date</th>
+                  <th className="px-3 py-2 text-left font-medium text-muted-foreground">Category</th>
+                  <th className="px-3 py-2 text-left font-medium text-muted-foreground">Subcategory</th>
+                  <th className="px-3 py-2 text-left font-medium text-muted-foreground">Description</th>
+                  <th className="px-3 py-2 text-right font-medium text-muted-foreground">Amount</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-100">
+              <tbody className="divide-y divide-border">
                 {previewRows.map((row, i) => (
-                  <tr key={i} className="hover:bg-gray-50">
-                    <td className="px-3 py-2 text-gray-700 whitespace-nowrap">{row.date}</td>
-                    <td className="px-3 py-2 text-gray-700">{row.categoryName}</td>
-                    <td className="px-3 py-2 text-gray-500">{row.subcategory ?? "—"}</td>
-                    <td className="px-3 py-2 text-gray-500 truncate max-w-[12rem]">{row.description ?? "—"}</td>
-                    <td className="px-3 py-2 text-right text-gray-700 tabular-nums">
+                  <tr key={i} className="hover:bg-muted">
+                    <td className="px-3 py-2 text-foreground whitespace-nowrap">{row.date}</td>
+                    <td className="px-3 py-2 text-foreground">{row.categoryName}</td>
+                    <td className="px-3 py-2 text-muted-foreground">{row.subcategory ?? "—"}</td>
+                    <td className="px-3 py-2 text-muted-foreground truncate max-w-[12rem]">{row.description ?? "—"}</td>
+                    <td className="px-3 py-2 text-right text-foreground tabular-nums">
                       ₹{row.amount.toLocaleString("en-IN")}
                     </td>
                   </tr>
@@ -259,7 +259,7 @@ export function ImportTab() {
               </tbody>
             </table>
             {parsed.length > 10 && (
-              <p className="px-3 py-2 text-xs text-gray-400 border-t border-gray-100 bg-gray-50">
+              <p className="px-3 py-2 text-xs text-muted-foreground border-t border-border bg-muted">
                 Showing first 10 of {parsed.length} rows
               </p>
             )}
@@ -274,7 +274,7 @@ export function ImportTab() {
               <Upload className="h-4 w-4 mr-1.5" />
               {importing ? "Importing..." : `Import ${parsed.length} transaction${parsed.length !== 1 ? "s" : ""}`}
             </Button>
-            <Button variant="outline" onClick={handleClear} className="border-gray-200 text-gray-600">
+            <Button variant="outline" onClick={handleClear} className="border-border text-muted-foreground">
               Cancel
             </Button>
           </div>
@@ -283,24 +283,24 @@ export function ImportTab() {
 
       {/* Import result */}
       {importResult && (
-        <div className="border border-gray-200 rounded-lg p-4 space-y-3">
+        <div className="border border-border rounded-lg p-4 space-y-3">
           <div className="flex items-center gap-2">
-            <div className={`w-2 h-2 rounded-full ${importResult.imported > 0 ? "bg-emerald-500" : "bg-gray-400"}`} />
-            <p className="text-sm font-medium text-gray-800">Import Complete</p>
+            <div className={`w-2 h-2 rounded-full ${importResult.imported > 0 ? "bg-emerald-500" : "bg-muted-foreground"}`} />
+            <p className="text-sm font-medium text-foreground">Import Complete</p>
           </div>
           <div className="grid grid-cols-2 gap-3 text-sm">
-            <div className="bg-emerald-50 border border-emerald-100 rounded-md px-3 py-2">
-              <p className="text-xs text-emerald-600 font-medium">Imported</p>
-              <p className="text-xl font-bold text-emerald-700">{importResult.imported}</p>
+            <div className="bg-emerald-50 border border-emerald-100 dark:bg-emerald-950 dark:border-emerald-900 rounded-md px-3 py-2">
+              <p className="text-xs text-emerald-600 dark:text-emerald-400 font-medium">Imported</p>
+              <p className="text-xl font-bold text-emerald-700 dark:text-emerald-400">{importResult.imported}</p>
             </div>
-            <div className="bg-amber-50 border border-amber-100 rounded-md px-3 py-2">
-              <p className="text-xs text-amber-600 font-medium">Skipped</p>
-              <p className="text-xl font-bold text-amber-700">{importResult.skipped}</p>
+            <div className="bg-amber-50 border border-amber-100 dark:bg-amber-950 dark:border-amber-900 rounded-md px-3 py-2">
+              <p className="text-xs text-amber-600 dark:text-amber-400 font-medium">Skipped</p>
+              <p className="text-xl font-bold text-amber-700 dark:text-amber-400">{importResult.skipped}</p>
             </div>
           </div>
           {importResult.errors.length > 0 && (
             <div className="space-y-1">
-              <p className="text-xs font-medium text-gray-600">Errors:</p>
+              <p className="text-xs font-medium text-muted-foreground">Errors:</p>
               <ul className="text-xs text-red-600 space-y-0.5 list-disc list-inside">
                 {importResult.errors.slice(0, 10).map((e, i) => (
                   <li key={i}>{e}</li>
@@ -314,7 +314,7 @@ export function ImportTab() {
           <Button
             variant="outline"
             onClick={handleClear}
-            className="border-gray-200 text-gray-600 text-sm"
+            className="border-border text-muted-foreground text-sm"
             size="sm"
           >
             Import Another File

@@ -103,16 +103,16 @@ export function UpdateSnapshotDialog({
         </DialogHeader>
 
         {rows.length === 0 ? (
-          <p className="text-sm text-gray-500 text-center py-6">No assets to update.</p>
+          <p className="text-sm text-muted-foreground text-center py-6">No assets to update.</p>
         ) : (
           <div className="space-y-3">
             {rows.map((row, i) => (
               <div key={row.assetName} className="flex items-center gap-3">
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-gray-800 truncate">{row.assetName}</p>
-                  <p className="text-xs text-gray-400">{ASSET_TYPE_LABELS[row.assetType]}</p>
+                  <p className="text-sm font-medium text-foreground truncate">{row.assetName}</p>
+                  <p className="text-xs text-muted-foreground">{ASSET_TYPE_LABELS[row.assetType]}</p>
                 </div>
-                <div className="text-right text-xs text-gray-400 w-24 shrink-0">
+                <div className="text-right text-xs text-muted-foreground w-24 shrink-0">
                   <p>Prev: {formatINR(row.prevValue)}</p>
                 </div>
                 <Input

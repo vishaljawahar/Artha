@@ -24,9 +24,9 @@ const CustomTooltip = ({ active, payload }: { active?: boolean; payload?: { payl
   if (active && payload && payload.length) {
     const entry = payload[0].payload
     return (
-      <div className="bg-white border border-gray-200 rounded-lg shadow-md px-3 py-2">
-        <p className="text-sm font-medium text-gray-800">{entry.name}</p>
-        <p className="text-sm text-gray-600">{formatINR(entry.value)}</p>
+      <div className="bg-card border border-border rounded-lg shadow-md px-3 py-2">
+        <p className="text-sm font-medium text-foreground">{entry.name}</p>
+        <p className="text-sm text-muted-foreground">{formatINR(entry.value)}</p>
       </div>
     )
   }
@@ -55,15 +55,15 @@ export function AllocationChart({ currentAssets }: AllocationChartProps) {
 
   if (data.length === 0) {
     return (
-      <div className="bg-white rounded-xl p-4 border border-gray-100 flex items-center justify-center h-[320px]">
-        <p className="text-gray-400 text-sm">No asset data yet</p>
+      <div className="bg-card rounded-xl p-4 border border-border flex items-center justify-center h-[320px]">
+        <p className="text-muted-foreground text-sm">No asset data yet</p>
       </div>
     )
   }
 
   return (
-    <div className="bg-white rounded-xl p-4 border border-gray-100">
-      <h3 className="text-sm font-semibold text-gray-700 mb-4">Asset Allocation</h3>
+    <div className="bg-card rounded-xl p-4 border border-border">
+      <h3 className="text-sm font-semibold text-foreground mb-4">Asset Allocation</h3>
       <div className="flex flex-col sm:flex-row items-center gap-4">
         <div className="w-full sm:w-[180px] flex-shrink-0">
           <ResponsiveContainer width="100%" height={180}>
@@ -97,11 +97,11 @@ export function AllocationChart({ currentAssets }: AllocationChartProps) {
                     className="w-2.5 h-2.5 rounded-full flex-shrink-0"
                     style={{ backgroundColor: entry.color }}
                   />
-                  <span className="text-xs text-gray-600 truncate">{entry.name}</span>
+                  <span className="text-xs text-muted-foreground truncate">{entry.name}</span>
                 </div>
                 <div className="flex items-center gap-2 flex-shrink-0">
-                  <span className="text-xs font-medium text-gray-800">{formatINR(entry.value)}</span>
-                  <span className="text-xs text-gray-400 w-10 text-right">{pct}%</span>
+                  <span className="text-xs font-medium text-foreground">{formatINR(entry.value)}</span>
+                  <span className="text-xs text-muted-foreground w-10 text-right">{pct}%</span>
                 </div>
               </div>
             )

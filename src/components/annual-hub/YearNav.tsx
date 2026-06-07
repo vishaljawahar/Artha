@@ -16,19 +16,19 @@ export function YearNav({ year, onPrev, onNext }: YearNavProps) {
         variant="ghost"
         size="icon"
         onClick={onPrev}
-        className="h-8 w-8 text-gray-500 hover:text-gray-900"
+        className="h-8 w-8 text-muted-foreground hover:text-foreground"
         aria-label="Previous year"
       >
         <ChevronLeft className="h-4 w-4" />
       </Button>
-      <span className="text-lg font-semibold text-gray-900 min-w-[4rem] text-center">
+      <span className="text-lg font-semibold text-foreground min-w-[4rem] text-center">
         {year}
       </span>
       <Button
         variant="ghost"
         size="icon"
         onClick={onNext}
-        className="h-8 w-8 text-gray-500 hover:text-gray-900"
+        className="h-8 w-8 text-muted-foreground hover:text-foreground"
         aria-label="Next year"
       >
         <ChevronRight className="h-4 w-4" />
