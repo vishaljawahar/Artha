@@ -114,8 +114,12 @@ export default function WealthTrackerPage() {
       />
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        <AllocationChart currentAssets={currentPortfolio} />
-        <TrendChart assets={assets} />
+        <div className="min-w-0">
+          <AllocationChart currentAssets={currentPortfolio} />
+        </div>
+        <div className="min-w-0">
+          <TrendChart assets={assets} />
+        </div>
       </div>
 
       <div>

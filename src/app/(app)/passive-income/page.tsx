@@ -192,7 +192,7 @@ export default function PassiveIncomePage() {
 
       {/* Tabs */}
       <Tabs defaultValue="bond">
-        <TabsList className="mb-4">
+        <TabsList className="mb-4 flex-wrap h-auto gap-1">
           <TabsTrigger value="bond">
             Bond Interest
             {bondEntries.length > 0 && (
