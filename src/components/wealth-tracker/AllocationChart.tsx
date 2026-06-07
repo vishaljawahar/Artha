@@ -87,7 +87,7 @@ export function AllocationChart({ currentAssets }: AllocationChartProps) {
         </div>
 
         {/* Legend */}
-        <div className="flex-1 w-full space-y-2">
+        <div className="flex-1 w-full min-w-0 space-y-2">
           {data.map((entry) => {
             const pct = total > 0 ? ((entry.value / total) * 100).toFixed(1) : "0"
             return (
