@@ -4,7 +4,6 @@ import {
   PieChart,
   Pie,
   Cell,
-  ResponsiveContainer,
   Tooltip,
 } from "recharts"
 import { Asset, AssetType, ASSET_TYPE_COLORS, ASSET_TYPE_LABELS, formatINR } from "./types"
@@ -65,25 +64,24 @@ export function AllocationChart({ currentAssets }: AllocationChartProps) {
     <div className="bg-card rounded-xl p-4 border border-border">
       <h3 className="text-sm font-semibold text-foreground mb-4">Asset Allocation</h3>
       <div className="flex flex-col sm:flex-row items-center gap-4">
-        <div className="w-full sm:w-[180px] flex-shrink-0">
-          <ResponsiveContainer width="100%" height={180}>
-            <PieChart>
-              <Pie
-                data={data}
-                cx="50%"
-                cy="50%"
-                innerRadius={50}
-                outerRadius={80}
-                paddingAngle={2}
-                dataKey="value"
-              >
-                {data.map((entry, index) => (
-                  <Cell key={index} fill={entry.color} stroke="white" strokeWidth={2} />
-                ))}
-              </Pie>
-              <Tooltip content={<CustomTooltip />} />
-            </PieChart>
-          </ResponsiveContainer>
+        <div className="flex-shrink-0 mx-auto sm:mx-0">
+          <PieChart width={180} height={180}>
+            <Pie
+              data={data}
+              cx="50%"
+              cy="50%"
+              innerRadius={50}
+              outerRadius={80}
+              paddingAngle={2}
+              dataKey="value"
+              isAnimationActive={false}
+            >
+              {data.map((entry, index) => (
+                <Cell key={index} fill={entry.color} stroke="white" strokeWidth={2} />
+              ))}
+            </Pie>
+            <Tooltip content={<CustomTooltip />} />
+          </PieChart>
         </div>
 
         {/* Legend */}
