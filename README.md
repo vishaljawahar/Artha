@@ -15,17 +15,19 @@ Built as a structured replacement for manual finance tracking, with real-time an
 | **Annual Hub** | Record yearly asset deployments and large liabilities; net position at a glance |
 | **Passive Income** | Track bond interest, dividends, SB interest, and other income — with a bond matrix view |
 | **Wealth Tracker** | Asset portfolio with allocation donut, net worth trend chart, and snapshot updates |
+| **Loans** | Shared multi-user loan tracker — contribution ledger, planned/actual EMIs, disbursements, auto-computed per-member totals |
+| **Bill Checklist** | Monthly paid/unpaid checklist for recurring bills |
 | **Settings** | Manage categories, EMIs, budget targets, import CSV data, and update your profile |
 
 ---
 
 ## Tech Stack
 
-- **Framework:** Next.js 15 (App Router) + TypeScript
+- **Framework:** Next.js 16 (App Router) + TypeScript
 - **Database:** PostgreSQL via [Neon](https://neon.tech) + Prisma ORM
 - **Auth:** NextAuth v5 (JWT sessions, bcrypt passwords, account lockout)
-- **UI:** shadcn/ui (Radix UI) + Tailwind CSS + Recharts
-- **Testing:** Jest — 127 tests, 100% passing
+- **UI:** shadcn/ui (Radix UI) + Tailwind CSS + Recharts v3
+- **Testing:** Jest — 192 tests (187 passing; 5 pre-existing register-gate failures)
 
 ---
 
@@ -73,8 +75,9 @@ npm run dev
 npm run dev           # Start dev server at localhost:3000
 npm run build         # Production build
 npm run lint          # ESLint
-npm test              # Run all 127 tests
+npm test              # Run the test suite
 npm run test:coverage # Tests with coverage report
+npm run seed:birla    # Seed the shared Birla Ojasvi home loan (idempotent)
 npx prisma studio     # Visual database browser
 ```
 
@@ -84,7 +87,7 @@ npx prisma studio     # Visual database browser
 
 - [Build Summary](docs/build-summary.md) — what was built, architecture decisions, API surface, file structure
 - [User Guide](docs/user-guide.md) — detailed guide on how to use every feature
-- [Test Report](tests/report.md) — full test suite results (127 tests across 14 suites)
+- [Test Report](tests/report.md) — full test suite results (192 tests; 187 passing, 5 pre-existing register-gate failures)
 
 ---
 
@@ -92,7 +95,7 @@ npx prisma studio     # Visual database browser
 
 - Passwords hashed with bcrypt (12 rounds)
 - Account lockout after 5 failed login attempts (15-minute cooldown)
-- All data scoped by `userId` — users can only access their own data
+- Most data is scoped by `userId` — users can only access their own data. The **Loan Tracker is a shared resource** and instead uses **membership-based** access: every loan route verifies the caller is a member of that loan, and non-members get a 404 (no existence leak)
 - Security headers: `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy`, `Permissions-Policy`
 - Input validation with Zod on all API routes
 
@@ -100,10 +103,9 @@ npx prisma studio     # Visual database browser
 
 ## Project Status
 
-All 6 modules are fully built and tested. The app runs locally. Vercel deployment is the next planned step.
+All modules are fully built and in active use, deployed to Vercel. This includes the **Loan Tracker** — Artha's first shared, multi-user resource (a loan co-owned by multiple users via membership, with a contribution ledger, planned/actual EMIs, disbursements, and auto-computed per-member totals).
 
 **Pending:**
-- Vercel deployment
 - Multi-user invite (admin can invite others by email)
 - Budget alerts (amber at 80%, red at 100% of monthly target)
 - Recurring transaction templates

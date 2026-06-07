@@ -43,6 +43,30 @@ enum AssetType {
   OTHER
 }
 
+enum LoanType {
+  HOME
+  PERSONAL
+  CAR
+  EDUCATION
+  GOLD
+  OTHER
+}
+
+enum LoanRole {
+  OWNER
+  MEMBER
+}
+
+enum LoanPaymentType {
+  BOOKING
+  DOWN_PAYMENT
+  INSTALLMENT
+  TDS
+  AGREEMENT
+  FEE
+  OTHER
+}
+
 // ─── Models ───────────────────────────────────────────────────────────────────
 
 model User {
@@ -66,6 +90,11 @@ model User {
   budgetTargets  BudgetTarget[]
   monthlyBills   MonthlyBill[]
   billPayments   MonthlyBillPayment[]
+
+  createdLoans    Loan[]        @relation("LoanCreator")
+  loanMemberships LoanMember[]  @relation("LoanMembership")
+  loanPayments    LoanPayment[] @relation("LoanPaymentPayer")
+  emiEntries      EmiEntry[]    @relation("EmiEntryMember")
 
   @@map("users")
 }
@@ -240,4 +269,98 @@ model MonthlyBillPayment {
 
   @@unique([userId, monthlyBillId, year, month])
   @@map("monthly_bill_payments")
+}
+
+// ─── Loan Tracker (Artha's first shared resource) ───────────────────────────────
+
+model Loan {
+  id               String    @id @default(uuid())
+  name             String
+  lender           String?
+  loanType         LoanType  @default(HOME)
+  sanctionedAmount Decimal?  @db.Decimal(14, 2)
+  interestRate     Decimal?  @db.Decimal(5, 2)
+  tenureMonths     Int?
+  plannedEmiAmount Decimal?  @db.Decimal(12, 2)
+  startDate        DateTime? @db.Date
+  notes            String?
+  createdById      String
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  createdBy     User               @relation("LoanCreator", fields: [createdById], references: [id])
+  members       LoanMember[]
+  payments      LoanPayment[]
+  emiEntries    EmiEntry[]
+  disbursements LoanDisbursement[]
+
+  @@map("loans")
+}
+
+model LoanMember {
+  id       String   @id @default(uuid())
+  loanId   String
+  userId   String
+  role     LoanRole @default(MEMBER)
+  joinedAt DateTime @default(now())
+
+  loan Loan @relation(fields: [loanId], references: [id], onDelete: Cascade)
+  user User @relation("LoanMembership", fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([loanId, userId])
+  @@map("loan_members")
+}
+
+model LoanPayment {
+  id          String          @id @default(uuid())
+  loanId      String
+  paidById    String
+  date        DateTime        @db.Date
+  type        LoanPaymentType @default(OTHER)
+  description String
+  amount      Decimal         @db.Decimal(14, 2)
+  mode        String?
+  notes       String?
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+
+  loan   Loan @relation(fields: [loanId], references: [id], onDelete: Cascade)
+  paidBy User @relation("LoanPaymentPayer", fields: [paidById], references: [id])
+
+  @@map("loan_payments")
+}
+
+model EmiEntry {
+  id           String    @id @default(uuid())
+  loanId       String
+  userId       String
+  year         Int
+  month        Int
+  plannedShare Decimal   @default(0) @db.Decimal(12, 2)
+  actualPaid   Decimal?  @db.Decimal(12, 2)
+  mode         String?
+  paidDate     DateTime? @db.Date
+  notes        String?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  loan Loan @relation(fields: [loanId], references: [id], onDelete: Cascade)
+  user User @relation("EmiEntryMember", fields: [userId], references: [id])
+
+  @@unique([loanId, userId, year, month])
+  @@map("emi_entries")
+}
+
+model LoanDisbursement {
+  id        String   @id @default(uuid())
+  loanId    String
+  date      DateTime @db.Date
+  amount    Decimal  @db.Decimal(14, 2)
+  notes     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  loan Loan @relation(fields: [loanId], references: [id], onDelete: Cascade)
+
+  @@map("loan_disbursements")
 }

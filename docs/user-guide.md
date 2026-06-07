@@ -12,7 +12,8 @@ This guide walks through every feature of Artha. All amounts are in INR (₹).
 4. [Annual Hub](#4-annual-hub)
 5. [Passive Income](#5-passive-income)
 6. [Wealth Tracker](#6-wealth-tracker)
-7. [Settings](#7-settings)
+7. [Loans](#7-loans)
+8. [Settings](#8-settings)
 
 ---
 
@@ -32,8 +33,10 @@ This guide walks through every feature of Artha. All amounts are in INR (₹).
 
 ### Navigation
 
-- **Desktop:** Persistent left sidebar with links to all 6 modules.
-- **Mobile:** Bottom tab bar with the same 6 destinations.
+- **Desktop:** Persistent left sidebar with links to all modules, including **Loans**.
+- **Mobile:** Bottom tab bar with four primary tabs (Dashboard, Monthly, Annual, Wealth); secondary destinations (**Loans**, Passive Income, Bill Checklist, Settings) live under the **More** menu.
+
+> Every module except **Loans** is private to your own account. **Loans are shared** — a loan is co-owned by multiple Artha users, and all its members see and edit the same data. See [section 7](#7-loans).
 
 ---
 
@@ -282,7 +285,87 @@ Use the **⋮** menu on each asset card to edit details or delete the asset reco
 
 ---
 
-## 7. Settings
+## 7. Loans
+
+Track a loan that you **share with other people**. Unlike every other part of Artha — which is private to your own account — a loan is co-owned by multiple Artha users. Every member of a loan sees and edits the same data: contributions, EMIs, and disbursements. This was built so a couple (or any group) can track a shared loan together instead of keeping a shared note by hand. All totals are calculated automatically from the entries, so the numbers are always in sync.
+
+### The Loans List
+
+The Loans page shows a card for every loan you're a member of — its name, lender, type, sanctioned amount, and your role (**Owner** or **Member**). Click a card to open its detail page.
+
+### Creating a Loan
+
+Click **Add Loan** and fill in:
+
+- **Name** — e.g. "Birla Ojasvi Home Loan"
+- **Lender** — the bank or finance company
+- **Type** — Home, Car, Personal, Education, or Other
+- **Sanctioned Amount (₹)** — the total approved loan amount
+- **Interest Rate (%)** — optional, for reference
+- **Tenure (months)** — optional, for reference
+- **Planned EMI (₹)** — optional, the expected monthly instalment
+- **Start Date** — optional
+- **Notes** — optional
+
+The person who creates the loan automatically becomes its first **Owner**.
+
+### The 5 Tabs
+
+The loan detail page has five tabs.
+
+#### Overview
+
+A summary of the whole loan, all auto-computed from the entries in the other tabs:
+
+- **Total Contributed** — the grand total put in by everyone, with a **per-member split** (how much each person has contributed).
+- **Disbursed vs Sanctioned** — a progress bar showing how much the lender has released against the approved amount.
+- **EMIs paid** — a running summary of EMI payments.
+- **This month: planned vs paid** — how the current month's EMI is tracking.
+- **Contributions-by-member donut** — a chart of who has contributed what.
+- **EMI Planned-vs-Actual bar chart** — planned versus actual EMI amounts over time.
+
+#### Payments
+
+A ledger of one-off contributions toward the loan (booking amount, instalments, TDS, agreement/registration fees, and so on). Each row records:
+
+- **Date**
+- **Type** — Booking, Installment, TDS, Agreement, Fee, or Other
+- **Description** — optional
+- **Who Paid** — the member who made the payment
+- **Mode** — e.g. "Axis Bank Cheque", "UPI"
+- **Amount (₹)**
+
+To add one, click **Add Payment**, fill in the fields, and save. Each row has **Edit** and **Delete** icons. **Any member** can add, edit, or delete payments.
+
+#### EMIs
+
+A **pivot grid** for tracking the monthly EMI split between members:
+
+- **Rows** are months.
+- For each member there are two columns — **Planned** (the share they're expected to pay) and **Paid** (what they actually paid).
+- A **monthly total** column sums the row.
+
+Add or edit an entry to record a member's planned and paid amount for a given month. **Any member** can add or edit EMI entries.
+
+#### Disbursements
+
+A list of the tranches the lender releases to the builder/seller over time. Each entry has a **Date**, an **Amount (₹)**, and optional **Notes**. These feed the "Disbursed vs Sanctioned" progress on the Overview tab. **Any member** can add, edit, or delete disbursements.
+
+#### Members
+
+Manage who shares the loan.
+
+- Every member is listed with their role: **Owner** or **Member**.
+- **Owners** can edit and delete the loan, and add or remove members.
+- **Members** can add and edit payments, EMIs, and disbursements, but cannot change the loan's details or its membership.
+- **Adding a member:** an owner clicks **Add Member** and enters the person's **email**. That person must already have an Artha account — they're matched by email.
+- **Removing a member:** owners can remove members, but the **last owner cannot be removed** — a loan must always have at least one owner.
+
+> If you aren't a member of a loan, you can't see it at all — it won't appear in your list, and opening its link directly returns "not found".
+
+---
+
+## 8. Settings
 
 Manage your account and app configuration.
 
@@ -356,6 +439,6 @@ date,category,subcategory,description,amount
 ## Tips
 
 - **Currency:** All amounts are in INR (₹). No multi-currency support.
-- **Data isolation:** Each user's data is completely separate. If you invite others in future, they will see only their own entries.
+- **Data isolation:** Each user's data is completely separate — with one exception. **Loans are shared** between their members: everyone who is a member of a loan sees and edits the same loan data. Every other module (Dashboard, Monthly Log, Annual Hub, Passive Income, Wealth Tracker, Bill Checklist, Settings) is private to your own account.
 - **Undo:** There is no undo. The delete confirmation dialogs are your safety net — read them before confirming.
 - **Bulk import:** Match category names exactly (case-insensitive) to avoid skipped rows. Run a test import with 5–10 rows before importing your full history.

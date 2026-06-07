@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { signOut } from "next-auth/react"
-import { CheckSquare, CircleDollarSign, LogOut, Moon, MoreHorizontal, Settings, Sun } from "lucide-react"
+import { CheckSquare, CircleDollarSign, Landmark, LogOut, Moon, MoreHorizontal, Settings, Sun } from "lucide-react"
 import { useTheme } from "next-themes"
 import { cn } from "@/lib/utils"
 import {
@@ -22,6 +22,7 @@ const MOBILE_NAV_ITEMS = [
 ]
 
 const MORE_ITEMS = [
+  { href: "/loans", label: "Loans", icon: Landmark },
   { href: "/passive-income", label: "Passive Income", icon: CircleDollarSign },
   { href: "/bill-checklist", label: "Bill Checklist", icon: CheckSquare },
   { href: "/settings", label: "Settings", icon: Settings },
