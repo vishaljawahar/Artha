@@ -13,6 +13,7 @@ const NAV_ITEMS = [
   { href: "/annual-hub",     label: "Annual Hub",     icon: "📆" },
   { href: "/passive-income", label: "Passive Income", icon: "💰" },
   { href: "/wealth-tracker", label: "Wealth Tracker", icon: "📈" },
+  { href: "/loans",          label: "Loans",          icon: "🏦" },
   { href: "/bill-checklist", label: "Bill Checklist", icon: "✅" },
   { href: "/settings",       label: "Settings",       icon: "⚙️"  },
 ]
