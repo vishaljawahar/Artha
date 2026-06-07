@@ -167,7 +167,7 @@ export function AddEditDialog({
                         <RadioGroupItem value="ASSET" id="type-asset" />
                         <Label
                           htmlFor="type-asset"
-                          className="cursor-pointer font-normal text-emerald-700"
+                          className="cursor-pointer font-normal text-emerald-700 dark:text-emerald-400"
                         >
                           Asset
                         </Label>
@@ -176,7 +176,7 @@ export function AddEditDialog({
                         <RadioGroupItem value="LIABILITY" id="type-liability" />
                         <Label
                           htmlFor="type-liability"
-                          className="cursor-pointer font-normal text-gray-700"
+                          className="cursor-pointer font-normal text-foreground"
                         >
                           Liability / Expense
                         </Label>
@@ -260,7 +260,7 @@ export function AddEditDialog({
                 <FormItem>
                   <FormLabel>
                     Entry Date{" "}
-                    <span className="text-gray-400 font-normal">(optional)</span>
+                    <span className="text-muted-foreground font-normal">(optional)</span>
                   </FormLabel>
                   <FormControl>
                     <Input {...field} type="date" />
@@ -278,7 +278,7 @@ export function AddEditDialog({
                 <FormItem>
                   <FormLabel>
                     Notes{" "}
-                    <span className="text-gray-400 font-normal">(optional)</span>
+                    <span className="text-muted-foreground font-normal">(optional)</span>
                   </FormLabel>
                   <FormControl>
                     <Textarea

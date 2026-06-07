@@ -31,9 +31,9 @@ function formatYAxis(v: number): string {
 const CustomTooltip = ({ active, payload, label }: { active?: boolean; payload?: { value: number }[]; label?: string }) => {
   if (active && payload && payload.length) {
     return (
-      <div className="bg-white border border-gray-200 rounded-lg shadow-md px-3 py-2">
-        <p className="text-xs text-gray-500 mb-1">{label}</p>
-        <p className="text-sm font-semibold text-gray-800">{formatINR(payload[0].value)}</p>
+      <div className="bg-card border border-border rounded-lg shadow-md px-3 py-2">
+        <p className="text-xs text-muted-foreground mb-1">{label}</p>
+        <p className="text-sm font-semibold text-foreground">{formatINR(payload[0].value)}</p>
       </div>
     )
   }
@@ -73,10 +73,10 @@ export function TrendChart({ assets }: TrendChartProps) {
 
   if (trendData.length < 2) {
     return (
-      <div className="bg-white rounded-xl p-4 border border-gray-100">
-        <h3 className="text-sm font-semibold text-gray-700 mb-4">Net Worth Trend</h3>
+      <div className="bg-card rounded-xl p-4 border border-border">
+        <h3 className="text-sm font-semibold text-foreground mb-4">Net Worth Trend</h3>
         <div className="flex items-center justify-center h-[180px]">
-          <p className="text-gray-400 text-sm text-center">
+          <p className="text-muted-foreground text-sm text-center">
             Add more snapshots over time to see your wealth trend
           </p>
         </div>
@@ -85,8 +85,8 @@ export function TrendChart({ assets }: TrendChartProps) {
   }
 
   return (
-    <div className="bg-white rounded-xl p-4 border border-gray-100">
-      <h3 className="text-sm font-semibold text-gray-700 mb-4">Net Worth Trend</h3>
+    <div className="bg-card rounded-xl p-4 border border-border">
+      <h3 className="text-sm font-semibold text-foreground mb-4">Net Worth Trend</h3>
       <ResponsiveContainer width="100%" height={220}>
         <LineChart data={trendData} margin={{ top: 4, right: 8, bottom: 4, left: 8 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />

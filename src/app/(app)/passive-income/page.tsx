@@ -179,7 +179,7 @@ export default function PassiveIncomePage() {
 
       {/* Error state */}
       {error && (
-        <div className="bg-red-50 border border-red-200 text-red-700 rounded-lg px-4 py-3 mb-6 text-sm">
+        <div className="bg-red-50 border border-red-200 text-red-700 dark:bg-red-950 dark:border-red-900 dark:text-red-400 rounded-lg px-4 py-3 mb-6 text-sm">
           {error} —{" "}
           <button
             className="underline font-medium"
@@ -192,11 +192,11 @@ export default function PassiveIncomePage() {
 
       {/* Tabs */}
       <Tabs defaultValue="bond">
-        <TabsList className="mb-4">
+        <TabsList className="mb-4 flex-wrap h-auto gap-1">
           <TabsTrigger value="bond">
             Bond Interest
             {bondEntries.length > 0 && (
-              <span className="ml-1.5 text-xs bg-emerald-100 text-emerald-700 rounded-full px-1.5">
+              <span className="ml-1.5 text-xs bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-400 rounded-full px-1.5">
                 {bondEntries.length}
               </span>
             )}
@@ -204,7 +204,7 @@ export default function PassiveIncomePage() {
           <TabsTrigger value="sb">
             SB Interest
             {sbEntries.length > 0 && (
-              <span className="ml-1.5 text-xs bg-emerald-100 text-emerald-700 rounded-full px-1.5">
+              <span className="ml-1.5 text-xs bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-400 rounded-full px-1.5">
                 {sbEntries.length}
               </span>
             )}
@@ -212,7 +212,7 @@ export default function PassiveIncomePage() {
           <TabsTrigger value="dividends">
             Dividends
             {dividendEntries.length > 0 && (
-              <span className="ml-1.5 text-xs bg-emerald-100 text-emerald-700 rounded-full px-1.5">
+              <span className="ml-1.5 text-xs bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-400 rounded-full px-1.5">
                 {dividendEntries.length}
               </span>
             )}
@@ -220,7 +220,7 @@ export default function PassiveIncomePage() {
           <TabsTrigger value="other">
             Other
             {otherEntries.length > 0 && (
-              <span className="ml-1.5 text-xs bg-emerald-100 text-emerald-700 rounded-full px-1.5">
+              <span className="ml-1.5 text-xs bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-400 rounded-full px-1.5">
                 {otherEntries.length}
               </span>
             )}

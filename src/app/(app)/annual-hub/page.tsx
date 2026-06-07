@@ -153,15 +153,21 @@ export default function AnnualHubPage() {
             onDelete={handleDelete}
           />
 
+          {/* Total (Assets + Liabilities) summary */}
+          <div className="flex items-center justify-between px-5 py-4 rounded-xl border font-semibold bg-card border-border text-foreground">
+            <span className="text-sm">Total (Assets + Liabilities)</span>
+            <span className="text-lg">{formatINR(totalAssets + totalLiabilities)}</span>
+          </div>
+
           {/* Net summary */}
           <div
             className={cn(
               "flex items-center justify-between px-5 py-4 rounded-xl border font-semibold",
               net > 0
-                ? "bg-emerald-50 border-emerald-200 text-emerald-800"
+                ? "bg-emerald-50 border-emerald-200 text-emerald-800 dark:bg-emerald-950 dark:border-emerald-900 dark:text-emerald-400"
                 : net < 0
-                ? "bg-red-50 border-red-200 text-red-700"
-                : "bg-gray-50 border-gray-200 text-gray-600"
+                ? "bg-red-50 border-red-200 text-red-700 dark:bg-red-950 dark:border-red-900 dark:text-red-400"
+                : "bg-muted border-border text-muted-foreground"
             )}
           >
             <span className="text-sm">Net (Assets − Liabilities)</span>

@@ -285,7 +285,7 @@ export default function MonthlyLogPage() {
         </div>
       ) : (
         <div className="flex items-center gap-2">
-          <div className="flex-1">
+          <div className="flex-1 min-w-0">
             <SummaryStrip header={header} totalExpenditure={totalExpenditure} />
           </div>
           {header && (

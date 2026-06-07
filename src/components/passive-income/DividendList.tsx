@@ -34,7 +34,7 @@ const formatDate = (date: string | null) => {
 export function DividendList({ entries, onEdit, onDelete }: DividendListProps) {
   if (entries.length === 0) {
     return (
-      <div className="text-center py-16 text-gray-400">
+      <div className="text-center py-16 text-muted-foreground">
         <p className="text-base">No dividend entries for this year.</p>
         <p className="text-sm mt-1">Add your first entry using the + Add button above.</p>
       </div>
@@ -76,33 +76,33 @@ export function DividendList({ entries, onEdit, onDelete }: DividendListProps) {
         return (
           <div key={monthNum}>
             <div className="flex items-center justify-between mb-2">
-              <h3 className="font-semibold text-gray-800">{label}</h3>
-              <span className="text-sm font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 rounded px-2 py-0.5">
+              <h3 className="font-semibold text-foreground">{label}</h3>
+              <span className="text-sm font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 dark:bg-emerald-950 dark:text-emerald-400 dark:border-emerald-900 rounded px-2 py-0.5">
                 {formatINR(monthTotal)}
               </span>
             </div>
-            <div className="border rounded-lg overflow-hidden divide-y divide-gray-100">
+            <div className="border rounded-lg overflow-hidden divide-y divide-border">
               {monthEntries.map((entry) => (
                 <div
                   key={entry.id}
-                  className="flex items-start justify-between px-4 py-3 bg-white hover:bg-gray-50 group transition-colors"
+                  className="flex items-start justify-between px-4 py-3 bg-card hover:bg-muted group transition-colors"
                 >
                   <div className="flex flex-col gap-0.5 min-w-0">
-                    <span className="text-sm font-medium text-gray-800">{entry.sourceName}</span>
+                    <span className="text-sm font-medium text-foreground">{entry.sourceName}</span>
                     {entry.receivedDate && (
-                      <span className="text-xs text-gray-400">{formatDate(entry.receivedDate)}</span>
+                      <span className="text-xs text-muted-foreground">{formatDate(entry.receivedDate)}</span>
                     )}
                     {entry.notes && (
-                      <span className="text-xs text-gray-500 italic">{entry.notes}</span>
+                      <span className="text-xs text-muted-foreground italic">{entry.notes}</span>
                     )}
                   </div>
                   <div className="flex items-center gap-2 ml-4 flex-shrink-0">
-                    <span className="font-semibold text-gray-800">{formatINR(Number(entry.amount))}</span>
+                    <span className="font-semibold text-foreground">{formatINR(Number(entry.amount))}</span>
                     <div className="hidden group-hover:flex items-center gap-1">
                       <Button
                         variant="ghost"
                         size="icon"
-                        className="h-7 w-7 text-gray-400 hover:text-blue-600"
+                        className="h-7 w-7 text-muted-foreground hover:text-blue-600"
                         onClick={() => onEdit(entry)}
                         title="Edit"
                       >
@@ -111,7 +111,7 @@ export function DividendList({ entries, onEdit, onDelete }: DividendListProps) {
                       <Button
                         variant="ghost"
                         size="icon"
-                        className="h-7 w-7 text-gray-400 hover:text-red-600"
+                        className="h-7 w-7 text-muted-foreground hover:text-red-600"
                         onClick={() => onDelete(entry)}
                         title="Delete"
                       >
@@ -129,21 +129,21 @@ export function DividendList({ entries, onEdit, onDelete }: DividendListProps) {
       {/* Source summary */}
       {bySource.size > 1 && (
         <div className="mt-8">
-          <h3 className="text-sm font-semibold text-gray-600 uppercase tracking-wide mb-3">
+          <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide mb-3">
             Annual Summary by Source
           </h3>
-          <div className="border rounded-lg overflow-hidden divide-y divide-gray-100">
+          <div className="border rounded-lg overflow-hidden divide-y divide-border">
             {Array.from(bySource.entries())
               .sort(([, a], [, b]) => b - a)
               .map(([source, total]) => (
-                <div key={source} className="flex items-center justify-between px-4 py-2.5 bg-white">
-                  <span className="text-sm text-gray-700">{source}</span>
-                  <span className="text-sm font-semibold text-gray-800">{formatINR(total)}</span>
+                <div key={source} className="flex items-center justify-between px-4 py-2.5 bg-card">
+                  <span className="text-sm text-foreground">{source}</span>
+                  <span className="text-sm font-semibold text-foreground">{formatINR(total)}</span>
                 </div>
               ))}
-            <div className="flex items-center justify-between px-4 py-2.5 bg-emerald-50">
-              <span className="text-sm font-semibold text-emerald-700">Total</span>
-              <span className="text-sm font-semibold text-emerald-700">{formatINR(annualTotal)}</span>
+            <div className="flex items-center justify-between px-4 py-2.5 bg-emerald-50 dark:bg-emerald-950">
+              <span className="text-sm font-semibold text-emerald-700 dark:text-emerald-400">Total</span>
+              <span className="text-sm font-semibold text-emerald-700 dark:text-emerald-400">{formatINR(annualTotal)}</span>
             </div>
           </div>
         </div>

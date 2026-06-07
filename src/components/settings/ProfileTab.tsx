@@ -79,31 +79,31 @@ export function ProfileTab({ name: initialName, email }: ProfileTabProps) {
   return (
     <div className="space-y-6 max-w-lg">
       {/* Update Name */}
-      <Card className="border-gray-200">
+      <Card className="border-border">
         <CardHeader className="pb-3">
-          <CardTitle className="text-base font-semibold text-gray-900">Profile</CardTitle>
-          <CardDescription className="text-sm text-gray-500">Update your display name</CardDescription>
+          <CardTitle className="text-base font-semibold text-foreground">Profile</CardTitle>
+          <CardDescription className="text-sm text-muted-foreground">Update your display name</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleNameSubmit} className="space-y-4">
             <div className="space-y-1.5">
-              <Label htmlFor="profile-name" className="text-xs text-gray-600">Name</Label>
+              <Label htmlFor="profile-name" className="text-xs text-muted-foreground">Name</Label>
               <Input
                 id="profile-name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="border-gray-200"
+                className="border-border"
                 placeholder="Your name"
               />
             </div>
             <div className="space-y-1.5">
-              <Label className="text-xs text-gray-600">Email</Label>
+              <Label className="text-xs text-muted-foreground">Email</Label>
               <Input
                 value={email}
                 disabled
-                className="border-gray-200 bg-gray-50 text-gray-400 cursor-not-allowed"
+                className="border-border bg-muted text-muted-foreground cursor-not-allowed"
               />
-              <p className="text-xs text-gray-400">Email cannot be changed</p>
+              <p className="text-xs text-muted-foreground">Email cannot be changed</p>
             </div>
             <Button
               type="submit"
@@ -117,47 +117,47 @@ export function ProfileTab({ name: initialName, email }: ProfileTabProps) {
       </Card>
 
       {/* Change Password */}
-      <Card className="border-gray-200">
+      <Card className="border-border">
         <CardHeader className="pb-3">
-          <CardTitle className="text-base font-semibold text-gray-900">Change Password</CardTitle>
-          <CardDescription className="text-sm text-gray-500">
+          <CardTitle className="text-base font-semibold text-foreground">Change Password</CardTitle>
+          <CardDescription className="text-sm text-muted-foreground">
             Must be at least 8 characters with one uppercase letter and one number
           </CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handlePasswordSubmit} className="space-y-4">
             <div className="space-y-1.5">
-              <Label htmlFor="current-password" className="text-xs text-gray-600">Current Password</Label>
+              <Label htmlFor="current-password" className="text-xs text-muted-foreground">Current Password</Label>
               <Input
                 id="current-password"
                 type="password"
                 value={currentPassword}
                 onChange={(e) => setCurrentPassword(e.target.value)}
-                className="border-gray-200"
+                className="border-border"
                 placeholder="Enter current password"
                 required
               />
             </div>
             <div className="space-y-1.5">
-              <Label htmlFor="new-password" className="text-xs text-gray-600">New Password</Label>
+              <Label htmlFor="new-password" className="text-xs text-muted-foreground">New Password</Label>
               <Input
                 id="new-password"
                 type="password"
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
-                className="border-gray-200"
+                className="border-border"
                 placeholder="Enter new password"
                 required
               />
             </div>
             <div className="space-y-1.5">
-              <Label htmlFor="confirm-password" className="text-xs text-gray-600">Confirm New Password</Label>
+              <Label htmlFor="confirm-password" className="text-xs text-muted-foreground">Confirm New Password</Label>
               <Input
                 id="confirm-password"
                 type="password"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                className="border-gray-200"
+                className="border-border"
                 placeholder="Confirm new password"
                 required
               />
