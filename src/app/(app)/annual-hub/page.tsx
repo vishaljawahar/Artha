@@ -153,6 +153,12 @@ export default function AnnualHubPage() {
             onDelete={handleDelete}
           />
 
+          {/* Total (Assets + Liabilities) summary */}
+          <div className="flex items-center justify-between px-5 py-4 rounded-xl border font-semibold bg-card border-border text-foreground">
+            <span className="text-sm">Total (Assets + Liabilities)</span>
+            <span className="text-lg">{formatINR(totalAssets + totalLiabilities)}</span>
+          </div>
+
           {/* Net summary */}
           <div
             className={cn(
