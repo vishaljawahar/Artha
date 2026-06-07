@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
@@ -29,7 +29,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
-import { LOAN_TYPE_OPTIONS, LOAN_TYPE_LABELS, LoanType } from "./types"
+import { Loan, LOAN_TYPE_OPTIONS, LOAN_TYPE_LABELS, LoanType } from "./types"
 
 const optionalNumber = z.string().optional().refine(
   (v) => v == null || v === "" || (!isNaN(Number(v)) && Number(v) >= 0),
@@ -54,53 +54,78 @@ interface AddLoanDialogProps {
   open: boolean
   onOpenChange: (open: boolean) => void
   onSuccess: () => void
+  editLoan?: Loan | null
 }
 
-export function AddLoanDialog({ open, onOpenChange, onSuccess }: AddLoanDialogProps) {
+function defaultsFromLoan(editLoan?: Loan | null): FormValues {
+  return {
+    name: editLoan?.name ?? "",
+    lender: editLoan?.lender ?? "",
+    loanType: editLoan?.loanType ?? "HOME",
+    sanctionedAmount: editLoan?.sanctionedAmount != null ? String(Number(editLoan.sanctionedAmount)) : "",
+    interestRate: editLoan?.interestRate != null ? String(Number(editLoan.interestRate)) : "",
+    tenureMonths: editLoan?.tenureMonths != null ? String(editLoan.tenureMonths) : "",
+    plannedEmiAmount: editLoan?.plannedEmiAmount != null ? String(Number(editLoan.plannedEmiAmount)) : "",
+    startDate: editLoan?.startDate ? editLoan.startDate.split("T")[0] : "",
+    notes: editLoan?.notes ?? "",
+  }
+}
+
+export function AddLoanDialog({ open, onOpenChange, onSuccess, editLoan }: AddLoanDialogProps) {
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const isEditing = !!editLoan
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      name: "",
-      lender: "",
-      loanType: "HOME",
-      sanctionedAmount: "",
-      interestRate: "",
-      tenureMonths: "",
-      plannedEmiAmount: "",
-      startDate: "",
-      notes: "",
-    },
+    defaultValues: defaultsFromLoan(editLoan),
   })
+
+  useEffect(() => {
+    if (open) form.reset(defaultsFromLoan(editLoan))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open, editLoan])
 
   async function onSubmit(values: FormValues) {
     setIsSubmitting(true)
     try {
       const body = {
         name: values.name,
-        lender: values.lender || undefined,
+        lender: values.lender || (isEditing ? null : undefined),
         loanType: values.loanType,
-        sanctionedAmount: values.sanctionedAmount ? Number(values.sanctionedAmount) : undefined,
-        interestRate: values.interestRate ? Number(values.interestRate) : undefined,
-        tenureMonths: values.tenureMonths ? Number(values.tenureMonths) : undefined,
-        plannedEmiAmount: values.plannedEmiAmount ? Number(values.plannedEmiAmount) : undefined,
-        startDate: values.startDate || undefined,
-        notes: values.notes || undefined,
+        sanctionedAmount: values.sanctionedAmount ? Number(values.sanctionedAmount) : (isEditing ? null : undefined),
+        interestRate: values.interestRate ? Number(values.interestRate) : (isEditing ? null : undefined),
+        tenureMonths: values.tenureMonths ? Number(values.tenureMonths) : (isEditing ? null : undefined),
+        plannedEmiAmount: values.plannedEmiAmount ? Number(values.plannedEmiAmount) : (isEditing ? null : undefined),
+        startDate: values.startDate || (isEditing ? null : undefined),
+        notes: values.notes || (isEditing ? null : undefined),
       }
 
-      const res = await fetch("/api/loans", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-      })
-      if (!res.ok) {
-        const data = await res.json()
-        toast.error(data.error ?? "Failed to add loan")
-        return
+      if (isEditing && editLoan) {
+        const res = await fetch(`/api/loans/${editLoan.id}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
+        })
+        if (!res.ok) {
+          const data = await res.json()
+          toast.error(data.error ?? "Failed to update loan")
+          return
+        }
+        toast.success("Loan updated successfully")
+      } else {
+        const res = await fetch("/api/loans", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
+        })
+        if (!res.ok) {
+          const data = await res.json()
+          toast.error(data.error ?? "Failed to add loan")
+          return
+        }
+        toast.success("Loan added successfully")
       }
 
-      toast.success("Loan added successfully")
       onSuccess()
       onOpenChange(false)
       form.reset()
@@ -115,7 +140,7 @@ export function AddLoanDialog({ open, onOpenChange, onSuccess }: AddLoanDialogPr
     <Dialog open={open} onOpenChange={(v) => { onOpenChange(v); if (!v) form.reset() }}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Add Loan</DialogTitle>
+          <DialogTitle>{isEditing ? "Edit Loan" : "Add Loan"}</DialogTitle>
         </DialogHeader>
 
         <Form {...form}>
@@ -274,7 +299,7 @@ export function AddLoanDialog({ open, onOpenChange, onSuccess }: AddLoanDialogPr
                 disabled={isSubmitting}
                 className="bg-emerald-600 hover:bg-emerald-700 text-white"
               >
-                {isSubmitting ? "Saving..." : "Add Loan"}
+                {isSubmitting ? "Saving..." : isEditing ? "Update" : "Add Loan"}
               </Button>
             </div>
           </form>

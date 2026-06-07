@@ -109,6 +109,7 @@ export interface Loan {
   startDate: string | null
   notes: string | null
   createdById: string
+  currentUserId: string
   createdAt: string
   updatedAt: string
   members: LoanMember[]

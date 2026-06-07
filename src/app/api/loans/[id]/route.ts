@@ -67,7 +67,7 @@ export async function GET(
     )
     const progress = computeProgress(loan, loan.disbursements, contributions)
 
-    return NextResponse.json({ ...loan, summary: { contributions, progress } })
+    return NextResponse.json({ ...loan, currentUserId: userId, summary: { contributions, progress } })
   } catch (error) {
     if (process.env.NODE_ENV === "development") console.error(error)
     return NextResponse.json({ error: "Something went wrong" }, { status: 500 })
