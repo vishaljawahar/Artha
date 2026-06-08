@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { Plus, Pencil, Trash2 } from "lucide-react"
+import { Plus, Pencil, Trash2, Download } from "lucide-react"
 import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
@@ -26,6 +26,7 @@ import {
 } from "@/components/ui/alert-dialog"
 import { Loan, LoanDisbursement, formatINR, formatDate } from "./types"
 import { AddDisbursementDialog } from "./AddDisbursementDialog"
+import { exportLoanDisbursementsPdf } from "./loan-pdf"
 
 interface DisbursementsTabProps {
   loan: Loan
@@ -62,14 +63,26 @@ export function DisbursementsTab({ loan, onChanged }: DisbursementsTabProps) {
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <h2 className="text-sm font-semibold text-foreground">Disbursements</h2>
-        <Button
-          className="bg-emerald-600 hover:bg-emerald-700 text-white gap-2"
-          size="sm"
-          onClick={() => { setEditDisbursement(null); setAddOpen(true) }}
-        >
-          <Plus className="h-4 w-4" />
-          Add Disbursement
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            className="gap-2"
+            disabled={loan.disbursements.length === 0}
+            onClick={() => exportLoanDisbursementsPdf(loan)}
+          >
+            <Download className="h-4 w-4" />
+            <span className="hidden sm:inline">Export PDF</span>
+          </Button>
+          <Button
+            className="bg-emerald-600 hover:bg-emerald-700 text-white gap-2"
+            size="sm"
+            onClick={() => { setEditDisbursement(null); setAddOpen(true) }}
+          >
+            <Plus className="h-4 w-4" />
+            Add Disbursement
+          </Button>
+        </div>
       </div>
 
       {/* Disbursed vs Sanctioned summary */}

@@ -58,3 +58,21 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* iOS Safari: normalize date/time inputs so they respect component height (h-10)
+   and left-align their value text. -webkit-appearance: none removes the inflated
+   default chrome while keeping the field tappable and the native date picker
+   accessible. The calendar picker indicator is NOT removed. */
+input[type="date"],
+input[type="time"],
+input[type="datetime-local"] {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+input[type="date"]::-webkit-date-and-time-value,
+input[type="time"]::-webkit-date-and-time-value,
+input[type="datetime-local"]::-webkit-date-and-time-value {
+  text-align: left;
+  margin: 0;
+}

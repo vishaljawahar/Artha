@@ -1,13 +1,14 @@
 "use client"
 
 import { useState } from "react"
-import { Plus, Pencil, Trash2 } from "lucide-react"
+import { Plus, Pencil, Trash2, Download } from "lucide-react"
 import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import {
   Table,
   TableBody,
   TableCell,
+  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
@@ -24,6 +25,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import { Loan, LoanPayment, LOAN_PAYMENT_TYPE_LABELS, formatINR, formatDate } from "./types"
+import { exportLoanPaymentsPdf } from "./loan-pdf"
 import { AddPaymentDialog } from "./AddPaymentDialog"
 
 interface PaymentsTabProps {
@@ -38,6 +40,8 @@ export function PaymentsTab({ loan, onChanged }: PaymentsTabProps) {
   const payments = [...loan.payments].sort(
     (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
   )
+
+  const totalAmount = payments.reduce((s, p) => s + Number(p.amount), 0)
 
   const handleDelete = async (paymentId: string) => {
     try {
@@ -58,14 +62,26 @@ export function PaymentsTab({ loan, onChanged }: PaymentsTabProps) {
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <h2 className="text-sm font-semibold text-foreground">Payments</h2>
-        <Button
-          className="bg-emerald-600 hover:bg-emerald-700 text-white gap-2"
-          size="sm"
-          onClick={() => { setEditPayment(null); setAddOpen(true) }}
-        >
-          <Plus className="h-4 w-4" />
-          Add Payment
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            className="gap-2"
+            disabled={payments.length === 0}
+            onClick={() => exportLoanPaymentsPdf(loan)}
+          >
+            <Download className="h-4 w-4" />
+            <span className="hidden sm:inline">Export PDF</span>
+          </Button>
+          <Button
+            className="bg-emerald-600 hover:bg-emerald-700 text-white gap-2"
+            size="sm"
+            onClick={() => { setEditPayment(null); setAddOpen(true) }}
+          >
+            <Plus className="h-4 w-4" />
+            Add Payment
+          </Button>
+        </div>
       </div>
 
       {payments.length === 0 ? (
@@ -138,6 +154,13 @@ export function PaymentsTab({ loan, onChanged }: PaymentsTabProps) {
                 </TableRow>
               ))}
             </TableBody>
+            <TableFooter>
+              <TableRow>
+                <TableCell colSpan={5} className="font-semibold">Total</TableCell>
+                <TableCell className="text-right font-semibold whitespace-nowrap">{formatINR(totalAmount)}</TableCell>
+                <TableCell></TableCell>
+              </TableRow>
+            </TableFooter>
           </Table>
         </div>
       )}
