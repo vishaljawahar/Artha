@@ -1,13 +1,14 @@
 "use client"
 
 import { useState, Fragment } from "react"
-import { Plus, Pencil, Trash2 } from "lucide-react"
+import { Plus, Pencil, Trash2, Download } from "lucide-react"
 import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import {
   Table,
   TableBody,
   TableCell,
+  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
@@ -25,6 +26,7 @@ import {
 } from "@/components/ui/alert-dialog"
 import { Loan, EmiEntry, formatINR } from "./types"
 import { EmiEntryDialog } from "./EmiEntryDialog"
+import { exportLoanEmisPdf } from "./loan-pdf"
 
 const MONTH_ABBR = [
   "Jan", "Feb", "Mar", "Apr", "May", "Jun",
@@ -52,7 +54,25 @@ export function EmiGrid({ loan, onChanged }: EmiGridProps) {
     entryByKey.set(`${mKey}-${e.userId}`, e)
   }
 
-  const sortedMonths = Array.from(monthKeys).sort()
+  const sortedMonths = Array.from(monthKeys).sort().reverse()
+
+  // Per-member subtotals for the footer
+  const memberTotals = members.map((m) => {
+    let plannedSum = 0
+    let paidSum = 0
+    for (const e of loan.emiEntries) {
+      if (e.userId === m.userId) {
+        plannedSum += Number(e.plannedShare)
+        if (e.actualPaid != null) paidSum += Number(e.actualPaid)
+      }
+    }
+    return { userId: m.userId, plannedSum, paidSum }
+  })
+
+  const overallTotal = loan.emiEntries.reduce(
+    (s, e) => s + (e.actualPaid != null ? Number(e.actualPaid) : Number(e.plannedShare)),
+    0
+  )
 
   const openAdd = () => {
     setEditEntry(null)
@@ -96,14 +116,26 @@ export function EmiGrid({ loan, onChanged }: EmiGridProps) {
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <h2 className="text-sm font-semibold text-foreground">EMIs (Planned vs Paid)</h2>
-        <Button
-          className="bg-emerald-600 hover:bg-emerald-700 text-white gap-2"
-          size="sm"
-          onClick={openAdd}
-        >
-          <Plus className="h-4 w-4" />
-          Add EMI
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            className="gap-2"
+            disabled={sortedMonths.length === 0}
+            onClick={() => exportLoanEmisPdf(loan)}
+          >
+            <Download className="h-4 w-4" />
+            <span className="hidden sm:inline">Export PDF</span>
+          </Button>
+          <Button
+            className="bg-emerald-600 hover:bg-emerald-700 text-white gap-2"
+            size="sm"
+            onClick={openAdd}
+          >
+            <Plus className="h-4 w-4" />
+            Add EMI
+          </Button>
+        </div>
       </div>
 
       {sortedMonths.length === 0 ? (
@@ -168,6 +200,24 @@ export function EmiGrid({ loan, onChanged }: EmiGridProps) {
                 )
               })}
             </TableBody>
+            <TableFooter>
+              <TableRow>
+                <TableCell className="font-medium">Total</TableCell>
+                {memberTotals.map((mt) => (
+                  <Fragment key={mt.userId}>
+                    <TableCell className="text-right border-l border-border whitespace-nowrap font-medium">
+                      {formatINR(mt.plannedSum)}
+                    </TableCell>
+                    <TableCell className="text-right whitespace-nowrap">
+                      {formatINR(mt.paidSum)}
+                    </TableCell>
+                  </Fragment>
+                ))}
+                <TableCell className="text-right border-l border-border whitespace-nowrap">
+                  {formatINR(overallTotal)}
+                </TableCell>
+              </TableRow>
+            </TableFooter>
           </Table>
         </div>
       )}
