@@ -297,7 +297,7 @@ The Loans page shows a card for every loan you're a member of — its name, lend
 
 Click **Add Loan** and fill in:
 
-- **Name** — e.g. "Birla Ojasvi Home Loan"
+- **Name** — e.g. "My Home Loan"
 - **Lender** — the bank or finance company
 - **Type** — Home, Car, Personal, Education, or Other
 - **Sanctioned Amount (₹)** — the total approved loan amount

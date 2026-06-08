@@ -152,7 +152,7 @@ export function AddLoanDialog({ open, onOpenChange, onSuccess, editLoan }: AddLo
                 <FormItem>
                   <FormLabel>Loan Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="e.g. Birla Ojasvi Home Loan" {...field} />
+                    <Input placeholder="e.g. My Home Loan" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
