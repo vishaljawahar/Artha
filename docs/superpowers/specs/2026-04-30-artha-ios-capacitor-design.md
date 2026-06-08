@@ -2,7 +2,7 @@
 
 **Date:** 2026-04-30  
 **Status:** Draft  
-**Author:** Vishal
+**Author:** Artha Team
 
 ---
 
@@ -86,7 +86,7 @@ artha/
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'com.vishal.artha',
+  appId: 'com.example.artha',
   appName: 'Artha',
   webDir: 'out',          // not used in remote mode, but required
   server: {
@@ -152,7 +152,7 @@ A simple white screen with the Artha logo/wordmark. Install `@capacitor/splash-s
 ### TestFlight flow
 
 1. Enroll in **Apple Developer Program** at [developer.apple.com](https://developer.apple.com) — $99 USD/year, identity verification takes 1–2 business days.
-2. In **App Store Connect**, create a new app record (bundle ID: `com.vishal.artha`).
+2. In **App Store Connect**, create a new app record (bundle ID: `com.example.artha`).
 3. In Xcode: set team → automatic signing → archive the app.
 4. Upload to TestFlight via Xcode Organizer (or `xcrun altool`).
 5. Add up to ≤20 internal testers by Apple ID email in App Store Connect.

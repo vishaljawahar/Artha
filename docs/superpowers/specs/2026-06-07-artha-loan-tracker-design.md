@@ -1,17 +1,17 @@
 # Artha — Loan Tracker: Design Spec
 **Date:** 2026-06-07
 **Status:** Approved
-**Author:** Vishal (with Claude Code)
+**Author:** Artha Team
 
 ---
 
 ## Context
 
-Vishal and his wife Sowmya share a home loan — the **Birla Ojasvi Home Loan** — and track their joint contributions to it in a single shared Apple Note. Both of them put money in (booking amount, installments, TDS, registration/agreement fees), the lender disburses tranches to the builder over time, and they split each month's EMI between them. The note is the only record of who paid what, and the running totals are tallied by hand.
+Two co-borrowers share a home loan and track their joint contributions to it in a single shared document. Both put money in (booking amount, installments, TDS, registration/agreement fees), the lender disburses tranches to the builder over time, and they split each month's EMI between them. The document is the only record of who paid what, and the running totals are tallied by hand.
 
 This is functional but fragile in exactly the ways the rest of Artha already solved for single-user data — except this data is *not* single-user. Two people read and write the same loan, the totals drift whenever a number is added without re-tallying, and there is no per-person view of "how much have I contributed so far". Every other Artha module is strictly per-user (`WHERE userId = session.user.id`); a shared loan does not fit that rule.
 
-**Outcome:** Artha's **first shared, multi-user resource**. A loan is co-owned by multiple Artha users via a membership table. Any member can record payments, EMIs, and disbursements; the module auto-computes every total (including a per-member contribution split) from the underlying ledger rows, so the figures are always correct. This replaces the shared Apple Note for the Birla Ojasvi loan and generalises to any future shared loan.
+**Outcome:** Artha's **first shared, multi-user resource**. A loan is co-owned by multiple Artha users via a membership table. Any member can record payments, EMIs, and disbursements; the module auto-computes every total (including a per-member contribution split) from the underlying ledger rows, so the figures are always correct. This replaces the manual shared record and generalises to any future shared loan.
 
 ---
 
@@ -21,7 +21,7 @@ This is functional but fragile in exactly the ways the rest of Artha already sol
 2. A loan is shared between Artha users who **already have accounts** — there is no external/email-only participant. Members are added by **email lookup** against existing users.
 3. This is a **contribution ledger**, not an amortization schedule. There is no principal/interest breakdown, no auto-generated repayment schedule, and no payoff projection. EMIs are tracked as planned-vs-actual amounts per member per month.
 4. Sanctioned amount, interest rate, tenure, and planned EMI are stored as loan metadata for reference but are not used to derive a schedule.
-5. The first real loan (Birla Ojasvi) is seeded from known historical data via a one-time idempotent script. All other loans are created in-app.
+5. Initial loans can be seeded from known historical data via a one-time idempotent script. All other loans are created in-app.
 6. Light/dark theme is supported app-wide (light default), consistent with the rest of Artha.
 
 ---
@@ -101,8 +101,8 @@ The shared loan. Has no owning `userId` — ownership is expressed through `Loan
 
 ```
 id                uuid PK
-name              varchar              -- "Birla Ojasvi Home Loan"
-lender            varchar nullable     -- "Birla Housing Finance"
+name              varchar              -- "My Home Loan"
+lender            varchar nullable     -- lender name
 type              LoanType
 sanctionedAmount  decimal(14,2)
 interestRate      decimal(5,2) nullable
@@ -302,11 +302,11 @@ Artha
 
 ---
 
-## Seed Script — `npm run seed:birla`
+## Seed Script
 
-A one-time, **idempotent** script that seeds the real **Birla Ojasvi Home Loan** with its known historical data (members, payments, EMI entries, disbursements).
+A one-time, **idempotent** script can be used to seed a loan with known historical data (members, payments, EMI entries, disbursements).
 
-- **Requires both users' accounts to exist** (Vishal and Sowmya) — it looks them up by email to create the `LoanMember` rows.
+- **Requires all member accounts to exist** — the script looks users up by email to create the `LoanMember` rows.
 - **Idempotent:** if the loan has already been seeded, the script **skips** rather than duplicating rows, so it is safe to re-run.
 
 ---
@@ -344,5 +344,5 @@ After implementation, verify end-to-end:
 7. **Progress:** add disbursements → disbursed-vs-sanctioned bar reflects the totals.
 8. **Last-owner protection:** attempt to remove the only OWNER → rejected.
 9. **Cascade:** delete a loan → all payments, EMI entries, disbursements, and memberships are removed.
-10. **Seed:** run `npm run seed:birla` twice → first seeds Birla Ojasvi data, second is a no-op (idempotent).
+10. **Seed:** run the seed script twice → first seeds loan data, second is a no-op (idempotent).
 11. **Charts:** confirm the contributions donut renders (fixed-size PieChart + `isAnimationActive={false}`) and the planned-vs-actual bars draw correctly.

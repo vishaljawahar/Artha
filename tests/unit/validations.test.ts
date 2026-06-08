@@ -31,8 +31,8 @@ describe("loginSchema", () => {
 describe("registerSchema", () => {
   it("passes with valid name, email, and strong password", () => {
     const result = registerSchema.safeParse({
-      name: "Vishal",
-      email: "vishal@example.com",
+      name: "Alice",
+      email: "alice@example.com",
       password: "Password1",
     })
     expect(result.success).toBe(true)
@@ -41,7 +41,7 @@ describe("registerSchema", () => {
   it("fails when name is too short (1 char)", () => {
     const result = registerSchema.safeParse({
       name: "V",
-      email: "vishal@example.com",
+      email: "alice@example.com",
       password: "Password1",
     })
     expect(result.success).toBe(false)
@@ -52,8 +52,8 @@ describe("registerSchema", () => {
 
   it("fails when password has no uppercase letter", () => {
     const result = registerSchema.safeParse({
-      name: "Vishal",
-      email: "vishal@example.com",
+      name: "Alice",
+      email: "alice@example.com",
       password: "password1",
     })
     expect(result.success).toBe(false)
@@ -64,8 +64,8 @@ describe("registerSchema", () => {
 
   it("fails when password has no number", () => {
     const result = registerSchema.safeParse({
-      name: "Vishal",
-      email: "vishal@example.com",
+      name: "Alice",
+      email: "alice@example.com",
       password: "PasswordOnly",
     })
     expect(result.success).toBe(false)
@@ -76,8 +76,8 @@ describe("registerSchema", () => {
 
   it("fails when password is too short (< 8 chars)", () => {
     const result = registerSchema.safeParse({
-      name: "Vishal",
-      email: "vishal@example.com",
+      name: "Alice",
+      email: "alice@example.com",
       password: "P1x",
     })
     expect(result.success).toBe(false)
@@ -88,7 +88,7 @@ describe("registerSchema", () => {
 
   it("fails with invalid email", () => {
     const result = registerSchema.safeParse({
-      name: "Vishal",
+      name: "Alice",
       email: "bad-email",
       password: "Password1",
     })

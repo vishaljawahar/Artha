@@ -42,7 +42,7 @@ Built as a structured replacement for manual finance tracking, with real-time an
 
 ```bash
 # Clone and install
-git clone https://github.com/vishaljawahar/Artha.git
+git clone https://github.com/<your-username>/Artha.git
 cd Artha
 npm install
 
@@ -77,7 +77,6 @@ npm run build         # Production build
 npm run lint          # ESLint
 npm test              # Run the test suite
 npm run test:coverage # Tests with coverage report
-npm run seed:birla    # Seed the shared Birla Ojasvi home loan (idempotent)
 npx prisma studio     # Visual database browser
 ```
 

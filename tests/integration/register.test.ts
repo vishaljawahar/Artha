@@ -78,8 +78,8 @@ describe("POST /api/user/register", () => {
           count: jest.fn().mockResolvedValue(0),
           create: jest.fn().mockResolvedValue({
             id: "user-1",
-            name: "Vishal",
-            email: "vishal@example.com",
+            name: "Alice",
+            email: "alice@example.com",
             role: "ADMIN",
           }),
         },
@@ -89,8 +89,8 @@ describe("POST /api/user/register", () => {
     })
 
     const req = makeRegisterRequest({
-      name: "Vishal",
-      email: "vishal@example.com",
+      name: "Alice",
+      email: "alice@example.com",
       password: "Password1",
     })
 
@@ -104,7 +104,7 @@ describe("POST /api/user/register", () => {
 
   it("returns 400 when email is invalid", async () => {
     const req = makeRegisterRequest({
-      name: "Vishal",
+      name: "Alice",
       email: "not-an-email",
       password: "Password1",
     })
@@ -118,8 +118,8 @@ describe("POST /api/user/register", () => {
 
   it("returns 400 when password is too weak (no uppercase)", async () => {
     const req = makeRegisterRequest({
-      name: "Vishal",
-      email: "vishal@example.com",
+      name: "Alice",
+      email: "alice@example.com",
       password: "password1",
     })
 
@@ -132,8 +132,8 @@ describe("POST /api/user/register", () => {
 
   it("returns 400 when password has no number", async () => {
     const req = makeRegisterRequest({
-      name: "Vishal",
-      email: "vishal@example.com",
+      name: "Alice",
+      email: "alice@example.com",
       password: "PasswordOnly",
     })
 
@@ -147,12 +147,12 @@ describe("POST /api/user/register", () => {
   it("returns 409 when email already exists", async () => {
     ;(mockPrisma.user.findUnique as jest.Mock).mockResolvedValue({
       id: "existing-user",
-      email: "vishal@example.com",
+      email: "alice@example.com",
     })
 
     const req = makeRegisterRequest({
-      name: "Vishal",
-      email: "vishal@example.com",
+      name: "Alice",
+      email: "alice@example.com",
       password: "Password1",
     })
 

@@ -8,7 +8,7 @@ describe("computeContributions", () => {
   })
 
   it("computes totals for a single member with one-off payments and EMIs", () => {
-    const members = [{ userId: "u1", name: "Vishal" }]
+    const members = [{ userId: "u1", name: "Alice" }]
     const payments = [
       { paidById: "u1", amount: 200000 },
       { paidById: "u1", amount: 50000 },
@@ -20,7 +20,7 @@ describe("computeContributions", () => {
     expect(result.byMember).toHaveLength(1)
     expect(result.byMember[0]).toEqual({
       userId: "u1",
-      name: "Vishal",
+      name: "Alice",
       paidOneOff: 250000,
       emiPaid: 30000,
       total: 280000,
@@ -30,7 +30,7 @@ describe("computeContributions", () => {
 
   it("splits contributions across two members with mixed payments and EMIs", () => {
     const members = [
-      { userId: "u1", name: "Vishal" },
+      { userId: "u1", name: "Alice" },
       { userId: "u2", name: "Partner" },
     ]
     const payments = [
@@ -48,7 +48,7 @@ describe("computeContributions", () => {
 
     expect(result.byMember[0]).toEqual({
       userId: "u1",
-      name: "Vishal",
+      name: "Alice",
       paidOneOff: 225000,
       emiPaid: 15000,
       total: 240000,
@@ -66,14 +66,14 @@ describe("computeContributions", () => {
   it("preserves the input members order in byMember", () => {
     const members = [
       { userId: "u2", name: "Partner" },
-      { userId: "u1", name: "Vishal" },
+      { userId: "u1", name: "Alice" },
     ]
     const result = computeContributions(members, [], [])
     expect(result.byMember.map((m) => m.userId)).toEqual(["u2", "u1"])
   })
 
   it("treats null actualPaid as 0", () => {
-    const members = [{ userId: "u1", name: "Vishal" }]
+    const members = [{ userId: "u1", name: "Alice" }]
     const emiEntries = [
       { userId: "u1", actualPaid: null },
       { userId: "u1", actualPaid: 20000 },
@@ -86,7 +86,7 @@ describe("computeContributions", () => {
   })
 
   it("coerces string and number amounts (Decimal at boundary)", () => {
-    const members = [{ userId: "u1", name: "Vishal" }]
+    const members = [{ userId: "u1", name: "Alice" }]
     const payments = [
       { paidById: "u1", amount: "200000" },
       { paidById: "u1", amount: 50000 },
@@ -101,7 +101,7 @@ describe("computeContributions", () => {
   })
 
   it("counts orphaned payer rows in grand totals even if not in members", () => {
-    const members = [{ userId: "u1", name: "Vishal" }]
+    const members = [{ userId: "u1", name: "Alice" }]
     const payments = [
       { paidById: "u1", amount: 100000 },
       { paidById: "ghost", amount: 75000 },
@@ -125,7 +125,7 @@ describe("computeProgress", () => {
     const loan = { sanctionedAmount: 4073025 }
     const disbursements = [{ amount: 1357675 }, { amount: 1357675 }]
     const contributions = computeContributions(
-      [{ userId: "u1", name: "Vishal" }],
+      [{ userId: "u1", name: "Alice" }],
       [{ paidById: "u1", amount: 200000 }],
       [{ userId: "u1", actualPaid: 30000 }],
     )

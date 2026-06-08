@@ -40,4 +40,7 @@ CLAUDE.md
 AGENTS.md
 docs/agent-teams-reference.md
 
+# Personal seed scripts (contain private financial data)
+prisma/seed-birla-ojasvi.ts
+
 /src/generated/prisma

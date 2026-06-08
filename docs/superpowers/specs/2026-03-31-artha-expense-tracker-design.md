@@ -1,25 +1,25 @@
 # Artha — Personal Finance Tracker: Design Spec
 **Date:** 2026-03-31
 **Status:** Approved
-**Author:** Vishal (with Claude Code)
+**Author:** Artha Team
 
 ---
 
 ## Context
 
-Vishal currently tracks personal finances across four Apple Notes documents: a monthly expense tracker, a yearly investments/liabilities tracker, an other-incomes tracker, and a consolidated master view. At year-end, all data is manually analysed (most recently via Claude, producing an HTML dashboard).
+The user currently tracks personal finances across four documents: a monthly expense tracker, a yearly investments/liabilities tracker, an other-incomes tracker, and a consolidated master view. At year-end, all data is manually analysed (most recently via Claude, producing an HTML dashboard).
 
-This is functional but fragile — data is unstructured text, analytics are manual, there is no historical trend view, and the system cannot be shared with family. The goal is to replace Apple Notes with a structured web app (**Artha**) that mirrors the existing workflow exactly but adds real-time analytics, multi-user support, and a foundation for a future iOS app.
+This is functional but fragile — data is unstructured text, analytics are manual, there is no historical trend view, and the system cannot be shared with family. The goal is to replace this manual approach with a structured web app (**Artha**) that mirrors the existing workflow exactly but adds real-time analytics, multi-user support, and a foundation for a future iOS app.
 
-**Outcome:** A web app that Vishal (and later his spouse and friends) can use daily to log expenses, track investments, monitor passive income, and get the same year-end financial dashboard — but at any point in time, not just December.
+**Outcome:** A web app that the primary user (and later family and friends) can use daily to log expenses, track investments, monitor passive income, and get the same year-end financial dashboard — but at any point in time, not just December.
 
 ---
 
 ## Assumptions
 
 1. Currency is INR throughout. No multi-currency support needed in v1.
-2. Single admin (Vishal) can invite others. Invited users see only their own data.
-3. Historical data import covers Jan–Mar 2026 only. Pre-2026 data stays in Apple Notes.
+2. Single admin can invite others. Invited users see only their own data.
+3. Historical data import covers Jan–Mar 2026 only. Pre-2026 data stays in existing records.
 4. No mobile app in v1 — mobile-responsive web app only. API design is iOS-ready for later.
 5. No real-time stock price integration in v1 — asset values are manually updated snapshots.
 6. No bank account sync (no Plaid/Finvu integration) in v1 — all entries are manual or CSV-imported.
@@ -74,7 +74,7 @@ Single repo, single deployment. Frontend (React) and backend (API routes) live t
 
 ## Modules
 
-| Apple Notes Tracker | Artha Module | Purpose |
+| Previous Tracker | Artha Module | Purpose |
 |---|---|---|
 | Monthly Expense Tracker | **Monthly Log** | Income, EMI, savings, day-to-day expenses |
 | Yearly Expense Tracker | **Annual Hub** | Large periodic expenses + yearly investments |
@@ -255,7 +255,7 @@ created_at      timestamp
 - **Top:** Month/year picker (`← March 2026 →`)
 - **Summary strip:** Income · EMI · Savings · Net Income · Expenditure · Surplus
 - **Two view modes (toggle):**
-  - *Grouped:* Categories with expandable sub-items and per-category totals — mirrors Apple Notes layout
+  - *Grouped:* Categories with expandable sub-items and per-category totals — mirrors the original tracker layout
   - *Timeline:* All transactions in date order, each with category chip
 - **Entry modes:**
   - *Quick-add (FAB):* date → category → subcategory → description → amount (5 taps)

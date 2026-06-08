@@ -10,7 +10,6 @@
     "lint": "next lint",
     "test": "jest",
     "test:coverage": "jest --coverage",
-    "seed:birla": "ts-node --transpile-only --compiler-options '{\"module\":\"commonjs\",\"moduleResolution\":\"node\"}' prisma/seed-birla-ojasvi.ts",
     "reset:password": "npx tsx prisma/reset-password.ts"
   },
   "dependencies": {
