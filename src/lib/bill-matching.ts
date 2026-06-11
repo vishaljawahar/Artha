@@ -24,7 +24,7 @@ export function transactionMatchesRule(
   )
 }
 
-type RuleBill = BillMatchRule & { id: string }
+export type RuleBill = BillMatchRule & { id: string }
 
 export async function recomputeBillPayment(
   userId: string,
@@ -34,7 +34,7 @@ export async function recomputeBillPayment(
 ): Promise<void> {
   if (!bill.matchCategoryId) return
 
-  const keyword = bill.matchKeyword?.trim()
+  const keyword = bill.matchKeyword?.trim().toLowerCase()
   const matchCount = await prisma.transaction.count({
     where: {
       userId,

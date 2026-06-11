@@ -19,6 +19,7 @@ jest.mock("@/lib/db", () => ({
 import { prisma } from "@/lib/db"
 import {
   recomputeBillPayment,
+  safeRecomputeBillPayment,
   syncBillsForTransactions,
   safeSyncBillsForTransactions,
 } from "@/lib/bill-matching"
@@ -115,6 +116,27 @@ describe("recomputeBillPayment", () => {
     expect(mockPrisma.monthlyBillPayment.update).not.toHaveBeenCalled()
     expect(mockPrisma.monthlyBillPayment.upsert).not.toHaveBeenCalled()
   })
+
+  it("trims and lowercases a padded keyword before querying", async () => {
+    ;(mockPrisma.transaction.count as jest.Mock).mockResolvedValue(0)
+    ;(mockPrisma.monthlyBillPayment.findUnique as jest.Mock).mockResolvedValue(null)
+    await recomputeBillPayment(
+      "user-1",
+      { id: "bill-1", matchCategoryId: "cat-utilities", matchKeyword: "  BESCOM  " },
+      2026,
+      6
+    )
+    expect(mockPrisma.transaction.count).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: expect.objectContaining({
+          OR: [
+            { description: { contains: "bescom", mode: "insensitive" } },
+            { subcategory: { contains: "bescom", mode: "insensitive" } },
+          ],
+        }),
+      })
+    )
+  })
 })
 
 describe("syncBillsForTransactions", () => {
@@ -161,6 +183,12 @@ describe("syncBillsForTransactions", () => {
     await syncBillsForTransactions("user-1", [])
     expect(mockPrisma.monthlyBill.findMany).not.toHaveBeenCalled()
   })
+
+  it("skips recompute work when no bills have rules", async () => {
+    ;(mockPrisma.monthlyBill.findMany as jest.Mock).mockResolvedValue([])
+    await syncBillsForTransactions("user-1", [SNAPSHOT])
+    expect(mockPrisma.transaction.count).not.toHaveBeenCalled()
+  })
 })
 
 describe("safeSyncBillsForTransactions", () => {
@@ -171,5 +199,12 @@ describe("safeSyncBillsForTransactions", () => {
         { categoryId: "c", description: null, subcategory: null, date: new Date(2026, 5, 11) },
       ])
     ).resolves.toBeUndefined()
+  })
+})
+
+describe("safeRecomputeBillPayment", () => {
+  it("swallows engine errors", async () => {
+    ;(mockPrisma.transaction.count as jest.Mock).mockRejectedValue(new Error("db down"))
+    await expect(safeRecomputeBillPayment("user-1", RULE_BILL, 2026, 6)).resolves.toBeUndefined()
   })
 })
