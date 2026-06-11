@@ -54,6 +54,7 @@ export async function GET(req: NextRequest) {
           isPaid: payment?.isPaid ?? false,
           paidAt: payment?.paidAt ?? null,
           paymentId: payment?.id ?? null,
+          autoChecked: payment?.autoChecked ?? false,
         }
       }),
     })

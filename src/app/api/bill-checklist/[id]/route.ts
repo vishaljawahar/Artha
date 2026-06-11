@@ -50,10 +50,12 @@ export async function PUT(
         month: parsed.data.month,
         isPaid: parsed.data.isPaid,
         paidAt: parsed.data.isPaid ? new Date() : null,
+        autoChecked: false,
       },
       update: {
         isPaid: parsed.data.isPaid,
         paidAt: parsed.data.isPaid ? new Date() : null,
+        autoChecked: false,
       },
     })
 

@@ -77,7 +77,7 @@ describe("GET /api/bill-checklist", () => {
     ;(mockPrisma.monthlyBill.findMany as jest.Mock).mockResolvedValue([
       {
         ...MOCK_BILL,
-        payments: [{ id: "payment-1", isPaid: true, paidAt: new Date("2026-05-10") }],
+        payments: [{ id: "payment-1", isPaid: true, paidAt: new Date("2026-05-10"), autoChecked: true }],
       },
     ])
     const req = new NextRequest("http://localhost/api/bill-checklist?year=2026&month=5")
@@ -85,6 +85,7 @@ describe("GET /api/bill-checklist", () => {
     expect(res.status).toBe(200)
     const body = await res.json()
     expect(body.items[0].isPaid).toBe(true)
+    expect(body.items[0].autoChecked).toBe(true)
     expect(mockPrisma.monthlyBill.findMany).toHaveBeenCalledWith(
       expect.objectContaining({
         where: { userId: "user-1", isActive: true },
@@ -116,6 +117,24 @@ describe("PUT /api/bill-checklist/[id]", () => {
     })
     const res = await PUT(req, { params: Promise.resolve({ id: "bill-2" }) })
     expect(res.status).toBe(404)
+  })
+
+  it("marks manual toggles as not auto-checked", async () => {
+    mockAuth.mockResolvedValue(MOCK_SESSION)
+    ;(mockPrisma.monthlyBill.findFirst as jest.Mock).mockResolvedValue(MOCK_BILL)
+    ;(mockPrisma.monthlyBillPayment.upsert as jest.Mock).mockResolvedValue({})
+    const req = new NextRequest("http://localhost/api/bill-checklist/bill-1", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ year: 2026, month: 5, isPaid: true }),
+    })
+    await PUT(req, { params: Promise.resolve({ id: "bill-1" }) })
+    expect(mockPrisma.monthlyBillPayment.upsert).toHaveBeenCalledWith(
+      expect.objectContaining({
+        create: expect.objectContaining({ autoChecked: false }),
+        update: expect.objectContaining({ autoChecked: false }),
+      })
+    )
   })
 
   it("upserts the selected month payment state", async () => {
