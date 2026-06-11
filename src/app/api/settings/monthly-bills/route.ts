@@ -2,12 +2,15 @@ import { NextRequest, NextResponse } from "next/server"
 import { auth } from "@/auth"
 import { prisma } from "@/lib/db"
 import { z } from "zod"
+import { safeRecomputeBillPayment } from "@/lib/bill-matching"
 
 const createMonthlyBillSchema = z.object({
   name: z.string().trim().min(1, "Name is required"),
   amount: z.number().positive("Amount must be positive").optional().nullable(),
   dueDay: z.number().int().min(1, "Due day must be between 1 and 31").max(31, "Due day must be between 1 and 31").optional().nullable(),
   isActive: z.boolean().optional(),
+  matchCategoryId: z.string().min(1).optional().nullable(),
+  matchKeyword: z.string().trim().max(100, "Keyword must be 100 characters or fewer").optional().nullable(),
 })
 
 const reorderMonthlyBillsSchema = z.object({
@@ -52,6 +55,18 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: parsed.error.issues[0].message }, { status: 400 })
     }
 
+    const matchCategoryId = parsed.data.matchCategoryId ?? null
+    const matchKeyword = matchCategoryId ? (parsed.data.matchKeyword?.trim() || null) : null
+
+    if (matchCategoryId) {
+      const category = await prisma.category.findFirst({
+        where: { id: matchCategoryId, userId },
+      })
+      if (!category) {
+        return NextResponse.json({ error: "Category not found" }, { status: 404 })
+      }
+    }
+
     const count = await prisma.monthlyBill.count({ where: { userId } })
     const bill = await prisma.monthlyBill.create({
       data: {
@@ -61,8 +76,15 @@ export async function POST(req: NextRequest) {
         dueDay: parsed.data.dueDay ?? null,
         isActive: parsed.data.isActive ?? true,
         sortOrder: count,
+        matchCategoryId,
+        matchKeyword,
       },
     })
+
+    if (bill.matchCategoryId) {
+      const now = new Date()
+      await safeRecomputeBillPayment(userId, bill, now.getFullYear(), now.getMonth() + 1)
+    }
 
     return NextResponse.json(
       { bill: { ...bill, amount: bill.amount === null ? null : Number(bill.amount) } },

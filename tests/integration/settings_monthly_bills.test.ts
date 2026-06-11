@@ -17,15 +17,23 @@ jest.mock("@/lib/db", () => ({
       delete: jest.fn(),
       count: jest.fn(),
     },
+    category: {
+      findFirst: jest.fn(),
+    },
     $transaction: jest.fn(),
   },
 }))
+
+jest.mock("@/lib/bill-matching", () => ({ safeRecomputeBillPayment: jest.fn().mockResolvedValue(undefined) }))
 
 import { GET, POST, PUT as REORDER } from "@/app/api/settings/monthly-bills/route"
 import { PUT, DELETE } from "@/app/api/settings/monthly-bills/[id]/route"
 import { NextRequest } from "next/server"
 import { auth } from "@/auth"
 import { prisma } from "@/lib/db"
+import { safeRecomputeBillPayment } from "@/lib/bill-matching"
+
+const mockRecompute = safeRecomputeBillPayment as jest.MockedFunction<typeof safeRecomputeBillPayment>
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const mockAuth = auth as jest.MockedFunction<any>
@@ -44,6 +52,8 @@ const MOCK_BILL = {
   dueDay: 10,
   isActive: true,
   sortOrder: 0,
+  matchCategoryId: null,
+  matchKeyword: null,
   createdAt: new Date(),
   updatedAt: new Date(),
 }
@@ -175,5 +185,82 @@ describe("PUT /api/settings/monthly-bills", () => {
     const res = await REORDER(req)
     expect(res.status).toBe(200)
     expect(mockPrisma.$transaction).toHaveBeenCalled()
+  })
+})
+
+describe("auto-check rules", () => {
+  it("rejects a rule whose category is not owned by the user", async () => {
+    mockAuth.mockResolvedValue(MOCK_SESSION)
+    ;(mockPrisma.category.findFirst as jest.Mock).mockResolvedValue(null)
+    const req = new NextRequest("http://localhost/api/settings/monthly-bills", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name: "Electricity", matchCategoryId: "cat-x", matchKeyword: "bescom" }),
+    })
+    const res = await POST(req)
+    expect(res.status).toBe(404)
+  })
+
+  it("creates a bill with a rule and recomputes the current month", async () => {
+    mockAuth.mockResolvedValue(MOCK_SESSION)
+    ;(mockPrisma.category.findFirst as jest.Mock).mockResolvedValue({ id: "cat-1", userId: "user-1" })
+    ;(mockPrisma.monthlyBill.count as jest.Mock).mockResolvedValue(0)
+    ;(mockPrisma.monthlyBill.create as jest.Mock).mockResolvedValue({
+      id: "bill-1", userId: "user-1", name: "Electricity", amount: null, dueDay: null,
+      isActive: true, sortOrder: 0, matchCategoryId: "cat-1", matchKeyword: "bescom",
+      createdAt: new Date(), updatedAt: new Date(),
+    })
+    const req = new NextRequest("http://localhost/api/settings/monthly-bills", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name: "Electricity", matchCategoryId: "cat-1", matchKeyword: "bescom" }),
+    })
+    const res = await POST(req)
+    expect(res.status).toBe(201)
+    expect(mockPrisma.monthlyBill.create).toHaveBeenCalledWith(
+      expect.objectContaining({
+        data: expect.objectContaining({ matchCategoryId: "cat-1", matchKeyword: "bescom" }),
+      })
+    )
+    const now = new Date()
+    expect(mockRecompute).toHaveBeenCalledWith(
+      "user-1",
+      expect.objectContaining({ id: "bill-1", matchCategoryId: "cat-1" }),
+      now.getFullYear(),
+      now.getMonth() + 1
+    )
+  })
+
+  it("recomputes when the rule changes on update", async () => {
+    mockAuth.mockResolvedValue(MOCK_SESSION)
+    ;(mockPrisma.monthlyBill.findFirst as jest.Mock).mockResolvedValue({
+      ...MOCK_BILL, matchCategoryId: null, matchKeyword: null,
+    })
+    ;(mockPrisma.category.findFirst as jest.Mock).mockResolvedValue({ id: "cat-1", userId: "user-1" })
+    ;(mockPrisma.monthlyBill.update as jest.Mock).mockResolvedValue({
+      ...MOCK_BILL, matchCategoryId: "cat-1", matchKeyword: null,
+    })
+    const req = new NextRequest("http://localhost/api/settings/monthly-bills/bill-1", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ matchCategoryId: "cat-1", matchKeyword: "" }),
+    })
+    const res = await PUT(req, { params: Promise.resolve({ id: "bill-1" }) })
+    expect(res.status).toBe(200)
+    expect(mockRecompute).toHaveBeenCalledTimes(1)
+  })
+
+  it("does not recompute when the rule is unchanged", async () => {
+    mockAuth.mockResolvedValue(MOCK_SESSION)
+    ;(mockPrisma.monthlyBill.findFirst as jest.Mock).mockResolvedValue(MOCK_BILL)
+    ;(mockPrisma.monthlyBill.update as jest.Mock).mockResolvedValue(MOCK_BILL)
+    const req = new NextRequest("http://localhost/api/settings/monthly-bills/bill-1", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ isActive: false }),
+    })
+    const res = await PUT(req, { params: Promise.resolve({ id: "bill-1" }) })
+    expect(res.status).toBe(200)
+    expect(mockRecompute).not.toHaveBeenCalled()
   })
 })
