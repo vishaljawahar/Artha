@@ -14,6 +14,7 @@ interface ChecklistItem {
   dueDay: number | null
   isPaid: boolean
   paidAt: string | null
+  autoChecked: boolean
 }
 
 const MONTH_NAMES = [
@@ -111,7 +112,7 @@ export default function BillChecklistPage() {
       setItems((current) =>
         current.map((entry) =>
           entry.id === item.id
-            ? { ...entry, isPaid: data.payment.isPaid, paidAt: data.payment.paidAt }
+            ? { ...entry, isPaid: data.payment.isPaid, paidAt: data.payment.paidAt, autoChecked: data.payment.autoChecked }
             : entry
         )
       )
@@ -194,6 +195,11 @@ export default function BillChecklistPage() {
                 <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
                   <p className={`text-sm font-medium truncate ${item.isPaid ? "text-muted-foreground line-through" : "text-foreground"}`}>
                     {item.name}
+                    {item.isPaid && item.autoChecked && (
+                      <span className="ml-2 inline-flex items-center rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-medium text-emerald-700 no-underline dark:bg-emerald-950 dark:text-emerald-400 align-middle">
+                        auto
+                      </span>
+                    )}
                   </p>
                   <p className="text-sm font-semibold text-foreground">
                     {item.amount === null ? "Varies" : formatINR(item.amount)}
