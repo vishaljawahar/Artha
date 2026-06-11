@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
 import { auth } from "@/auth"
 import { prisma } from "@/lib/db"
+import { safeSyncBillsForTransactions } from "@/lib/bill-matching"
 import { z } from "zod"
 
 const updateTransactionSchema = z.object({
@@ -61,6 +62,21 @@ export async function PUT(
     },
   })
 
+  await safeSyncBillsForTransactions(userId, [
+    {
+      categoryId: existing.categoryId,
+      description: existing.description,
+      subcategory: existing.subcategory,
+      date: existing.date,
+    },
+    {
+      categoryId: transaction.categoryId,
+      description: transaction.description,
+      subcategory: transaction.subcategory,
+      date: transaction.date,
+    },
+  ])
+
   return NextResponse.json({ transaction: { ...transaction, amount: Number(transaction.amount) } })
 }
 
@@ -88,6 +104,15 @@ export async function DELETE(
   }
 
   await prisma.transaction.delete({ where: { id } })
+
+  await safeSyncBillsForTransactions(userId, [
+    {
+      categoryId: existing.categoryId,
+      description: existing.description,
+      subcategory: existing.subcategory,
+      date: existing.date,
+    },
+  ])
 
   return NextResponse.json({ success: true })
 }

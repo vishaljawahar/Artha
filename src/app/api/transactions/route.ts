@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
 import { auth } from "@/auth"
 import { prisma } from "@/lib/db"
+import { safeSyncBillsForTransactions } from "@/lib/bill-matching"
 import { z } from "zod"
 
 const createTransactionSchema = z.object({
@@ -99,6 +100,15 @@ export async function POST(req: NextRequest) {
       monthlyHeaderId: header?.id ?? null,
     },
   })
+
+  await safeSyncBillsForTransactions(userId, [
+    {
+      categoryId: transaction.categoryId,
+      description: transaction.description,
+      subcategory: transaction.subcategory,
+      date: transaction.date,
+    },
+  ])
 
   return NextResponse.json({ transaction: { ...transaction, amount: Number(transaction.amount) } }, { status: 201 })
 }

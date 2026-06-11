@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
 import { auth } from "@/auth"
 import { prisma } from "@/lib/db"
+import { safeSyncBillsForTransactions } from "@/lib/bill-matching"
 import { z } from "zod"
 
 const MAX_BULK_LINES = 200
@@ -78,6 +79,16 @@ export async function POST(req: NextRequest) {
       monthlyHeaderId: header?.id ?? null,
     })),
   })
+
+  await safeSyncBillsForTransactions(
+    userId,
+    parsedLines.map((item) => ({
+      categoryId,
+      description: item.description,
+      subcategory: null,
+      date: today,
+    }))
+  )
 
   return NextResponse.json({ count: transactions.count }, { status: 201 })
 }
