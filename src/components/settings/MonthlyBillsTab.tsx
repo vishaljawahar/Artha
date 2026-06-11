@@ -31,6 +31,14 @@ interface MonthlyBill {
   amount: number | null
   dueDay: number | null
   isActive: boolean
+  matchCategoryId: string | null
+  matchKeyword: string | null
+}
+
+interface CategoryOption {
+  id: string
+  name: string
+  icon: string | null
 }
 
 const EMPTY_FORM = {
@@ -38,6 +46,8 @@ const EMPTY_FORM = {
   amount: "",
   dueDay: "",
   isActive: true,
+  matchCategoryId: "",
+  matchKeyword: "",
 }
 
 function formatINR(amount: number) {
@@ -67,6 +77,15 @@ export function MonthlyBillsTab() {
 
   const [deleteTarget, setDeleteTarget] = useState<MonthlyBill | null>(null)
   const [deleting, setDeleting] = useState(false)
+
+  const [categories, setCategories] = useState<CategoryOption[]>([])
+
+  useEffect(() => {
+    fetch("/api/settings/categories")
+      .then((res) => (res.ok ? res.json() : Promise.reject()))
+      .then((data) => setCategories(data.categories))
+      .catch(() => setCategories([]))
+  }, [])
 
   const fetchBills = useCallback(async () => {
     setLoading(true)
@@ -102,6 +121,8 @@ export function MonthlyBillsTab() {
       amount: bill.amount === null ? "" : String(bill.amount),
       dueDay: bill.dueDay === null ? "" : String(bill.dueDay),
       isActive: bill.isActive,
+      matchCategoryId: bill.matchCategoryId ?? "",
+      matchKeyword: bill.matchKeyword ?? "",
     })
     setDialogOpen(true)
   }
@@ -132,6 +153,8 @@ export function MonthlyBillsTab() {
           amount,
           dueDay,
           isActive: form.isActive,
+          matchCategoryId: form.matchCategoryId || null,
+          matchKeyword: form.matchCategoryId ? form.matchKeyword.trim() || null : null,
         }),
       })
       const data = await res.json()
@@ -232,6 +255,12 @@ export function MonthlyBillsTab() {
                 {bill.dueDay === null ? "No due day" : `Due ${dueDayLabel(bill.dueDay)}`} &middot;{" "}
                 {bill.amount === null ? "Amount varies" : formatINR(bill.amount)}
               </p>
+              {bill.matchCategoryId && (
+                <p className="text-xs text-emerald-700 dark:text-emerald-400 mt-0.5 truncate">
+                  Auto: {categories.find((c) => c.id === bill.matchCategoryId)?.name ?? "category"}
+                  {bill.matchKeyword ? ` · "${bill.matchKeyword}"` : ""}
+                </p>
+              )}
             </div>
             <Switch checked={bill.isActive} onCheckedChange={() => handleToggleActive(bill)} className="scale-90" />
             <button onClick={() => openEdit(bill)} className="text-muted-foreground hover:text-foreground" title="Edit">
@@ -300,6 +329,42 @@ export function MonthlyBillsTab() {
                 />
               </div>
             </div>
+            <div className="space-y-1.5">
+              <Label htmlFor="bill-match-category" className="text-xs text-muted-foreground">
+                Auto-check rule <span className="opacity-60">(optional)</span>
+              </Label>
+              <select
+                id="bill-match-category"
+                value={form.matchCategoryId}
+                onChange={(e) => setForm((f) => ({ ...f, matchCategoryId: e.target.value }))}
+                className="h-10 w-full rounded-md border border-border bg-background px-3 text-sm text-foreground"
+              >
+                <option value="">No auto-check</option>
+                {categories.map((cat) => (
+                  <option key={cat.id} value={cat.id}>
+                    {cat.icon ? `${cat.icon} ` : ""}{cat.name}
+                  </option>
+                ))}
+              </select>
+              <p className="text-xs text-muted-foreground">
+                Monthly log entries in this category tick this bill automatically.
+              </p>
+            </div>
+            {form.matchCategoryId && (
+              <div className="space-y-1.5">
+                <Label htmlFor="bill-match-keyword" className="text-xs text-muted-foreground">
+                  Keyword filter <span className="opacity-60">(optional)</span>
+                </Label>
+                <Input
+                  id="bill-match-keyword"
+                  value={form.matchKeyword}
+                  maxLength={100}
+                  onChange={(e) => setForm((f) => ({ ...f, matchKeyword: e.target.value }))}
+                  placeholder="e.g. bescom — leave blank to match any entry"
+                  className="border-border"
+                />
+              </div>
+            )}
             <div className="flex items-center gap-2">
               <Switch
                 id="bill-active"
