@@ -90,14 +90,14 @@ export function HeaderForm({ year, month, header, onSaved }: HeaderFormProps) {
   // Inline card if no header
   if (!header) {
     return (
-      <div className="bg-white border border-gray-200 rounded-xl p-5">
-        <h3 className="text-sm font-semibold text-gray-900 mb-4">
+      <div className="bg-card border border-border rounded-xl p-5">
+        <h3 className="text-sm font-semibold text-foreground mb-4">
           Set income &amp; savings for {monthLabel}
         </h3>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div className="space-y-1.5">
-              <Label htmlFor="income" className="text-xs text-gray-600">Income (₹)</Label>
+              <Label htmlFor="income" className="text-xs text-muted-foreground">Income (₹)</Label>
               <Input
                 id="income"
                 type="number"
@@ -106,12 +106,12 @@ export function HeaderForm({ year, month, header, onSaved }: HeaderFormProps) {
                 placeholder="e.g. 80000"
                 value={income}
                 onChange={(e) => setIncome(e.target.value)}
-                className="border-gray-200"
+                className="border-input"
                 required
               />
             </div>
             <div className="space-y-1.5">
-              <Label htmlFor="emi" className="text-xs text-gray-600">EMI Total (₹)</Label>
+              <Label htmlFor="emi" className="text-xs text-muted-foreground">EMI Total (₹)</Label>
               <Input
                 id="emi"
                 type="number"
@@ -120,12 +120,12 @@ export function HeaderForm({ year, month, header, onSaved }: HeaderFormProps) {
                 placeholder="e.g. 15000"
                 value={emiTotal}
                 onChange={(e) => setEmiTotal(e.target.value)}
-                className="border-gray-200"
+                className="border-input"
                 required
               />
             </div>
             <div className="space-y-1.5">
-              <Label htmlFor="savings" className="text-xs text-gray-600">Savings (₹)</Label>
+              <Label htmlFor="savings" className="text-xs text-muted-foreground">Savings (₹)</Label>
               <Input
                 id="savings"
                 type="number"
@@ -134,7 +134,7 @@ export function HeaderForm({ year, month, header, onSaved }: HeaderFormProps) {
                 placeholder="e.g. 20000"
                 value={savings}
                 onChange={(e) => setSavings(e.target.value)}
-                className="border-gray-200"
+                className="border-input"
                 required
               />
             </div>
@@ -156,7 +156,7 @@ export function HeaderForm({ year, month, header, onSaved }: HeaderFormProps) {
     <>
       <button
         onClick={handleOpen}
-        className="flex items-center gap-1 text-xs text-gray-400 hover:text-emerald-600 transition-colors"
+        className="flex items-center gap-1 text-xs text-muted-foreground hover:text-emerald-600 transition-colors"
         title="Edit monthly header"
       >
         <Pencil className="h-3.5 w-3.5" />
@@ -170,7 +170,7 @@ export function HeaderForm({ year, month, header, onSaved }: HeaderFormProps) {
           </DialogHeader>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-1.5">
-              <Label htmlFor="edit-income" className="text-xs text-gray-600">Income (₹)</Label>
+              <Label htmlFor="edit-income" className="text-xs text-muted-foreground">Income (₹)</Label>
               <Input
                 id="edit-income"
                 type="number"
@@ -179,12 +179,12 @@ export function HeaderForm({ year, month, header, onSaved }: HeaderFormProps) {
                 placeholder="e.g. 80000"
                 value={income}
                 onChange={(e) => setIncome(e.target.value)}
-                className="border-gray-200"
+                className="border-input"
                 required
               />
             </div>
             <div className="space-y-1.5">
-              <Label htmlFor="edit-emi" className="text-xs text-gray-600">EMI Total (₹)</Label>
+              <Label htmlFor="edit-emi" className="text-xs text-muted-foreground">EMI Total (₹)</Label>
               <Input
                 id="edit-emi"
                 type="number"
@@ -193,12 +193,12 @@ export function HeaderForm({ year, month, header, onSaved }: HeaderFormProps) {
                 placeholder="e.g. 15000"
                 value={emiTotal}
                 onChange={(e) => setEmiTotal(e.target.value)}
-                className="border-gray-200"
+                className="border-input"
                 required
               />
             </div>
             <div className="space-y-1.5">
-              <Label htmlFor="edit-savings" className="text-xs text-gray-600">Savings (₹)</Label>
+              <Label htmlFor="edit-savings" className="text-xs text-muted-foreground">Savings (₹)</Label>
               <Input
                 id="edit-savings"
                 type="number"
@@ -207,7 +207,7 @@ export function HeaderForm({ year, month, header, onSaved }: HeaderFormProps) {
                 placeholder="e.g. 20000"
                 value={savings}
                 onChange={(e) => setSavings(e.target.value)}
-                className="border-gray-200"
+                className="border-input"
                 required
               />
             </div>

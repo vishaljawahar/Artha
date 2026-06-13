@@ -68,7 +68,7 @@ export function ContributionChart({ loan }: ContributionChartProps) {
               isAnimationActive={false}
             >
               {data.map((entry, index) => (
-                <Cell key={index} fill={entry.color} stroke="white" strokeWidth={2} />
+                <Cell key={index} fill={entry.color} stroke="hsl(var(--card))" strokeWidth={2} />
               ))}
             </Pie>
             <Tooltip content={<CustomTooltip />} />
