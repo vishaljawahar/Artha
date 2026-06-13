@@ -141,9 +141,10 @@ Jest is configured. 222 tests, **217 pass**. The **5 failures are pre-existing**
 **Never commit directly to `main`** — main is connected to Vercel production. All changes go through a branch.
 
 - **Branch naming:** `fix/DD-MM-YYYY` for bug fixes (e.g. `fix/05-06-2026`), `feat/DD-MM-YYYY` or descriptive slug for features
-- **PR process:** Vishal creates and merges PRs manually — do not open PRs via `gh` unless explicitly asked
+- **PR process:** Create a PR for main but do not merge the PR with main unless explicitly stated
 - **Approvals:** Solo project, no branch protection requiring approvals — PRs can be merged directly without a review approval
 - **Deploy trigger:** Merging a PR into `main` automatically triggers Vercel deployment
+- **Keep this file current:** After completing a feature or a major bug fix, update `CLAUDE.md` in the same PR to reflect it — new modules/routes/models, changed patterns, and any non-obvious gotchas or constraints discovered (e.g. the root cause of a bug worth not re-introducing). Treat it as part of "done," not a follow-up. Skip purely trivial changes (typos, copy tweaks, minor style fixes).
 
 ## UI / Design Conventions
 
