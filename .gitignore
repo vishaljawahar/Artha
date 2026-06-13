@@ -36,7 +36,6 @@ yarn-error.log*
 next-env.d.ts
 
 # Claude Code
-CLAUDE.md
 AGENTS.md
 docs/agent-teams-reference.md
 

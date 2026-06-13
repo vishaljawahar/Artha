@@ -9,11 +9,26 @@ const inter = Inter({ subsets: ["latin"] })
 export const metadata: Metadata = {
   title: "Artha — Personal Finance Tracker",
   description: "Track expenses, investments, and net worth",
+  manifest: "/manifest.json",
+  appleWebApp: {
+    capable: true,
+    title: "Artha",
+    statusBarStyle: "default",
+  },
+  icons: {
+    apple: [{ url: "/icons/apple-touch-icon.png", sizes: "180x180" }],
+  },
+  // Next 16 emits the standardized `mobile-web-app-capable`; add the legacy
+  // Apple-prefixed tag too so standalone mode also works on older iOS.
+  other: {
+    "apple-mobile-web-app-capable": "yes",
+  },
 }
 
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
+  themeColor: "#ffffff",
 }
 
 export default function RootLayout({
