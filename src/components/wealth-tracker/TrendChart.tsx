@@ -89,16 +89,16 @@ export function TrendChart({ assets }: TrendChartProps) {
       <h3 className="text-sm font-semibold text-foreground mb-4">Net Worth Trend</h3>
       <ResponsiveContainer width="100%" height={220}>
         <LineChart data={trendData} margin={{ top: 4, right: 8, bottom: 4, left: 8 }}>
-          <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
+          <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
           <XAxis
             dataKey="displayDate"
-            tick={{ fontSize: 11, fill: "#94a3b8" }}
+            tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }}
             axisLine={false}
             tickLine={false}
           />
           <YAxis
             tickFormatter={formatYAxis}
-            tick={{ fontSize: 11, fill: "#94a3b8" }}
+            tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }}
             axisLine={false}
             tickLine={false}
             width={60}
@@ -109,8 +109,8 @@ export function TrendChart({ assets }: TrendChartProps) {
             dataKey="total"
             stroke="#10B981"
             strokeWidth={2.5}
-            dot={{ fill: "#10B981", r: 4, strokeWidth: 2, stroke: "white" }}
-            activeDot={{ r: 6, fill: "#10B981", stroke: "white", strokeWidth: 2 }}
+            dot={{ fill: "#10B981", r: 4, strokeWidth: 2, stroke: "hsl(var(--card))" }}
+            activeDot={{ r: 6, fill: "#10B981", stroke: "hsl(var(--card))", strokeWidth: 2 }}
           />
         </LineChart>
       </ResponsiveContainer>

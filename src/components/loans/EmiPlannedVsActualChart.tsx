@@ -87,21 +87,21 @@ export function EmiPlannedVsActualChart({ loan }: EmiPlannedVsActualChartProps) 
       <h3 className="text-sm font-semibold text-foreground mb-4">EMI: Planned vs Actual</h3>
       <ResponsiveContainer width="100%" height={220}>
         <BarChart data={data} margin={{ top: 4, right: 8, bottom: 4, left: 8 }}>
-          <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
+          <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
           <XAxis
             dataKey="label"
-            tick={{ fontSize: 11, fill: "#94a3b8" }}
+            tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }}
             axisLine={false}
             tickLine={false}
           />
           <YAxis
             tickFormatter={formatYAxis}
-            tick={{ fontSize: 11, fill: "#94a3b8" }}
+            tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }}
             axisLine={false}
             tickLine={false}
             width={60}
           />
-          <Tooltip content={<CustomTooltip />} cursor={{ fill: "#f1f5f9", opacity: 0.4 }} />
+          <Tooltip content={<CustomTooltip />} cursor={{ fill: "hsl(var(--accent))", opacity: 0.4 }} />
           <Legend wrapperStyle={{ fontSize: 12 }} />
           <Bar dataKey="planned" name="Planned" fill="#94a3b8" radius={[3, 3, 0, 0]} isAnimationActive={false} />
           <Bar dataKey="actual" name="Actual" fill="#10B981" radius={[3, 3, 0, 0]} isAnimationActive={false} />

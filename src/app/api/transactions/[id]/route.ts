@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
 import { auth } from "@/auth"
 import { prisma } from "@/lib/db"
+import { safeSyncBillsForTransactions } from "@/lib/bill-matching"
 import { z } from "zod"
 
 const updateTransactionSchema = z.object({
@@ -60,6 +61,12 @@ export async function PUT(
       amount,
     },
   })
+
+  // Auto-tick any matching monthly bill if the edited transaction now matches a rule
+  // (check-only; an edit never un-ticks, and this never fails the request).
+  await safeSyncBillsForTransactions(userId, [
+    { categoryName: category.name, subcategory: transaction.subcategory, date: transaction.date },
+  ])
 
   return NextResponse.json({ transaction: { ...transaction, amount: Number(transaction.amount) } })
 }

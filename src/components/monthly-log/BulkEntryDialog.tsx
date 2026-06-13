@@ -91,15 +91,15 @@ export function BulkEntryDialog({
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>Bulk Entry</DialogTitle>
-          <DialogDescription className="text-xs text-gray-500">
-            Enter one transaction per line. Format: <code className="bg-gray-100 px-1 rounded">500 Car wash</code> or just <code className="bg-gray-100 px-1 rounded">800</code> for amount only.
+          <DialogDescription className="text-xs text-muted-foreground">
+            Enter one transaction per line. Format: <code className="bg-muted px-1 rounded">500 Car wash</code> or just <code className="bg-muted px-1 rounded">800</code> for amount only.
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-1.5">
-            <Label htmlFor="bulk-category" className="text-xs text-gray-600">Category</Label>
+            <Label htmlFor="bulk-category" className="text-xs text-muted-foreground">Category</Label>
             <Select value={categoryId} onValueChange={setCategoryId}>
-              <SelectTrigger className="border-gray-200">
+              <SelectTrigger className="border-input">
                 <SelectValue placeholder="Select category..." />
               </SelectTrigger>
               <SelectContent>
@@ -116,13 +116,13 @@ export function BulkEntryDialog({
           </div>
 
           <div className="space-y-1.5">
-            <Label htmlFor="bulk-lines" className="text-xs text-gray-600">Transactions</Label>
+            <Label htmlFor="bulk-lines" className="text-xs text-muted-foreground">Transactions</Label>
             <Textarea
               id="bulk-lines"
               placeholder={"500 Car wash\n1200 Grocery\n800"}
               value={lines}
               onChange={(e) => setLines(e.target.value)}
-              className="border-gray-200 min-h-[140px] font-mono text-sm"
+              className="border-input min-h-[140px] font-mono text-sm"
               required
             />
           </div>
